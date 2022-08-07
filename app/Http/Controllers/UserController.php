@@ -45,7 +45,7 @@ class UserController extends Controller
             p.is_pettd
         from
             users u
-        inner join person p on
+        left join person p on
             u.id = p.user_id
         left join roles r on
             p.role_id = r.id";
@@ -57,10 +57,11 @@ class UserController extends Controller
         return response()->json($result);
     }
 
-    public function addUser(Request $request) {
+    public function addUser(Request $request)
+    {
         // Debug::dump($request->input());die;
 
-        $user_id = (int)$request->input('id')??0;
+        $user_id = (int)$request->input('id') ?? 0;
 
         $data = [
             'name' => $request->input('name'),
@@ -82,8 +83,8 @@ class UserController extends Controller
             'nip'       => (int) $request->input('nip'),
             'role_id'       => (int) $request->input('role'),
             'jabatan'       => $request->input('jabatan'),
-            'is_pemaraf'       => (int) ($request->input('is_pemaraf')??0) == 1 ? 1: 0,
-            'is_pettd'       => (int) ($request->input('is_pettd')??0) == 1 ? 1: 0,
+            'is_pemaraf'       => (int) ($request->input('is_pemaraf') ?? 0) == 1 ? 1 : 0,
+            'is_pettd'       => (int) ($request->input('is_pettd') ?? 0) == 1 ? 1 : 0,
         ];
 
         $result = app('db')->connection()->insert("INSERT into person (user_id, nip, role_id, jabatan, is_pemaraf, is_pettd) VALUES(:user_id, :nip, :role_id, :jabatan, :is_pemaraf, :is_pettd)", $params);
@@ -94,14 +95,14 @@ class UserController extends Controller
             'status' => 1,
             'data' => $userInfo,
         ], 200);
-    
     }
 
-    public function editUser(Request $request, $user_id){
+    public function editUser(Request $request, $user_id)
+    {
 
         $user_id = (int) $user_id;
         // Debug::dump($user_id);die;
-        
+
         $params = [
             'user_id'   => $user_id,
             'name'      => $request->input('name'),
@@ -109,7 +110,7 @@ class UserController extends Controller
         ];
 
         $additional_set = "";
-        if ($request->input('password')!=''){
+        if ($request->input('password') != '') {
             $params['password'] = Hash::make($request->input('password'));
             $additional_set .= ", password=:password";
         }
@@ -127,8 +128,8 @@ class UserController extends Controller
             'nip'       => (int) $request->input('nip'),
             'role_id'       => (int) $request->input('role'),
             'jabatan'       => $request->input('jabatan'),
-            'is_pemaraf'       => (int) ($request->input('is_pemaraf')??0) == 1 ? 1: 0,
-            'is_pettd'       => (int) ($request->input('is_pettd')??0) == 1 ? 1: 0,
+            'is_pemaraf'       => (int) ($request->input('is_pemaraf') ?? 0) == 1 ? 1 : 0,
+            'is_pettd'       => (int) ($request->input('is_pettd') ?? 0) == 1 ? 1 : 0,
         ];
 
         // Debug::dump($params);die;
@@ -143,13 +144,14 @@ class UserController extends Controller
         ]);
     }
 
-    public function deleteUser(Request $request, $user_id){
+    public function deleteUser(Request $request, $user_id)
+    {
         $user_id = (int) $user_id;
         // Debug::dump($user_id);die;
 
         app('db')->connection()->table('users')->where('id', $user_id)->delete();
         app('db')->connection()->table('person')->where('user_id', $user_id)->delete();
 
-        return response()->json(['status'=>1]);
+        return response()->json(['status' => 1]);
     }
 }
