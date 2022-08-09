@@ -13,8 +13,13 @@
 
 
 @endpush
+@php
+$user_role = auth()->user()->role_id;
+@endphp
 
 @section('content')
+
+@if($user_role==2)
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -27,104 +32,120 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-4">
-                                Tanggal
-                            </div>
-                            <div class="col-6">
-                                <input type="date" class="form-control" id="exampleFormControlInput1"
-                                    placeholder="Masukan Tanggal">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-4">
-                                Jenis
-                            </div>
-                            <div class="col-6">
-                                <select class="form-select" aria-label="Default select example">
-                                    <option value="penting">Penting</option>
-                                    <option value="biasa">Biasa</option>
-                                </select>
+                <form id="form-surat-masuk" enctype="multipart/form-data" novalidate="novalidate">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    Tanggal
+                                </div>
+                                <div class="col-6">
+                                    <input type="date" name="tanggal_surat" class="form-control" id="tanggal_surat"
+                                        placeholder="Masukan Tanggal">
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-4">
-                                Asal
-                            </div>
-                            <div class="col-6">
-                                <input type="text" class="form-control" id="exampleFormControlInput1"
-                                    placeholder="Masukan Asal">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-4">
-                                Upload File
-                            </div>
-                            <div class="col-6">
-                                <input class="form-control" type="file" id="formFile">
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-4">
-                                Perihal
-                            </div>
-                            <div class="col-6">
-                                <input type="text" class="form-control" id="exampleFormControlInput1"
-                                    placeholder="Masukan Perihal">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-
-                    </div>
-
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-4">
-                                Nomor
-                            </div>
-                            <div class="col-6">
-                                <input type="text" class="form-control" id="exampleFormControlInput1"
-                                    placeholder="Masukan Perihal">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-4">
-
-                            </div>
-                            <div class="col-6  d-flex align-items-end flex-column">
-                                <button type="button" class="btn btn-primary">Submit</button>
-
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    Jenis
+                                </div>
+                                <div class="col-6">
+                                    <select name="jenis_surat_masuk" class="form-select"
+                                        aria-label="Default select example" id="jenis_surat_masuk">
+                                        <option value="penting">Penting</option>
+                                        <option value="biasa">Biasa</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
                     </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    Asal
+                                </div>
+                                <div class="col-6">
+                                    <input name="asal_surat" type="text" class="form-control" id="asal_surat"
+                                        placeholder="Masukan Asal">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    Upload File
+                                </div>
+                                <div class="col-6">
+                                    <input name="file" class="form-control" type="file" id="formFile">
+                                </div>
+                            </div>
+                        </div>
 
-                </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    Perihal
+                                </div>
+                                <div class="col-6">
+                                    <input name="perihal_surat" type="text" class="form-control" id="perihal_surat"
+                                        placeholder="Masukan Perihal">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    Ditugaskan ke
+                                </div>
+                                <div class="col-6">
+                                    <select name="ditugaskan_ke" class="form-select" aria-label="Default select example"
+                                        id="ditugaskan_ke">
+                                        <option value="penting">Penting</option>
+                                        <option value="biasa">Biasa</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    Nomor
+                                </div>
+                                <div class="col-6">
+                                    <input name="nomor_surat" type="text" class="form-control" id="nomor_surat"
+                                        placeholder="Masukan Nomor">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+
+                                </div>
+                                <div class="col-6  d-flex align-items-end flex-column">
+                                    <button type="submit" class="btn btn-primary btn-submit-surat-masuk">Submit</button>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+@endif
+
 <div class="row mt-5">
     <div class="col-12">
         <div class="card">
@@ -231,6 +252,11 @@
 @push('js')
 <script>
 $(() => {
+    $('#form-surat-masuk').on('submit', (e) => {
+        e.preventDefault();
+        submitSurat($(e.currentTarget));
+    });
+
 
     var dataa = [{
             'urgensi': 'Penting',
@@ -360,5 +386,29 @@ $(() => {
     // })
 
 });
+
+function submitSurat(form) {
+    var formData = new FormData();
+    formData.append('tanggal_surat', $("#tanggal_surat").val())
+    formData.append('jenis_surat_masuk', $("#jenis_surat_masuk").val())
+    formData.append('asal_surat', $("#asal_surat").val())
+    formData.append('perihal_surat', $("#perihal_surat").val())
+    formData.append('ditugaskan_ke', $("#ditugaskan_ke").val())
+    formData.append('nomor_surat', $("#nomor_surat").val())
+    formData.append('file', $('input[type=file]')[0].files[0]);
+
+
+
+    $.ajax({
+        url: '/api/surat-masuk',
+        method: 'post',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: (res) => {
+            console.log(res)
+        }
+    })
+}
 </script>
 @endpush

@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Zend\Debug\Debug;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -36,24 +37,31 @@ class RoleController extends Controller
         // Debug::dump($result);die;
 
 
-        $result = ['status'=>1, 'data' => $data];
+        $result = ['status' => 1, 'data' => $data];
 
         return response()->json($result);
     }
 
-    public function addRole(Request $request) {
-        // Debug::dump($request->input());die;
+    public function addRole(Request $request)
+    {
 
-        $params = [
-            'name'  => $request->input('name'),
-            'level'  => (int) $request->input('level'),
-        ];
 
-        app('db')->connection()->insert("INSERT INTO roles (name, level, created_at) VALUES(:name, :level, now())", $params);
-        return response()->json(['status'=>1]);
+        try {
+            $params = [
+                'name'  => $request->input('name'),
+                'level'  => (int) $request->input('level'),
+            ];
+
+            app('db')->connection()->insert("INSERT INTO roles (name, level, created_at) VALUES(:name, :level, now())", $params);
+            return response()->json(['status' => 1]);
+        } catch (Exception $e) {
+            Debug::dump($e->getMessage());
+            die;
+        }
     }
 
-    public function editRole(Request $request, $role_id) {
+    public function editRole(Request $request, $role_id)
+    {
         // Debug::dump($request->input());die;
 
         $role_id = (int) $request->input('id');
@@ -65,10 +73,11 @@ class RoleController extends Controller
         ];
 
         app('db')->connection()->insert("UPDATE roles set name=:name, level=:level where id=:role_id", $params);
-        return response()->json(['status'=>1]);
+        return response()->json(['status' => 1]);
     }
 
-    public function deleteRole(Request $request, $role_id) {
+    public function deleteRole(Request $request, $role_id)
+    {
         // Debug::dump($request->input());die;
 
         $role_id = (int) $role_id;
@@ -79,8 +88,6 @@ class RoleController extends Controller
         // Debug::dump($params);die;
 
         app('db')->connection()->table('roles')->where('id', $role_id)->delete();
-        return response()->json(['status'=>1]);
+        return response()->json(['status' => 1]);
     }
-
-
 }
