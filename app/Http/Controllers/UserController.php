@@ -35,6 +35,7 @@ class UserController extends Controller
             u.id,
             p.nip,
             u.name,
+            u.role_id as role,
             u.email,
             p.id as person_id,
             p.role_id,
@@ -48,7 +49,7 @@ class UserController extends Controller
         left join person p on
             u.id = p.user_id
         left join roles r on
-            p.role_id = r.id";
+            u.role_id = r.id ";
         $data = app('db')->connection()->select($sql, []);
         // Debug::dump($data);die;
 
@@ -85,6 +86,7 @@ class UserController extends Controller
             'jabatan'       => $request->input('jabatan'),
             'is_pemaraf'       => (int) ($request->input('is_pemaraf') ?? 0) == 1 ? 1 : 0,
             'is_pettd'       => (int) ($request->input('is_pettd') ?? 0) == 1 ? 1 : 0,
+
         ];
 
         $result = app('db')->connection()->insert("INSERT into person (user_id, nip, role_id, jabatan, is_pemaraf, is_pettd) VALUES(:user_id, :nip, :role_id, :jabatan, :is_pemaraf, :is_pettd)", $params);
@@ -106,7 +108,8 @@ class UserController extends Controller
         $params = [
             'user_id'   => $user_id,
             'name'      => $request->input('name'),
-            'email'      => $request->input('email')
+            'email'      => $request->input('email'),
+            'role_id'       => (int) $request->input('role'),
         ];
 
         $additional_set = "";
@@ -118,7 +121,7 @@ class UserController extends Controller
         // Debug::dump($params);die;
 
         app('db')->connection()->update(
-            "UPDATE users set name=:name, email=:email, updated_at=now(){$additional_set} where id=:user_id",
+            "UPDATE users set name=:name, email=:email, role_id=:role_id,updated_at=now(){$additional_set} where id=:user_id",
             $params
         );
         // Debug::dump($result);die;

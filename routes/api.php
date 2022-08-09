@@ -18,7 +18,7 @@ use Zend\Debug\Debug;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
- 
+
 Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user-list');
 Route::post('/user', [App\Http\Controllers\UserController::class, 'addUser'])->name('add-user');
 Route::put('/user/{user_id}', [App\Http\Controllers\UserController::class, 'editUser'])->name('edit-user');
@@ -29,3 +29,5 @@ Route::get('/role', [App\Http\Controllers\Api\RoleController::class, 'index']);
 Route::post('/role', [App\Http\Controllers\Api\RoleController::class, 'addRole']);
 Route::put('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class, 'editRole']);
 Route::delete('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class, 'deleteRole']);
+
+Route::post('/surat-masuk', [App\Http\Controllers\SuratMasukController::class, 'addSuratMasuk'])->name('add-surat-masuk');
