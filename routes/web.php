@@ -31,8 +31,18 @@ use Zend\Debug\Debug;
         Route::get('/admin/users', [App\Http\Controllers\AdminController::class, 'users'])->name('users')->middleware('auth');
         Route::get('/admin/roles', [App\Http\Controllers\AdminController::class, 'roles'])->name('roles')->middleware('auth');
         Route::get('/surat-masuk', [App\Http\Controllers\SuratMasukController::class, 'index'])->name('surat-masuk.index');
-        Route::get('/surat-keluar', [App\Http\Controllers\SuratKeluarController::class, 'index'])->name('surat-masuk.index');
+        Route::get('/surat-keluar', [App\Http\Controllers\SuratKeluarController::class, 'index'])->name('surat-keluar.index');
         Route::get('/arsip', [App\Http\Controllers\ArsipController::class, 'index'])->name('arsip.index');
+
+
+        Route::group(['prefix' => 'api'], function() {
+            Route::get('/get-pemaraf/{user_id}/user', [App\Http\Controllers\UserController::class, 'getPemarafByUser']);
+            Route::get('/get-pemaraf/{level}/level', [App\Http\Controllers\UserController::class, 'getPemarafByLevel']);
+            Route::post('/surat-keluar', [App\Http\Controllers\SuratKeluarController::class, 'addSurat'])->name('surat-keluar.addSurat');
+
+        });
     });
+
+    
 
 });

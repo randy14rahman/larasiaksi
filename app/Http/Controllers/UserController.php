@@ -139,4 +139,32 @@ class UserController extends Controller
 
         return response()->json(['status' => 1]);
     }
+
+    public function getPemarafByUser(Request $request, $user_id){
+        
+        $user_id = (int) $user_id;
+        // Debug::dump($user_id);die;
+
+        if ($user_id==0) {
+            return response()->json(false);
+        }
+
+        $user = new User();
+        $data = $user->getPemarafByUser($user_id);
+
+        return response()->json($data);
+    }
+
+    public function getPemarafByLevel(Request $request, $level){
+        
+        $level = (int) $level;
+        // Debug::dump($level);die;
+
+        Debug::dump(auth()->user());die;
+
+        $user = new User();
+        $data = $user->getPemarafByLevel($level);
+
+        return response()->json($data);
+    }
 }

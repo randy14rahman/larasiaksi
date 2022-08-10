@@ -6,246 +6,160 @@
 @stop
 
 @section('content')
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header border-0">
-                    <div class="d-flex justify-content-between">
-                        <div></div>
-                        <div>
-                            <h4> Buat Surat</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-4">
-                                    Tanggal
-                                </div>
-                                <div class="col-6">
-                                    <input type="date" class="form-control" id="exampleFormControlInput1"
-                                        placeholder="Masukan Tanggal">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-4">
-                                    Pemaraf 1
-                                </div>
-                                <div class="col-6">
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option value="penting">Andi</option>
-                                        <option value="biasa">Bambang</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-4">
-                                    Perihal
-                                </div>
-                                <div class="col-6">
-                                    <input type="text" class="form-control" id="exampleFormControlInput1"
-                                        placeholder="Masukan Asal">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-4">
-                                    Pemaraf 2
-                                </div>
-                                <div class="col-6">
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option value="penting">Andi</option>
-                                        <option value="biasa">Bambang</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-4">
-                                    Nomor
-                                </div>
-                                <div class="col-6">
-                                    <input type="number" class="form-control" id="exampleFormControlInput1"
-                                        placeholder="Masukan Nomor Surat">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-4">
-                                    Penanda Tangan
-                                </div>
-                                <div class="col-6">
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option value="penting">Andi</option>
-                                        <option value="biasa">Bambang</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-4">
-                                    Judul
-                                </div>
-                                <div class="col-6">
-                                    <input type="number" class="form-control" id="exampleFormControlInput1"
-                                        placeholder="Masukan Judul">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-4">
-                                    Upload File
-                                </div>
-                                <div class="col-6">
-                                    <input class="form-control" type="file" id="formFile">
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-6"></div>
-                        <div class="col-5 d-flex align-items-end flex-column">
-                            <button type="button" class="btn btn-primary">Submit</button>
-
-                        </div>
-                        <div class="col-1"></div>
-
-
-                    </div>
+@if(auth()->user()->role_id==2)
+    <div class="card mb-5">
+        <div class="card-header border-0">
+            <div class="d-flex justify-content-between">
+                <div></div>
+                <div>
+                    <h4> Buat Surat</h4>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header border-0">
-                    <div class="d-flex justify-content-between">
-                        <div></div>
-                        <div>
-                            <h4> List Surat</h4>
+        <form id="form-add-surat-keluar" enctype="multipart/form-data" novalidate="novalidate">
+            @csrf
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-5">
+                        <div class="form-group row">
+                            <label class="col-form-label col-4">Tanggal Surat <span class="text-danger">*</span></label>
+                            <div class="col-8">
+                                <input type="date" class="form-control" name="tanggal_surat" value="{{date('Y-m-d')}}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-4">Perihal <span class="text-danger">*</span></label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="perihal" placeholder="Masukan Perihal">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-4">Nomor Surat <span class="text-danger">*</span></label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="nomor_surat" placeholder="Masukan Nomor Surat">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-4">Judul Surat <span class="text-danger">*</span></label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" name="judul_surat" placeholder="Masukan Judul Surat">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 offset-1">
+                        <div class="form-group row">
+                            <label class="col-form-label col-4">Penandatangan <span class="text-danger">*</span></label>
+                            <div class="col-8">
+                                <select class="form-control" id="pettd" name="pettd">
+                                    <option>Pilih Penandatangan</option>
+                                    @foreach ($users_pettd as $k => $v)
+                                        <option value="{{$v->id}}" data-level="{{$v->level}}">{{$v->nip}} | {{$v->name}} | {{$v->jabatan}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-4">Pemaraf 1 <span class="text-danger">*</span></label>
+                            <div class="col-8">
+                                <select class="form-control pemaraf" id="pemaraf1" name="pemaraf1">
+                                    <option value="">Pilih Pemaraf</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-4">
+                                Pemaraf 2 <small>(optional)</small>
+                            </label>
+                            <div class="col-8">
+                                <select class="form-control pemaraf" id="pemaraf1" name="pemaraf2">
+                                    <option value="">Pilih Pemaraf</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-4">Upload File <span class="text-danger">*</span></label>
+                            <div class="col-8">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="customFile" name="file" accept="application/pdf">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <table id="datatable-surat-keluar" class="table" style="width:100%" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Judul</th>
-                                <th>Perihal</th>
-                                <th>Tanggal Surat</th>
-                                <th>File</th>
-                                <th>Status Dokumen</th>
-                                <th>Action</th>
-                            </tr>
-                            <tr class="filte">
-                                <th>
-                                    <div>
-                                        <select class="form-select" aria-label="Default select example">
-                                            <option value="penting">Penting</option>
-                                            <option value="biasa">Biasa</option>
-                                        </select>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div>
-                                        <select class="form-select" aria-label="Default select example">
-                                            <option value="penting">Item 1 </option>
-                                            <option value="biasa">Item 2</option>
-                                        </select>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div>
-                                        <select class="form-select" aria-label="Default select example">
-                                            <option value="penting">1 Agustus 2022</option>
-                                            <option value="biasa">1 Agustus 2022</option>
-                                        </select>
-                                    </div>
-                                </th>
-                                <th></th>
-                                <th>
-                                    <div>
-                                        <select class="form-select" aria-label="Default select example">
-                                            <option value="penting">Masuk Ka Opd</option>
-                                            <option value="biasa">Process</option>
-                                        </select>
-                                    </div>
-                                </th>
-                                <th></th>
-                            </tr>
-
-                        </thead>
-
-                    </table>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-info float-right">Buat Surat</button>
+            </div>
+        </form>
+    </div>
+@endif
+    <div class="card">
+        <div class="card-header border-0">
+            <div class="d-flex justify-content-between">
+                <div></div>
+                <div>
+                    <h4> List Surat</h4>
                 </div>
             </div>
+        </div>
+        <div class="card-body">
+            <table id="datatable-surat-keluar" class="table" style="width:100%" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Judul</th>
+                        <th>Perihal</th>
+                        <th>Tanggal Surat</th>
+                        <th>File</th>
+                        <th>Status Dokumen</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr class="filte">
+                        <th>
+                            <div>
+                                <select class="form-control" aria-label="Default select example">
+                                    <option value="penting">Penting</option>
+                                    <option value="biasa">Biasa</option>
+                                </select>
+                            </div>
+                        </th>
+                        <th>
+                            <div>
+                                <select class="form-control" aria-label="Default select example">
+                                    <option value="penting">Item 1 </option>
+                                    <option value="biasa">Item 2</option>
+                                </select>
+                            </div>
+                        </th>
+                        <th>
+                            <div>
+                                <select class="form-control" aria-label="Default select example">
+                                    <option value="penting">1 Agustus 2022</option>
+                                    <option value="biasa">1 Agustus 2022</option>
+                                </select>
+                            </div>
+                        </th>
+                        <th></th>
+                        <th>
+                            <div>
+                                <select class="form-control" aria-label="Default select example">
+                                    <option value="penting">Masuk Ka Opd</option>
+                                    <option value="biasa">Process</option>
+                                </select>
+                            </div>
+                        </th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+            </table>
         </div>
     </div>
 @stop
 @push('js')
-<script>
-$(() => {
-    var dataa = [{
-        'judul': 'Perjalanan Dinas',
-        'perihal': 'Surat Tugas',
-        'tanggal': 'Aug 4, 2022',
-        'action': 'liat file',
-        'status': 'Diproses',
-        'delete': 'delete'
-    }]
-
-    datatable = $('#datatable-surat-keluar').DataTable({
-        data: dataa,
-        orderCellsTop: true,
-        columns: [{
-            data: 'judul'
-        }, {
-            data: 'perihal'
-        }, {
-            data: 'tanggal'
-        }, {
-            data: 'action',
-            render: () => {
-                return '<a href="google.com">Liat File</a>'
-            }
-        }, {
-            data: 'status',
-            render: (data, type, row) => {
-                return `<div><span class="badge text-bg-primary" style="background-color:#28a745">Proses</span></div>`
-            }
-        }, {
-            data: 'delete',
-            render: (data, type, row) => {
-                return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}"><i class="fas fa-trash fa-fw"></i></button>`
-            }
-        }]
-
-
-    });
-
-
-})
-</script>
+    <script src="/assets/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="/assets/plugins/jquery-validation/additional-methods.min.js"></script>
+    <script>const user_id = <?= auth()->id() ?>;</script>
+    <script src="/assets/app/surat-keluar/index.js"></script>
 @endpush
