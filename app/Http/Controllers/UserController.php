@@ -29,7 +29,18 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        // Debug::dump($request->input());die;
+
+        $where = '';
+
+        if (count($request->input()) > 0) {
+            foreach ($request->input() as $k => $v) {
+                if ($k != "_") {
+                    $wh = 'u.' . $k . '=' . $v;
+                    $where .= ' AND ' . $wh;
+                }
+            }
+        }
+
 
         $sql = "SELECT
             u.id,
@@ -46,7 +57,7 @@ class UserController extends Controller
         from
             users u
         left join roles r on
-            u.role_id = r.id ";
+            u.role_id = r.id WHERE 1=1" . $where;
         $data = app('db')->connection()->select($sql, []);
         // Debug::dump($data);die;
 
@@ -57,7 +68,7 @@ class UserController extends Controller
 
     public function addUser(Request $request)
     {
-        // Debug::dump($request->input());die;
+
 
         $user_id = (int)$request->input('id') ?? 0;
 

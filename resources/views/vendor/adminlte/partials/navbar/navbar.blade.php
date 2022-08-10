@@ -14,8 +14,29 @@
         @yield('content_top_nav_left')
     </ul>
 
+
+
     {{-- Navbar right links --}}
     <ul class="navbar-nav ml-auto">
+        <div class="nav-item dropdown">
+            <div class="nav-link dropdown-toggle"
+                style="display:flex;align-items:center;justify-content:center;cursor:pointer" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="far fa-fw fa-bell" style="font-size: 25px;"></i>
+                <div
+                    style="display:flex;align-items:center;justify-content:center;width: 15px;height:15px;border-radius:50%;background-color:red;margin-left:-12px">
+                    <span style="font-size: 8px;color:white">10</span>
+                </div>
+            </div>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+        </div>
+
         {{-- Custom right links --}}
         @yield('content_top_nav_right')
 
@@ -23,6 +44,7 @@
         @each('adminlte::partials.navbar.menu-item', $adminlte->menu('navbar-right'), 'item')
 
         {{-- User menu link --}}
+
         {{-- @if(Auth::user())
             @if(config('adminlte.usermenu_enabled'))
                 @include('adminlte::partials.navbar.menu-item-dropdown-user-menu')
@@ -68,10 +90,9 @@
             <i class="fas fa-sign-out-alt"></i>
             </a>
         </li>
-
         {{-- Right sidebar toggler link --}}
         @if(config('adminlte.right_sidebar'))
-            @include('adminlte::partials.navbar.menu-item-right-sidebar-toggler')
+        @include('adminlte::partials.navbar.menu-item-right-sidebar-toggler')
         @endif
     </ul>
 
