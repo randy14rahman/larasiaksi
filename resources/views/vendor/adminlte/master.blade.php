@@ -24,14 +24,13 @@
 
     {{-- Base Stylesheets --}}
     @if(!config('adminlte.enabled_laravel_mix'))
-        <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+        <link rel="stylesheet" href="/assets/plugins/toastr/toastr.min.css">
         {{-- Configured Stylesheets --}}
         @include('adminlte::plugins', ['type' => 'css'])
-
-        <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        <link rel="stylesheet" href="/assets/adminlte/dist/css/adminlte.min.css">
     @else
         <link rel="stylesheet" href="{{ mix(config('adminlte.laravel_mix_css_path', 'css/app.css')) }}">
     @endif
@@ -80,9 +79,10 @@
 
     {{-- Base Scripts --}}
     @if(!config('adminlte.enabled_laravel_mix'))
-        <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-        <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+        <script src="/assets/plugins/jquery/jquery.min.js"></script>
+        <script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+        <script src="/assets/plugins/toastr/toastr.min.js"></script>
 
         {{-- Configured Scripts --}}
         @include('adminlte::plugins', ['type' => 'js'])

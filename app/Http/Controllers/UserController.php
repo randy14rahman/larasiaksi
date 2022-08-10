@@ -44,21 +44,18 @@ class UserController extends Controller
 
         $sql = "SELECT
             u.id,
-            p.nip,
+            u.nip,
             u.name,
             u.role_id as role,
             u.email,
-            p.id as person_id,
-            p.role_id,
+            u.role_id,
             r.name role_name,
             r.`level`,
-            p.jabatan,
-            p.is_pemaraf,
-            p.is_pettd
+            u.jabatan,
+            u.is_pemaraf,
+            u.is_pettd
         from
             users u
-        left join person p on
-            u.id = p.user_id
         left join roles r on
             u.role_id = r.id WHERE 1=1" . $where;
         $data = app('db')->connection()->select($sql, []);
@@ -79,32 +76,19 @@ class UserController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => $request->input('password'),
-            'role_id' => (int) $request->input('role')
-        ];
-
-        $result = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'role_id'  => $data['role_id'],
-        ]);
-
-        $userInfo = $result->getOriginal();
-        // Debug::dump($userInfo['id']);die;
-
-        $params = [
-            'user_id'   => (int) $userInfo['id'],
             'nip'       => (int) $request->input('nip'),
             'role_id'       => (int) $request->input('role'),
             'jabatan'       => $request->input('jabatan'),
             'is_pemaraf'       => (int) ($request->input('is_pemaraf') ?? 0) == 1 ? 1 : 0,
             'is_pettd'       => (int) ($request->input('is_pettd') ?? 0) == 1 ? 1 : 0,
-
+            'password' => Hash::make($data['password']??'test'),
         ];
 
-        $result = app('db')->connection()->insert("INSERT into person (user_id, nip, role_id, jabatan, is_pemaraf, is_pettd) VALUES(:user_id, :nip, :role_id, :jabatan, :is_pemaraf, :is_pettd)", $params);
+        $result = User::create($data);
 
-        // Debug::dump($result);die;
+        $userInfo = $result->getOriginal();
+        // Debug::dump($userInfo['id']);die;
+
 
         return response()->json([
             'status' => 1,
@@ -119,10 +103,14 @@ class UserController extends Controller
         // Debug::dump($user_id);die;
 
         $params = [
-            'user_id'   => $user_id,
-            'name'      => $request->input('name'),
-            'email'      => $request->input('email'),
+            'user_id'       => $user_id,
+            'name'          => $request->input('name'),
+            'email'         => $request->input('email'),
             'role_id'       => (int) $request->input('role'),
+            'nip'           => (int) $request->input('nip'),
+            'jabatan'       => $request->input('jabatan'),
+            'is_pemaraf'    => (int) ($request->input('is_pemaraf') ?? 0) == 1 ? 1 : 0,
+            'is_pettd'      => (int) ($request->input('is_pettd') ?? 0) == 1 ? 1 : 0,
         ];
 
         $additional_set = "";
@@ -134,26 +122,10 @@ class UserController extends Controller
         // Debug::dump($params);die;
 
         app('db')->connection()->update(
-            "UPDATE users set name=:name, email=:email, role_id=:role_id,updated_at=now(){$additional_set} where id=:user_id",
+            "UPDATE users set name=:name, email=:email, role_id=:role_id, nip=:nip, jabatan=:jabatan, is_pemaraf=:is_pemaraf, is_pettd=:is_pettd, updated_at=now(){$additional_set} where id=:user_id",
             $params
         );
         // Debug::dump($result);die;
-
-        $params = [
-            'user_id' => $user_id,
-            'nip'       => (int) $request->input('nip'),
-            'role_id'       => (int) $request->input('role'),
-            'jabatan'       => $request->input('jabatan'),
-            'is_pemaraf'       => (int) ($request->input('is_pemaraf') ?? 0) == 1 ? 1 : 0,
-            'is_pettd'       => (int) ($request->input('is_pettd') ?? 0) == 1 ? 1 : 0,
-        ];
-
-        // Debug::dump($params);die;
-
-        app('db')->connection()->update(
-            "UPDATE person set nip=:nip, role_id=:role_id, jabatan=:jabatan, is_pemaraf=:is_pemaraf, is_pettd=:is_pettd where user_id=:user_id",
-            $params
-        );
 
         return response()->json([
             'status' => 1

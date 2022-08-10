@@ -44,14 +44,52 @@
         @each('adminlte::partials.navbar.menu-item', $adminlte->menu('navbar-right'), 'item')
 
         {{-- User menu link --}}
-        @if(Auth::user())
-        @if(config('adminlte.usermenu_enabled'))
-        @include('adminlte::partials.navbar.menu-item-dropdown-user-menu')
-        @else
-        @include('adminlte::partials.navbar.menu-item-logout-link')
-        @endif
-        @endif
 
+        {{-- @if(Auth::user())
+            @if(config('adminlte.usermenu_enabled'))
+                @include('adminlte::partials.navbar.menu-item-dropdown-user-menu')
+            @else
+                @include('adminlte::partials.navbar.menu-item-logout-link')
+            @endif
+        @endif --}}
+
+        <!-- Notifications Dropdown Menu -->
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-bell"></i>
+            <span class="badge badge-warning navbar-badge">15</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-item dropdown-header">15 Notifications</span>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+                <i class="fas fa-envelope mr-2"></i> 4 new messages
+                <span class="float-right text-muted text-sm">3 mins</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+                <i class="fas fa-users mr-2"></i> 8 friend requests
+                <span class="float-right text-muted text-sm">12 hours</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+                <i class="fas fa-file mr-2"></i> 3 new reports
+                <span class="float-right text-muted text-sm">2 days</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+            <i class="fas fa-expand-arrows-alt"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/logout">
+            <i class="fas fa-sign-out-alt"></i>
+            </a>
+        </li>
         {{-- Right sidebar toggler link --}}
         @if(config('adminlte.right_sidebar'))
         @include('adminlte::partials.navbar.menu-item-right-sidebar-toggler')

@@ -6,14 +6,6 @@
 <h1 class="m-0 text-dark">Role Management</h1>
 @stop
 
-@push('css')
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="sweetalert2.all.min.js"></script>
-<script src="sweetalert2.min.js"></script>
-<link rel="stylesheet" href="sweetalert2.min.css">
-<link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-@endpush
-
 @section('content')
 <div class="row">
     <div class="col-12">

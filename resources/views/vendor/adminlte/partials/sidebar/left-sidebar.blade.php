@@ -62,22 +62,31 @@
     @endphp
 
     <div class="sidebar">
-        <nav class="pt-2">
+        <!-- Sidebar user (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="{!! url('assets/adminlte/dist/img/user2-160x160.jpg') !!}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="javascript:;" class="d-block">{{ auth()->user()->name }} xx</a>
+            </div>
+        </div>
+        <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column {{ config('adminlte.classes_sidebar_nav', '') }}"
                 data-widget="treeview" role="menu" @if(config('adminlte.sidebar_nav_animation_speed') !=300)
                 data-animation-speed="{{ config('adminlte.sidebar_nav_animation_speed') }}" @endif <!--
                 @if(!config('adminlte.sidebar_nav_accordion')) data-accordion="false" @endif>
                 @foreach ($menu as $item)
-                <i @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item">
+                <li @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item">
                     <a class="nav-link @isset($item['shift']) {{ $item['shift'] }} @endisset" href="{{ $item['url'] }}"
-                        @isset($item['url']) target="{{ $item['url'] }}" @endisset {!! $item['data-compiled'] ?? '' !!}>
+                        @isset($item['url']) @endisset {!! $item['data-compiled'] ?? '' !!}>
                         <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{
                             isset($item['icon_color']) ? 'text-'.$item['icon_color'] : ''
                         }}"></i>
                         <p>
                             {{ $item['text'] }}
                         </p>
-                    </a> </i>
+                    </a> </li>
                 @endforeach
                 @if($user_role==1)
                 <li class="nav-header">
@@ -85,32 +94,32 @@
                 </li>
                 @foreach ($menuadmin as $item)
 
-                <i @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item">
+                <li @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item">
                     <a class="nav-link @isset($item['shift']) {{ $item['shift'] }} @endisset" href="{{ $item['url'] }}"
-                        @isset($item['url']) target="{{ $item['url'] }}" @endisset {!! $item['data-compiled'] ?? '' !!}>
+                        @isset($item['url']) @endisset {!! $item['data-compiled'] ?? '' !!}>
                         <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{
                             isset($item['icon_color']) ? 'text-'.$item['icon_color'] : ''
                         }}"></i>
                         <p>
                             {{ $item['text'] }}
                         </p>
-                    </a> </i>
+                    </a> </li>
                 @endforeach
                 @endif
                 <li class="nav-header">
                     Administrator
                 </li>
                 @foreach ($menuprofile as $item)
-                <i @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item">
+                <li @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item">
                     <a class="nav-link @isset($item['shift']) {{ $item['shift'] }} @endisset" href="{{ $item['url'] }}"
-                        @isset($item['url']) target="{{ $item['url'] }}" @endisset {!! $item['data-compiled'] ?? '' !!}>
+                        @isset($item['url']) @endisset {!! $item['data-compiled'] ?? '' !!}>
                         <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{
                             isset($item['icon_color']) ? 'text-'.$item['icon_color'] : ''
                         }}"></i>
                         <p>
                             {{ $item['text'] }}
                         </p>
-                    </a> </i>
+                    </a> </li>
                 @endforeach
 
 
