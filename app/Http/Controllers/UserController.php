@@ -136,7 +136,6 @@ class UserController extends Controller
         // Debug::dump($user_id);die;
 
         app('db')->connection()->table('users')->where('id', $user_id)->delete();
-        app('db')->connection()->table('person')->where('user_id', $user_id)->delete();
 
         return response()->json(['status' => 1]);
     }
