@@ -92,14 +92,14 @@ class UserController extends Controller
         // Debug::dump($user_id);die;
 
         $params = [
-            'user_id'   => $user_id,
-            'name'      => $request->input('name'),
-            'email'      => $request->input('email'),
+            'user_id'       => $user_id,
+            'name'          => $request->input('name'),
+            'email'         => $request->input('email'),
             'role_id'       => (int) $request->input('role'),
-            'nip'       => (int) $request->input('nip'),
+            'nip'           => (int) $request->input('nip'),
             'jabatan'       => $request->input('jabatan'),
-            'is_pemaraf'       => (int) ($request->input('is_pemaraf') ?? 0) == 1 ? 1 : 0,
-            'is_pettd'       => (int) ($request->input('is_pettd') ?? 0) == 1 ? 1 : 0,
+            'is_pemaraf'    => (int) ($request->input('is_pemaraf') ?? 0) == 1 ? 1 : 0,
+            'is_pettd'      => (int) ($request->input('is_pettd') ?? 0) == 1 ? 1 : 0,
         ];
 
         $additional_set = "";

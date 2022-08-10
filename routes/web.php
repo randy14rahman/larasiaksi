@@ -15,9 +15,10 @@ use Zend\Debug\Debug;
 | contains the "web" middleware group. Now create something great!
 |
 */Route::group(['namespace' => 'App\Http\Controllers'], function()
-{   
+{
 
     Auth::routes();
+    
     Route::group(['middleware' => ['guest']], function() {
     });
 
@@ -31,6 +32,7 @@ use Zend\Debug\Debug;
         Route::get('/admin/roles', [App\Http\Controllers\AdminController::class, 'roles'])->name('roles')->middleware('auth');
         Route::get('/surat-masuk', [App\Http\Controllers\SuratMasukController::class, 'index'])->name('surat-masuk.index');
         Route::get('/surat-keluar', [App\Http\Controllers\SuratKeluarController::class, 'index'])->name('surat-masuk.index');
+        Route::get('/arsip', [App\Http\Controllers\ArsipController::class, 'index'])->name('arsip.index');
     });
 
 });
