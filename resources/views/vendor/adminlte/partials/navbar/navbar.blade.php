@@ -1,3 +1,11 @@
+@php( $logout_url = View::getSection('logout_url') ?? config('adminlte.logout_url', 'logout') )
+
+@if (config('adminlte.use_route_url', false))
+@php( $logout_url = $logout_url ? route($logout_url) : '' )
+@else
+@php( $logout_url = $logout_url ? url($logout_url) : '' )
+@endif
+
 <nav class="main-header navbar
     {{ config('adminlte.classes_topnav_nav', 'navbar-expand') }}
     {{ config('adminlte.classes_topnav', 'navbar-white navbar-light') }}">
@@ -63,11 +71,8 @@
             <i class="fas fa-expand-arrows-alt"></i>
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/logout">
-            <i class="fas fa-sign-out-alt"></i>
-            </a>
-        </li>
+
+        @include('adminlte::partials.navbar.menu-item-logout-link')
 
         {{-- Right sidebar toggler link --}}
         @if(config('adminlte.right_sidebar'))
