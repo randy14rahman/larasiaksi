@@ -70,7 +70,7 @@
                 @foreach ($menu as $item)
                 <i @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item">
                     <a class="nav-link @isset($item['shift']) {{ $item['shift'] }} @endisset" href="{{ $item['url'] }}"
-                        @isset($item['url']) target="{{ $item['url'] }}" @endisset {!! $item['data-compiled'] ?? '' !!}>
+                        @isset($item['url']) @endisset {!! $item['data-compiled'] ?? '' !!}>
                         <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{
                             isset($item['icon_color']) ? 'text-'.$item['icon_color'] : ''
                         }}"></i>
@@ -87,7 +87,7 @@
 
                 <i @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item">
                     <a class="nav-link @isset($item['shift']) {{ $item['shift'] }} @endisset" href="{{ $item['url'] }}"
-                        @isset($item['url']) target="{{ $item['url'] }}" @endisset {!! $item['data-compiled'] ?? '' !!}>
+                        @isset($item['url']) @endisset {!! $item['data-compiled'] ?? '' !!}>
                         <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{
                             isset($item['icon_color']) ? 'text-'.$item['icon_color'] : ''
                         }}"></i>
@@ -103,7 +103,7 @@
                 @foreach ($menuprofile as $item)
                 <i @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item">
                     <a class="nav-link @isset($item['shift']) {{ $item['shift'] }} @endisset" href="{{ $item['url'] }}"
-                        @isset($item['url']) target="{{ $item['url'] }}" @endisset {!! $item['data-compiled'] ?? '' !!}>
+                        @isset($item['url']) @endisset {!! $item['data-compiled'] ?? '' !!}>
                         <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{
                             isset($item['icon_color']) ? 'text-'.$item['icon_color'] : ''
                         }}"></i>
