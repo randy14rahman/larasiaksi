@@ -31,5 +31,8 @@ Route::put('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class, '
 Route::delete('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class, 'deleteRole']);
 
 Route::get('/surat-masuk', [App\Http\Controllers\SuratMasukController::class, 'getSuratMasuk'])->name('get-surat-masuk');
-
 Route::post('/surat-masuk', [App\Http\Controllers\SuratMasukController::class, 'addSuratMasuk'])->name('add-surat-masuk');
+Route::get('/surat-masuk/detail', [App\Http\Controllers\SuratMasukController::class, 'getDetailSuratMasuk'])->name('get-detail-surat-masuk');
+Route::get('/surat-masuk/list-disposisi-assign', [App\Http\Controllers\SuratMasukController::class, 'getListDisposisiAssign'])->name('list-disposisi-assign');
+
+Route::get('/notification', [App\Http\Controllers\NotificationController::class, 'index'])->name('get-notification');
