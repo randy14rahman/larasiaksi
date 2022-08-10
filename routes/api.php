@@ -30,4 +30,6 @@ Route::post('/role', [App\Http\Controllers\Api\RoleController::class, 'addRole']
 Route::put('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class, 'editRole']);
 Route::delete('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class, 'deleteRole']);
 
+Route::get('/surat-masuk', [App\Http\Controllers\SuratMasukController::class, 'getSuratMasuk'])->name('get-surat-masuk');
+
 Route::post('/surat-masuk', [App\Http\Controllers\SuratMasukController::class, 'addSuratMasuk'])->name('add-surat-masuk');

@@ -14,7 +14,10 @@
 
 @endpush
 @php
+$user = auth()->user();
 $user_role = auth()->user()->role_id;
+
+$id_user = $user->id;
 @endphp
 
 @section('content')
@@ -53,8 +56,8 @@ $user_role = auth()->user()->role_id;
                                 <div class="col-6">
                                     <select name="jenis_surat_masuk" class="form-select"
                                         aria-label="Default select example" id="jenis_surat_masuk">
-                                        <option value="penting">Penting</option>
-                                        <option value="biasa">Biasa</option>
+                                        <option value="1">Penting</option>
+                                        <option value="0">Biasa</option>
                                     </select>
                                 </div>
                             </div>
@@ -105,8 +108,8 @@ $user_role = auth()->user()->role_id;
                                 <div class="col-6">
                                     <select name="ditugaskan_ke" class="form-select" aria-label="Default select example"
                                         id="ditugaskan_ke">
-                                        <option value="penting">Penting</option>
-                                        <option value="biasa">Biasa</option>
+                                        <!-- <option value="penting">Penting</option>
+                                        <option value="biasa">Biasa</option> -->
                                     </select>
                                 </div>
                             </div>
@@ -250,24 +253,21 @@ $user_role = auth()->user()->role_id;
 
 @stop
 @push('js')
+<script src="https://adminlte.io/themes/v3/plugins/sweetalert2/sweetalert2.min.js"></script>
+
 <script>
+const user_id = "<?php echo $id_user ?>"
+
 $(() => {
+    getPenugasan()
+    getListSurat()
     $('#form-surat-masuk').on('submit', (e) => {
         e.preventDefault();
         submitSurat($(e.currentTarget));
     });
 
 
-    var dataa = [{
-            'urgensi': 'Penting',
-            'perihal': 'Surat Tugas',
-            'tanggal': 'Aug 4, 2022',
-            'action': 'liat file',
-            'status': 'Masuk Ka OPD',
-            'delete': 'delete'
-        }
 
-    ]
     var data_disposisi = [{
             'posisi': 'Andi',
             'jabatan': 'Eselon 3',
@@ -279,34 +279,7 @@ $(() => {
         }
 
     ]
-    datatable = $('#datatable-surat').DataTable({
-        data: dataa,
-        orderCellsTop: true,
-        columns: [{
-            data: 'urgensi'
-        }, {
-            data: 'perihal'
-        }, {
-            data: 'tanggal'
-        }, {
-            data: 'action',
-            render: () => {
-                return '<a href="google.com">Liat File</a>'
-            }
-        }, {
-            data: 'status',
-            render: (data, type, row) => {
-                return `<div><span class="badge text-bg-primary" style="background-color:#0d6efd">Masuk Ka OPD</span></div>`
-            }
-        }, {
-            data: 'delete',
-            render: (data, type, row) => {
-                return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}"><i class="fas fa-trash fa-fw"></i></button>`
-            }
-        }]
 
-
-    });
     datatable = $('#datatable-disposisi').DataTable({
         data: data_disposisi,
         orderCellsTop: true,
@@ -387,6 +360,51 @@ $(() => {
 
 });
 
+function getListSurat() {
+    // var dataa = [{
+    //         'urgensi': 'Penting',
+    //         'perihal': 'Surat Tugas',
+    //         'tanggal': 'Aug 4, 2022',
+    //         'action': 'liat file',
+    //         'status': 'Masuk Ka OPD',
+    //         'delete': 'delete'
+    //     }
+
+    // ]
+
+    var datatable = $('#datatable-surat').DataTable({
+        ajax: '/api/surat-masuk',
+        orderCellsTop: true,
+        bDestroy: true,
+        columns: [{
+            data: 'jenis_surat_masuk'
+        }, {
+            data: 'perihal_surat'
+        }, {
+            data: 'tanggal_surat'
+        }, {
+            data: 'action',
+            render: (data, type, row) => {
+
+                return '<a href="' + row.link_file + '" target="_blank">Liat File</a>'
+            }
+        }, {
+            data: 'status',
+            render: (data, type, row) => {
+                return `<div><span class="badge text-bg-primary" style="background-color:#0d6efd">Masuk Ka OPD</span></div>`
+            }
+        }, {
+            data: 'delete',
+            render: (data, type, row) => {
+                return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}"><i class="fas fa-trash fa-fw"></i></button>`
+            }
+        }]
+
+
+    });
+
+}
+
 function submitSurat(form) {
     var formData = new FormData();
     formData.append('tanggal_surat', $("#tanggal_surat").val())
@@ -395,7 +413,9 @@ function submitSurat(form) {
     formData.append('perihal_surat', $("#perihal_surat").val())
     formData.append('ditugaskan_ke', $("#ditugaskan_ke").val())
     formData.append('nomor_surat', $("#nomor_surat").val())
+
     formData.append('file', $('input[type=file]')[0].files[0]);
+    formData.append('user_id', user_id);
 
 
 
@@ -405,8 +425,54 @@ function submitSurat(form) {
         data: formData,
         processData: false,
         contentType: false,
+        beforeSend: () => {
+            const spinner = ' <div class = "ml-2 spinner-border text-light spinner-grow-sm"' +
+                'role = "status" id = "spinner-loading" ><span class = "sr-only"id = "spinner-loading" > Loading... < /span> < /div > ';
+
+            $(".btn-submit-surat-masuk").append(spinner)
+
+        },
+        error: () => {
+
+        },
+        complete: () => {
+            $("#spinner-loading").remove()
+        },
         success: (res) => {
+
+            if (res.transaction) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Surat Masuk Berhasil di Tugaskan',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $("#form-surat-masuk").trigger("reset");
+                        getListSurat()
+                    }
+                });
+            }
             console.log(res)
+        }
+    })
+}
+
+function getPenugasan() {
+
+    $.ajax({
+        url: '/api/user',
+        method: 'get',
+        data: {
+            role_id: 3
+        },
+        success: (res) => {
+
+            $.each(res.data, (k, v) => {
+                $('#ditugaskan_ke').append(`<option value="${v.id}">${v.name}</option>`);
+
+            });
+
+            console.log(res, 'res')
         }
     })
 }
