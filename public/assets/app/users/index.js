@@ -128,8 +128,8 @@ $(() => {
             $(element).removeClass('is-invalid');
         },
         submitHandler: function (form) {
-            // console.log($(form).attr('name'));
-            addUser($(form));
+            const user_id = parseInt($(this.currentForm).find('input[name="id"]').val());
+            editUser($(form), user_id);
         }
     });
 

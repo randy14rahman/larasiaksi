@@ -98,7 +98,7 @@
                         <input type="hidden" id="id" name="id">
                         <div class="form-group">
                             <label>NIP</label>
-                            <input type="number" name="nip" class="form-control" id="nip" placeholder="NIP" min="18" max="18">
+                            <input type="number" name="nip" class="form-control" id="nip" placeholder="NIP">
                         </div>
                         <div class="form-group">
                             <label>Name</label>

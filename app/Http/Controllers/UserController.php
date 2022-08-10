@@ -69,13 +69,11 @@ class UserController extends Controller
     public function addUser(Request $request)
     {
 
-
-        $user_id = (int)$request->input('id') ?? 0;
+        // Debug::dump($request->input());
 
         $data = [
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password' => $request->input('password'),
             'nip'       => (int) $request->input('nip'),
             'role_id'       => (int) $request->input('role'),
             'jabatan'       => $request->input('jabatan'),
@@ -84,15 +82,13 @@ class UserController extends Controller
             'password' => Hash::make($data['password']??'test'),
         ];
 
-        $result = User::create($data);
+        // Debug::dump($data);die;
 
-        $userInfo = $result->getOriginal();
-        // Debug::dump($userInfo['id']);die;
-
+        app('db')->connection()->insert("INSERT INTO users (name, email, password, role_id, nip, jabatan, is_pemaraf, is_pettd) VALUES(:name, :email, :password, :role_id, :nip, :jabatan, :is_pemaraf, :is_pettd)", $data);
 
         return response()->json([
             'status' => 1,
-            'data' => $userInfo,
+            'data' => $data,
         ], 200);
     }
 
@@ -101,6 +97,8 @@ class UserController extends Controller
 
         $user_id = (int) $user_id;
         // Debug::dump($user_id);die;
+
+        // Debug::dump($request->input());
 
         $params = [
             'user_id'       => $user_id,
