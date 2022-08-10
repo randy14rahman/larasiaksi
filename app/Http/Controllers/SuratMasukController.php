@@ -14,6 +14,11 @@ class SuratMasukController extends Controller
         return view('surat-masuk.index');
     }
 
+    public function detail()
+    {
+        return view('surat-masuk.detail');
+    }
+
     public function addSuratMasuk(Request $request)
     {
 
@@ -94,5 +99,48 @@ class SuratMasukController extends Controller
         } catch (Exception $e) {
             dd($e->getMessage());
         }
+    }
+
+    public function getDetailSuratMasuk(Request $request)
+    {
+        $sql = 'SELECT id_surat,tanggal_surat,asal_surat
+                        perihal_surat,
+                        nomor_surat,
+                        jenis_surat_masuk,
+                        id_operator,
+                        link_file,
+                        assign_to,
+                        is_disposisi,
+                        is_proses,
+                        is_arsip,
+                        is_deleted,
+                        created_date from surat_masuk where id_surat=:id_surat';
+        $data = app('db')->connection()->selectOne($sql, ['id_surat' => $request->input('id_surat')]);
+
+        $res = [
+            'transaction' => true,
+            'data' => $data
+        ];
+        return response()->json($res);
+    }
+
+    public function getListDisposisiAssign(Request $request)
+    {
+        $check_role_id = 'SELECT level from roles where id=:role_id';
+        $level = app('db')->connection()->SelectOne($check_role_id, ['role_id' => $request->input('role_id')]);
+
+        $where = 5;
+        if ((int)$level->level == 3 || (int)$level->level == 4) {
+            $where = 5;
+        } else {
+            $where = (int)$level->level + 1;
+        }
+
+        $sql = "SELECT * FROM `users` LEFT JOIN roles on users.role_id = roles.id where roles.level = :level";
+
+        $data = app('db')->connection()->selectOne($sql, ['level' => $where]);
+
+        Debug::dump(($data));
+        die();
     }
 }

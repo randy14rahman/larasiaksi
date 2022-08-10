@@ -7,8 +7,8 @@
 
 @push('css')
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
 <link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 
 
@@ -54,7 +54,7 @@ $id_user = $user->id;
                                     Jenis
                                 </div>
                                 <div class="col-6">
-                                    <select name="jenis_surat_masuk" class="form-select"
+                                    <select name="jenis_surat_masuk" class="form-control form-select"
                                         aria-label="Default select example" id="jenis_surat_masuk">
                                         <option value="1">Penting</option>
                                         <option value="0">Biasa</option>
@@ -106,8 +106,8 @@ $id_user = $user->id;
                                     Ditugaskan ke
                                 </div>
                                 <div class="col-6">
-                                    <select name="ditugaskan_ke" class="form-select" aria-label="Default select example"
-                                        id="ditugaskan_ke">
+                                    <select name="ditugaskan_ke" class="form-control form-select"
+                                        aria-label="Default select example" id="ditugaskan_ke">
                                         <!-- <option value="penting">Penting</option>
                                         <option value="biasa">Biasa</option> -->
                                     </select>
