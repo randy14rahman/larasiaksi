@@ -21,6 +21,47 @@ class SuratKeluarController extends Controller
         ]);
     }
 
+    public function listSurat(Request $request) {
+
+        // Debug::dump(auth()->user()->role_id);die;
+
+        $params = [];
+        $additional = "";
+        if (!in_array(auth()->user()->role_id, [1,2])){ // [admin,operator]
+            $params = [
+                'user_id'=>auth()->id(),
+                'pemaraf1'=>auth()->id(),
+                'pemaraf2'=>auth()->id(),
+                'pettd'=>auth()->id(),
+            ];
+
+            $additional = " and (sk.created_by=:user_id or sk.pemaraf1=:pemaraf1 or sk.pemaraf2=:pemaraf2 or sk.pettd=:pettd)";
+        }
+
+        $sql = "SELECT sk.*, u.id as created_by_id, u.name as created_by_name from surat_keluar sk
+        left join users u on sk.created_by=u.id where (is_ttd=0 or is_ttd is null){$additional}";
+
+        $data = app('db')->connection()->select($sql, $params);
+        // Debug::dump($data);die;
+
+        $userModel = new User();
+        foreach ($data as $k => $v) {
+
+            
+            $pemaraf1 = $userModel->getInfoById($v->pemaraf1);
+            $pemaraf2 = (!is_null($v->pemaraf2) && ($v->pemaraf2)>1) ? $userModel->getInfoById(($v->pemaraf2)) : null;
+            $pettd = $userModel->getInfoById($v->pettd);
+
+            $data[$k]->pemaraf1 = $pemaraf1;
+            $data[$k]->pemaraf2 = $pemaraf2;
+            $data[$k]->pettd = $pettd;
+        }
+
+        // Debug::dump($data);die;
+        
+        return response()->json(['data'=>$data]);
+    }
+
     public function addSurat(Request $request){
         // Debug::dump($request->input());die;
 
@@ -81,7 +122,8 @@ class SuratKeluarController extends Controller
                 pettd,
                 pemaraf1,
                 link_surat,
-                created_by{$additional_field})
+                created_by,
+                created_at{$additional_field})
             VALUES (:tanggal_surat,
             :perihal_surat,
             :nomor_surat,
@@ -89,13 +131,44 @@ class SuratKeluarController extends Controller
             :pettd,
             :pemaraf1,
             :link_surat,
-            :user_id{$additional_value})";
+            :user_id,
+            now(){$additional_value})";
 
         // Debug::dump($sql);
         // Debug::dump($params);die;
 
         app('db')->connection()->insert($sql, $params);
 
-        return response()->json(['status'=>true]);
+        return response()->json(['status'=>1]);
+    }
+
+    public function setActiveParaf1(Request $request, $id){
+        $result = app('db')->connection()->update('UPDATE surat_keluar set is_paraf1=1, paraf1_date=now(), updated_at=now() where id=:id and pemaraf1=:pemaraf1', [
+            'id' => (int) $id,
+            'pemaraf1' => (int) auth()->user()->id
+        ]);
+        // Debug::dump($result);die;
+
+        return response()->json(['status'=>$result]);
+    }
+
+    public function setActiveParaf2(Request $request, $id){
+        $result = app('db')->connection()->update('UPDATE surat_keluar set is_paraf2=1, paraf2_date=now(), updated_at=now() where id=:id and pemaraf2=:pemaraf2', [
+            'id' => (int) $id,
+            'pemaraf2' => (int) auth()->user()->id
+        ]);
+        // Debug::dump($result);die;
+
+        return response()->json(['status'=>$result]);
+    }
+
+    public function setTtd(Request $request, $id){
+        $result = app('db')->connection()->update('UPDATE surat_keluar set is_ttd=1, ttd_date=now(), updated_at=now() where id=:id and pettd=:pettd', [
+            'id' => (int) $id,
+            'pettd' => (int) auth()->user()->id
+        ]);
+        // Debug::dump($result);die;
+
+        return response()->json(['status'=>$result]);
     }
 }

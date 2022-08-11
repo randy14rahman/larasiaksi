@@ -104,62 +104,80 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="datatable-surat-keluar" class="table" style="width:100%" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Judul</th>
-                        <th>Perihal</th>
-                        <th>Tanggal Surat</th>
-                        <th>File</th>
-                        <th>Status Dokumen</th>
-                        <th>Action</th>
-                    </tr>
-                    <tr class="filte">
-                        <th>
-                            <div>
-                                <select class="form-control" aria-label="Default select example">
-                                    <option value="penting">Penting</option>
-                                    <option value="biasa">Biasa</option>
-                                </select>
-                            </div>
-                        </th>
-                        <th>
-                            <div>
-                                <select class="form-control" aria-label="Default select example">
-                                    <option value="penting">Item 1 </option>
-                                    <option value="biasa">Item 2</option>
-                                </select>
-                            </div>
-                        </th>
-                        <th>
-                            <div>
-                                <select class="form-control" aria-label="Default select example">
-                                    <option value="penting">1 Agustus 2022</option>
-                                    <option value="biasa">1 Agustus 2022</option>
-                                </select>
-                            </div>
-                        </th>
-                        <th></th>
-                        <th>
-                            <div>
-                                <select class="form-control" aria-label="Default select example">
-                                    <option value="penting">Masuk Ka Opd</option>
-                                    <option value="biasa">Process</option>
-                                </select>
-                            </div>
-                        </th>
-                        <th></th>
-                    </tr>
-
-                </thead>
-
-            </table>
+            <table id="datatable-surat-keluar" class="table table-stripped" style="width:100%" style="width:100%"></table>
         </div>
     </div>
+
+    <div class="modal fade" id="modal-detail-surat">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div id="show-pdf"></div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group row">
+                                   <dt class="col-4">Perihal</dt>
+                                   <dd class="col-8">: <span id="detail-perihal"></span></dd>
+                                </div>
+                                <div class="form-group row">
+                                   <dt class="col-4">Judul Surat</dt>
+                                   <dd class="col-8">: <span id="detail-judul_surat"></span></dd>
+                                </div>
+                                <div class="form-group row">
+                                   <dt class="col-4">Tanggal Surat</dt>
+                                   <dd class="col-8">: <span id="detail-tanggal_surat"></span></dd>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-6 pemaraf1 text-center">
+                                        <strong>Pemaraf</strong>
+                                        <address>
+                                            <span>Name</span>
+                                            <div></div>
+                                            <span>NIP</span>
+                                            <br>
+                                            <span>Jabatan</span>
+                                        </address>
+                                    </div>
+                                    <div class="col-6 pemaraf2 text-center">
+                                        <strong>Pemaraf</strong>
+                                        <address>
+                                            <span>Name</span>
+                                            <div></div>
+                                            <span>NIP</span>
+                                            <br>
+                                            <span>Jabatan</span>
+                                        </address>
+                                    </div>
+                                    <div class="col-6 offset-3 pettd text-center">
+                                        <strong>Penandatangan</strong>
+                                        <address>
+                                            <span>Name</span>
+                                            <div></div>
+                                            <span>NIP</span>
+                                            <br>
+                                            <span>Jabatan</span>
+                                        </address>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @stop
 @push('js')
     <script src="/assets/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="/assets/plugins/jquery-validation/additional-methods.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.8/pdfobject.min.js"></script>
     <script>const user_id = <?= auth()->id() ?>;</script>
     <script src="/assets/app/surat-keluar/index.js"></script>
 @endpush

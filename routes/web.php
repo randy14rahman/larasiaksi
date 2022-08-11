@@ -42,7 +42,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::group(['prefix' => 'api'], function() {
             Route::get('/get-pemaraf/{user_id}/user', [App\Http\Controllers\UserController::class, 'getPemarafByUser']);
             Route::get('/get-pemaraf/{level}/level', [App\Http\Controllers\UserController::class, 'getPemarafByLevel']);
+            Route::get('/surat-keluar', [App\Http\Controllers\SuratKeluarController::class, 'listSurat'])->name('surat-keluar.listSurat');
             Route::post('/surat-keluar', [App\Http\Controllers\SuratKeluarController::class, 'addSurat'])->name('surat-keluar.addSurat');
+            Route::put('/surat-keluar/{id}/paraf1', [App\Http\Controllers\SuratKeluarController::class, 'setActiveParaf1'])->name('surat-keluar.setActiveParaf1');
+            Route::put('/surat-keluar/{id}/paraf2', [App\Http\Controllers\SuratKeluarController::class, 'setActiveParaf2'])->name('surat-keluar.setActiveParaf2');
+            Route::put('/surat-keluar/{id}/ttd', [App\Http\Controllers\SuratKeluarController::class, 'setTtd'])->name('surat-keluar.setTtd');
 
         });
     });
