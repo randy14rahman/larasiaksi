@@ -62,6 +62,47 @@ class SuratKeluarController extends Controller
         return response()->json(['data'=>$data]);
     }
 
+    public function listArsip(Request $request) {
+
+        // Debug::dump(auth()->user()->role_id);die;
+
+        $params = [];
+        $additional = "";
+        if (!in_array(auth()->user()->role_id, [1,2])){ // [admin,operator]
+            $params = [
+                'user_id'=>auth()->id(),
+                'pemaraf1'=>auth()->id(),
+                'pemaraf2'=>auth()->id(),
+                'pettd'=>auth()->id(),
+            ];
+
+            $additional = " and (sk.created_by=:user_id or sk.pemaraf1=:pemaraf1 or sk.pemaraf2=:pemaraf2 or sk.pettd=:pettd)";
+        }
+
+        $sql = "SELECT sk.*, u.id as created_by_id, u.name as created_by_name from surat_keluar sk
+        left join users u on sk.created_by=u.id where is_ttd=1{$additional}";
+
+        $data = app('db')->connection()->select($sql, $params);
+        // Debug::dump($data);die;
+
+        $userModel = new User();
+        foreach ($data as $k => $v) {
+
+            
+            $pemaraf1 = $userModel->getInfoById($v->pemaraf1);
+            $pemaraf2 = (!is_null($v->pemaraf2) && ($v->pemaraf2)>1) ? $userModel->getInfoById(($v->pemaraf2)) : null;
+            $pettd = $userModel->getInfoById($v->pettd);
+
+            $data[$k]->pemaraf1 = $pemaraf1;
+            $data[$k]->pemaraf2 = $pemaraf2;
+            $data[$k]->pettd = $pettd;
+        }
+
+        // Debug::dump($data);die;
+        
+        return response()->json(['data'=>$data]);
+    }
+
     public function addSurat(Request $request){
         // Debug::dump($request->input());die;
 

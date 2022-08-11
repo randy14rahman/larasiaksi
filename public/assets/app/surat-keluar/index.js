@@ -1,12 +1,4 @@
 $(() => {
-    var dataa = [{
-        'judul': 'Perjalanan Dinas',
-        'perihal': 'Surat Tugas',
-        'tanggal': 'Aug 4, 2022',
-        'action': 'liat file',
-        'status': 'Diproses',
-        'delete': 'delete'
-    }]
 
     datatable = $('#datatable-surat-keluar').DataTable({
         ajax: `/api/surat-keluar`,
