@@ -44,8 +44,7 @@ $id_surat = request()->route('id');
                         Nomor Surat
                     </div>
                     <div class="col-1">:</div>
-                    <div class="col-4">
-                        12/12/1999
+                    <div class="col-4" id="nomor_surat">
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -53,7 +52,7 @@ $id_surat = request()->route('id');
                         Tanggal Surat
                     </div>
                     <div class="col-1">:</div>
-                    <div class="col-4">
+                    <div class="col-4" id="tanggal_surat">
                         12/12/1999
                     </div>
                 </div>
@@ -62,8 +61,8 @@ $id_surat = request()->route('id');
                         Perihal Surat
                     </div>
                     <div class="col-1">:</div>
-                    <div class="col-4">
-                        12/12/1999
+                    <div class="col-4" id="perihal_surat">
+
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -71,8 +70,7 @@ $id_surat = request()->route('id');
                         Jenis Surat Masuk
                     </div>
                     <div class="col-1">:</div>
-                    <div class="col-4">
-                        12/12/1999
+                    <div class="col-4" id="jenis_surat_masuk">
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -80,15 +78,14 @@ $id_surat = request()->route('id');
                         Tanggal Upload
                     </div>
                     <div class="col-1">:</div>
-                    <div class="col-4">
-                        12/12/1999
+                    <div class="col-4" id="tanggal_upload">
                     </div>
                 </div>
 
-                <div style="bottom: 20px;position: absolute;">
-                    <button type="button" class="btn btn-primary" onclick="processSurat()">Proses Surat</button>
+                <div style="bottom: 20px;position: absolute;" id="button-action">
+                    <!-- <button type="button" class="btn btn-primary" onclick="processSurat()">Proses Surat</button>
                     <button type="button" class="btn btn-success" onclick="openModalDisposisi()">Disposisi
-                        Surat</button>
+                        Surat</button> -->
                 </div>
             </div>
         </div>
@@ -110,15 +107,19 @@ $id_surat = request()->route('id');
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <div class="timeline-steps aos-init aos-animate" data-aos="fade-up">
-                                <div class="timeline-step">
+                            <div class="timeline-steps aos-init aos-animate" data-aos="fade-up" id="container-step">
+                                <!-- <div class="timeline-step">
                                     <div class="timeline-content" data-toggle="popover" data-trigger="hover"
                                         data-placement="top" title=""
                                         data-content="And here's some amazing content. It's very engaging. Right?"
                                         data-original-title="2003">
-                                        <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">2003</p>
-                                        <p class="h6 text-muted mb-0 mb-lg-0">Favland Founded</p>
+                                        <p class="h6 text-muted mb-4 mb-lg-4"><i>Surat Masuk</i></p>
+
+                                        <div class="inner-circle-active"></div>
+                                        <p class="h6 mt-3 mb-1">Bone Fletcher</p>
+                                        <p class="h6 text-muted mb-0 mb-lg-0"><i>Operator</i></p>
+                                        <p class="h7 text-muted mb-0 mb-lg-0">Jun 6, 2022</p>
+
                                     </div>
                                 </div>
                                 <div class="timeline-step">
@@ -126,41 +127,53 @@ $id_surat = request()->route('id');
                                         data-placement="top" title=""
                                         data-content="And here's some amazing content. It's very engaging. Right?"
                                         data-original-title="2004">
+                                        <p class="h6 text-muted mb-4 mb-lg-4"><i>Disposisi 1</i></p>
+
                                         <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">2004</p>
-                                        <p class="h6 text-muted mb-0 mb-lg-0">Launched Trello</p>
+                                        <p class="h6 mt-3 mb-1">Bone Fletcher</p>
+                                        <p class="h6 text-muted mb-0 mb-lg-0"><i>Ka OPD</i></p>
+                                        <p class="h7 text-muted mb-0 mb-lg-0">Jun 6, 2022</p>
                                     </div>
                                 </div>
                                 <div class="timeline-step">
                                     <div class="timeline-content" data-toggle="popover" data-trigger="hover"
                                         data-placement="top" title=""
                                         data-content="And here's some amazing content. It's very engaging. Right?"
-                                        data-original-title="2005">
+                                        data-original-title="2004">
+                                        <p class="h6 text-muted mb-4 mb-lg-4"><i>Disposisi 2</i></p>
+
                                         <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">2005</p>
-                                        <p class="h6 text-muted mb-0 mb-lg-0">Launched Messanger</p>
+                                        <p class="h6 mt-3 mb-1">Bone Fletcher</p>
+                                        <p class="h6 text-muted mb-0 mb-lg-0"><i>Ka OPD</i></p>
+                                        <p class="h7 text-muted mb-0 mb-lg-0">Jun 6, 2022</p>
                                     </div>
                                 </div>
                                 <div class="timeline-step">
                                     <div class="timeline-content" data-toggle="popover" data-trigger="hover"
                                         data-placement="top" title=""
                                         data-content="And here's some amazing content. It's very engaging. Right?"
-                                        data-original-title="2010">
+                                        data-original-title="2004">
+                                        <p class="h6 text-muted mb-4 mb-lg-4"><i>Disposisi 3</i></p>
+
                                         <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">2010</p>
-                                        <p class="h6 text-muted mb-0 mb-lg-0">Open New Branch</p>
+                                        <p class="h6 mt-3 mb-1">Bone Fletcher</p>
+                                        <p class="h6 text-muted mb-0 mb-lg-0"><i>Ka OPD</i></p>
+                                        <p class="h7 text-muted mb-0 mb-lg-0">Jun 6, 2022</p>
                                     </div>
                                 </div>
-                                <div class="timeline-step mb-0">
+                                <div class="timeline-step">
                                     <div class="timeline-content" data-toggle="popover" data-trigger="hover"
                                         data-placement="top" title=""
                                         data-content="And here's some amazing content. It's very engaging. Right?"
-                                        data-original-title="2020">
+                                        data-original-title="2004">
+                                        <p class="h6 text-muted mb-4 mb-lg-4"><i>Disposisi 2</i></p>
+
                                         <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">2020</p>
-                                        <p class="h6 text-muted mb-0 mb-lg-0">In Fortune 500</p>
+                                        <p class="h6 mt-3 mb-1">Bone Fletcher</p>
+                                        <p class="h6 text-muted mb-0 mb-lg-0"><i>Ka OPD</i></p>
+                                        <p class="h7 text-muted mb-0 mb-lg-0">Jun 6, 2022</p>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -190,7 +203,7 @@ $id_surat = request()->route('id');
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success">Disposisi Surat</button>
+                <button type="button" class="btn btn-success" onclick="disposisiSurat()">Disposisi Surat</button>
             </div>
         </div>
     </div>
@@ -224,7 +237,8 @@ $id_surat = request()->route('id');
         width: 3.46rem;
         position: absolute;
         left: 7.5rem;
-        top: .3125rem
+        top: .3125rem;
+        margin-top: 50px
     }
 
     .timeline-steps .timeline-step:not(:first-child):before {
@@ -234,7 +248,8 @@ $id_surat = request()->route('id');
         width: 3.8125rem;
         position: absolute;
         right: 7.5rem;
-        top: .3125rem
+        top: .3125rem;
+        margin-top: 50px
     }
 }
 
@@ -250,12 +265,33 @@ $id_surat = request()->route('id');
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    background-color: red
+}
+
+.timeline-steps .timeline-content .inner-circle-active {
+    border-radius: 1.5rem;
+    height: 1rem;
+    width: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background-color: #3b82f6
 }
 
 .timeline-steps .timeline-content .inner-circle:before {
     content: "";
-    background-color: #3b82f6;
+    background-color: #C4C4C4;
+    display: inline-block;
+    height: 3rem;
+    width: 3rem;
+    min-width: 3rem;
+    border-radius: 6.25rem;
+    opacity: .5
+}
+
+.timeline-steps .timeline-content .inner-circle-active:before {
+    content: "";
+    background-color: red;
     display: inline-block;
     height: 3rem;
     width: 3rem;
@@ -270,11 +306,14 @@ $id_surat = request()->route('id');
 
 <script>
 const id_surat = "<?php echo $id_surat ?>";
-const user_role = "<?php echo $user_role ?>"
+const user_role = "<?php echo $user_role ?>";
+const user_id = "<?php echo $id_user ?>";
+
 
 
 $(() => {
     getDetailSuratMasuk()
+    getTrackingList()
 });
 
 function getDetailSuratMasuk() {
@@ -285,15 +324,74 @@ function getDetailSuratMasuk() {
             id_surat
         },
         success: (res) => {
+            $("#button-action").html('')
             if (res.transaction) {
                 $("#iframe-preview-pdf").attr('src', res.data.link_file)
+                $("#nomor_surat").text(res.data.nomor_surat)
+                $("#perihal_surat").text(res.data.perihal_surat)
+                $("#tanggal_surat").text(res.data.tanggal_surat)
+                $("#jenis_surat_masuk").text(res.data.jenis_surat_masuk)
+                $("#tanggal_upload").text(res.data.created_date)
+
+                if (res.data.is_proses != 1 && res.data.is_disposisi != 1 && res.data.assign_to ==
+                    user_id) {
+                    const btnAction =
+                        ' <button type="button" class="btn btn-primary" onclick="processSurat()">Proses Surat</button>' +
+                        '<button type="button" class="btn btn-success" onclick="openModalDisposisi()" style="margin-left:16px">Disposisi' +
+                        'Surat</button>';
+
+                    $("#button-action").append(btnAction)
+
+
+                }
+
+
             }
         }
     })
 }
 
 function processSurat() {
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Apakah anda yakin akan memproses Surat ini ",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes'
+
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/api/surat-masuk/proses-surat',
+                method: 'post',
+                data: {
+                    user_id: user_id,
+                    id_surat: id_surat,
+
+                },
+                success: (res) => {
+                    if (res.transaction) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: 'Surat Masuk Diproses',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                getDetailSuratMasuk()
+                                getTrackingList()
+
+                                $("#disposisiModal").modal('hide')
+                            }
+                        });
+                    }
+                }
+            })
+        }
+        console.log(result, 'halo')
+    })
     console.log('process surat')
+
 }
 
 function openModalDisposisi() {
@@ -311,7 +409,94 @@ function getListDisposisiAssign() {
             role_id: user_role
         },
         success: (res) => {
+            if (res.transaction) {
+                $("#list_disposisi_assign").html('')
+                $.each(res.data, (k, v) => {
+                    var list = '<option value="' + v.id + '">' + v.name + '</option>';
+
+                    $("#list_disposisi_assign").append(list)
+                })
+            }
             console.log(res)
+        }
+    })
+}
+
+function getTrackingList() {
+    $.ajax({
+        url: '/api/surat-masuk/get-tracking',
+        method: 'get',
+        data: {
+            id_surat
+        },
+        success: (res) => {
+            if (res.transaction) {
+                $("#container-step").html('')
+                var selesai = false;
+                // const last_index = res.data.length - 1
+                // console.log(res.data.length)
+                $.each(res.data, (k, v) => {
+                    selesai = v.status == 'Selesai' ? true : false
+                    var status = v.proses == 1 ? 'Proses' : v.status
+                    // const active = k == last_index ? 'inner-circle-active' : 'inner-circle'
+                    const step = '<div class="timeline-step">' +
+                        '<div class="timeline-content" >' +
+                        '<p class="h6 text-muted mb-4 mb-lg-4"><i>' + status + '</i></p>' +
+                        '<div class="inner-circle-active"></div>' +
+                        '<p class="h6 mt-3 mb-1">' + v.name + '</p>' +
+                        '<p class="h6 text-muted mb-0 mb-lg-0"><i>' + v.role + '</i></p>' +
+                        '<p class="h7 text-muted mb-0 mb-lg-0">' + v.date + '</p>' +
+                        '</div>' +
+                        '</div>';
+
+                    $("#container-step").append(step)
+
+                })
+
+                if (selesai == false) {
+                    const step = '<div class="timeline-step">' +
+                        '<div class="timeline-content" >' +
+                        '<p class="h6 text-muted mb-4 mb-lg-4"><i>Selesai</i></p>' +
+                        '<div class="inner-circle' +
+                        '"></div>' +
+                        '<p class="h6 mt-3 mb-1"></p>' +
+                        '<p class="h6 text-muted mb-0 mb-lg-0"><i></i></p>' +
+                        '<p class="h7 text-muted mb-0 mb-lg-0"></p>' +
+                        '</div>' +
+                        '</div>';
+
+                    $("#container-step").append(step)
+                }
+
+            }
+        }
+    })
+}
+
+function disposisiSurat() {
+    var id_disposisi = $("#list_disposisi_assign").val()
+
+    $.ajax({
+        url: '/api/surat-masuk/disposisi-surat',
+        method: 'post',
+        data: {
+            assign_to: id_disposisi,
+            id_surat: id_surat,
+            user_id: user_id
+        },
+        success: (res) => {
+            if (res.transaction) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Surat Masuk berhasil Disposisi',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        getDetailSuratMasuk()
+                        getTrackingList()
+                    }
+                });
+            }
         }
     })
 }

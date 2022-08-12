@@ -171,7 +171,7 @@ $id_user = $user->id;
                             <th>Status Dokumen</th>
                             <th>Action</th>
                         </tr>
-                        <tr class="filte">
+                        <!-- <tr class="filte">
                             <th>
                                 <div>
                                     <select class="form-select" aria-label="Default select example">
@@ -206,7 +206,7 @@ $id_user = $user->id;
                                 </div>
                             </th>
                             <th></th>
-                        </tr>
+                        </tr> -->
 
                     </thead>
 
@@ -391,7 +391,7 @@ function getListSurat() {
         }, {
             data: 'status',
             render: (data, type, row) => {
-                return `<div><span class="badge text-bg-primary" style="background-color:#0d6efd">Masuk Ka OPD</span></div>`
+                return `<div><span class="badge badge-primary" >Masuk Ka OPD</span></div>`
             }
         }, {
             data: 'delete',

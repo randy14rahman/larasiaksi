@@ -79,10 +79,10 @@ class UserController extends Controller
             'jabatan'       => $request->input('jabatan'),
             'is_pemaraf'       => (int) ($request->input('is_pemaraf') ?? 0) == 1 ? 1 : 0,
             'is_pettd'       => (int) ($request->input('is_pettd') ?? 0) == 1 ? 1 : 0,
-            'password' => Hash::make($data['password']??'test'),
+            'password' => Hash::make($data['password'] ?? 'test'),
         ];
 
-        // Debug::dump($data);die;
+
 
         app('db')->connection()->insert("INSERT INTO users (name, email, password, role_id, nip, jabatan, is_pemaraf, is_pettd) VALUES(:name, :email, :password, :role_id, :nip, :jabatan, :is_pemaraf, :is_pettd)", $data);
 
@@ -140,12 +140,13 @@ class UserController extends Controller
         return response()->json(['status' => 1]);
     }
 
-    public function getPemarafByUser(Request $request, $user_id){
-        
+    public function getPemarafByUser(Request $request, $user_id)
+    {
+
         $user_id = (int) $user_id;
         // Debug::dump($user_id);die;
 
-        if ($user_id==0) {
+        if ($user_id == 0) {
             return response()->json(false);
         }
 
@@ -155,12 +156,14 @@ class UserController extends Controller
         return response()->json($data);
     }
 
-    public function getPemarafByLevel(Request $request, $level){
-        
+    public function getPemarafByLevel(Request $request, $level)
+    {
+
         $level = (int) $level;
         // Debug::dump($level);die;
 
-        Debug::dump(auth()->user());die;
+        Debug::dump(auth()->user());
+        die;
 
         $user = new User();
         $data = $user->getPemarafByLevel($level);
