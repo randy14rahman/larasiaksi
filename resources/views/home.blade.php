@@ -1,5 +1,5 @@
 <?php
-use Zend\Debug\Debug;
+// use Zend\Debug\Debug;
 // Debug::dump($data);die;
 ?>
 @extends('adminlte::page')
@@ -35,8 +35,7 @@ use Zend\Debug\Debug;
                 <div class="row">
                     <div class="col-4">
                         <div class="description-block border-right">
-                            <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 35%</span>
-                            <h5 class="description-header">105</h5>
+                            <h5 class="description-header">{{$data['surat_masuk']['stats']->surat_baru??0}}</h5>
                             <span class="description-text">Surat Baru</span>
                         </div>
 
@@ -44,9 +43,7 @@ use Zend\Debug\Debug;
 
                     <div class="col-4">
                         <div class="description-block border-right">
-                            <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i>
-                                42%</span>
-                            <h5 class="description-header">129</h5>
+                            <h5 class="description-header">{{$data['surat_masuk']['stats']->disposisi??0}}</h5>
                             <span class="description-text">Disposisi</span>
                         </div>
 
@@ -54,8 +51,7 @@ use Zend\Debug\Debug;
 
                     <div class="col-4">
                         <div class="description-block">
-                            <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 23%</span>
-                            <h5 class="description-header">73</h5>
+                            <h5 class="description-header">{{$data['surat_masuk']['stats']->proses??0}}</h5>
                             <span class="description-text">Proses</span>
                         </div>
                     </div>
@@ -79,7 +75,7 @@ use Zend\Debug\Debug;
                     <div class="col-6">
                         <div class="description-block border-right">
                             <span class="description-percentage text-primary"></span>
-                            <h5 class="description-header">{{$data['surat_keluar']['stats']->draft}}</h5>
+                            <h5 class="description-header">{{$data['surat_keluar']['stats']->draft??0}}</h5>
                             <span class="description-text">Draft Surat</span>
                         </div>
 
@@ -88,7 +84,7 @@ use Zend\Debug\Debug;
                     <div class="col-6">
                         <div class="description-block border-right">
                             <span class="description-percentage text-warning"></span>
-                            <h5 class="description-header">{{$data['surat_keluar']['stats']->paraf}}</h5>
+                            <h5 class="description-header">{{$data['surat_keluar']['stats']->paraf??0}}</h5>
                             <span class="description-text">Paraf</span>
                         </div>
 
@@ -119,31 +115,31 @@ use Zend\Debug\Debug;
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="far fa-envelope"></i><span class="ml-2">Arsip Surat Keluar</span>
-                            <span class="badge bg-success float-right">{{$data['surat_keluar']['stats']->arsip}}</span>
+                            <span class="badge bg-success float-right">{{$data['surat_keluar']['stats']->arsip??0}}</span>
                         </a>
                     </li>
                     <li class="nav-item active">
                         <a href="#" class="nav-link">
                             <i class="fas fa-inbox"></i><span class="ml-2">Arsip Surat Masuk</span>
-                            <span class="badge bg-success float-right">12</span>
+                            <span class="badge bg-success float-right">{{$data['surat_masuk']['stats']->arsip??0}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="far fa-file-alt"></i><span class="ml-2">Disposisi Selesai</span>
-                            <span class="badge bg-primary float-right">12</span>
+                            <span class="badge bg-primary float-right">{{$data['surat_masuk']['stats']->disposisi??0}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="fas fa-filter"></i><span class="ml-2">Disposisi Proses</span>
-                            <span class="badge bg-info float-right">12</span>
+                            <span class="badge bg-info float-right">{{$data['surat_masuk']['stats']->disposisi??0}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="far fa-trash-alt"></i><span class="ml-2">Disposisi Proses > 7 hari</span>
-                            <span class="badge bg-danger float-right">12</span>
+                            <span class="badge bg-danger float-right">{{$data['surat_masuk']['stats']->arsip??0}}</span>
                         </a>
                     </li>
                 </ul>
