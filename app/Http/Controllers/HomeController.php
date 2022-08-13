@@ -24,7 +24,19 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+        $sk_stats = app('db')->connection()->select("select
+        sum(case when is_ttd is null then 1 else 0 end) proses,
+        sum(is_ttd) as arsip,
+        sum(case when (ifnull(is_paraf1,0)+ifnull(is_paraf2,0))=0 then 1 else 0 end) draft,
+        sum(case when (is_paraf1+is_paraf2)>0 then 1 else 0 end) paraf
+        from surat_keluar sk");
+        // Debug::dump($sk_stats);die;
         
-        return view('home');
+        return view('home', [
+            'data'=>[
+                'surat_keluar' => $sk_stats
+            ]
+        ]);
     }
 }

@@ -50,12 +50,12 @@ Highcharts.chart('pie-sk', {
         plotShadow: false
     },
     title: {
-        text: '1183',
+        text: (parseInt(data.surat_keluar[0].arsip,'')+parseInt(data.surat_keluar[0].proses||'')),
         align: 'center',
         verticalAlign: 'middle',
     },
     tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
     },
     accessibility: {
         point: {
@@ -80,11 +80,11 @@ Highcharts.chart('pie-sk', {
     },
     series: [{
         type: 'pie',
-        name: 'Browser share',
+        name: 'Surat Keluar',
         innerSize: '50%',
         data: [
-            ['Proses', 307],
-            ['Arsip', 876],
+            ['Proses', parseInt(data.surat_keluar[0].proses,'')],
+            ['Arsip', parseInt(data.surat_keluar[0].arsip,'')],
         ]
     }]
 });
