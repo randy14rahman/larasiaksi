@@ -30,7 +30,7 @@ class HomeController extends Controller
         sum(is_ttd) as arsip,
         sum(case when (isnull(is_paraf1,0)+isnull(is_paraf2,0))=0 then 1 else 0 end) draft,
         sum(case when (is_paraf1+is_paraf2)>0 then 1 else 0 end) paraf
-        from surat_keluar sk");
+        from surat_keluar");
         // Debug::dump($sk_stats);die;
 
         $tmp_sk_trendline = app('db')->connection()->select("select tanggal_surat, count(*) as jumlah from surat_keluar sk
