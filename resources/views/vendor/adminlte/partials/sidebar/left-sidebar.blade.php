@@ -56,6 +56,7 @@
     'url' => 'admin/settings',
     'icon' => 'fas fa-fw fa-lock',
     ]];
+    $menuprofile = [];
     $isadmin=true;
 
     $user_role = auth()->user()->role_id;
@@ -106,7 +107,7 @@
                     </a> </li>
                 @endforeach
                 @endif
-                <li class="nav-header">
+                <li class="nav-header d-none">
                     Administrator
                 </li>
                 @foreach ($menuprofile as $item)
