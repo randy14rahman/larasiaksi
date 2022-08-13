@@ -1,3 +1,8 @@
+<?php
+use Zend\Debug\Debug;
+
+// Debug::dump($data);die;
+?>
 @extends('adminlte::page')
 
 @section('title_prefix', 'Dashboard -')
@@ -72,31 +77,22 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-6">
                         <div class="description-block border-right">
-                            <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 13%</span>
-                            <h5 class="description-header">32</h5>
+                            <span class="description-percentage text-primary">{{round($data['surat_keluar'][0]->arsip/($data['surat_keluar'][0]->paraf+$data['surat_keluar'][0]->arsip)*100, 2)}}%</span>
+                            <h5 class="description-header">{{$data['surat_keluar'][0]->draft}}</h5>
                             <span class="description-text">Draft Surat</span>
                         </div>
 
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-6">
                         <div class="description-block border-right">
-                            <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i>
-                                44%</span>
-                            <h5 class="description-header">103</h5>
-                            <span class="description-text">Paraf/Tanda Tangan</span>
+                            <span class="description-percentage text-warning">{{round($data['surat_keluar'][0]->paraf/($data['surat_keluar'][0]->paraf+$data['surat_keluar'][0]->arsip)*100, 2)}}%</span>
+                            <h5 class="description-header">{{$data['surat_keluar'][0]->paraf}}</h5>
+                            <span class="description-text">Paraf</span>
                         </div>
 
-                    </div>
-
-                    <div class="col-4">
-                        <div class="description-block">
-                            <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 43%</span>
-                            <h5 class="description-header">102</h5>
-                            <span class="description-text">Shared</span>
-                        </div>
                     </div>
                 </div>
 
@@ -109,7 +105,7 @@
         <div class="card">
             <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                    <h3 class="card-title">Surat Masuk</h3>
+                    <h3 class="card-title">Jumlah Surat Masuk / Surat Keluar per Bulan</h3>
                 </div>
             </div>
             <div class="card-body">
@@ -126,15 +122,15 @@
             </div>
             <div class="card-body" style="height: 250px;">
                 <ul class="nav nav-pills flex-column">
-                    <li class="nav-item active">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-inbox"></i><span class="ml-2">Arsip Surat Masuk</span>
-                            <span class="badge bg-success float-right">12</span>
-                        </a>
-                    </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="far fa-envelope"></i><span class="ml-2">Arsip Surat Keluar</span>
+                            <span class="badge bg-success float-right">{{$data['surat_keluar'][0]->arsip}}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-inbox"></i><span class="ml-2">Arsip Surat Masuk</span>
                             <span class="badge bg-success float-right">12</span>
                         </a>
                     </li>
@@ -167,5 +163,6 @@
 
 @push('js')
     <script type="text/javascript" src="/assets/plugins/highcharts/highcharts.js"></script>
+    <script>const data = <?= json_encode($data) ?>;</script>
     <script src="/assets/app/home.js"></script>
 @endpush
