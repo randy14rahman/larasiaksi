@@ -117,9 +117,18 @@ class SuratMasukController extends Controller
                         created_date from surat_masuk where id_surat=:id_surat';
         $data = app('db')->connection()->selectOne($sql, ['id_surat' => $request->input('id_surat')]);
 
+        $sql1 = 'SELECT * FROM `disposisi_surat_masuk` WHERE id_surat=:id_surat and target_disposisi=:user_id and is_selesai<>1';
+
+        $data_disposisi = app('db')->connection()->selectOne($sql1, ['id_surat' => $request->input('id_surat'), 'user_id' => $request->input('user_id')]);
+
+        $conv = json_decode(json_encode($data_disposisi), true);
+
+
+
         $res = [
             'transaction' => true,
-            'data' => $data
+            'data' => $data,
+            'disposisi' => $conv
         ];
         return response()->json($res);
     }
@@ -176,18 +185,74 @@ class SuratMasukController extends Controller
         }
 
 
-        $data_list[] = [
-            'status' => 'Disposisi 1',
-            'id' => $data->id_to,
-            'name' => $data->name_to,
-            'role' => $data->role_to,
-            'date' => $date_process,
-            'proses' => $to_process
-        ];
+
 
         if ($data->is_disposisi != NULL) {
-            // Debug::dump($data->is_disposisi);
-            // die();
+            $sql1 = 'select dsm.source_disposisi as id_source,us.name as name_source,rs.name as role_source,dsm.target_disposisi as id_target,ut.name as name_target,rt.name as role_target, dsm.tanggal_disposisi as tanggal, dsm.is_selesai as proses from disposisi_surat_masuk dsm 
+            left join users us on dsm.source_disposisi = us.id 
+            left join users ut on dsm.target_disposisi = ut.id
+            left join roles rs on us.role_id = rs.id
+            left join roles rt on ut.role_id = rt.id
+             where id_surat=:id_surat order by dsm.tanggal_disposisi asc';
+            $dataa = app('db')->connection()->select($sql1,  ['id_surat' => $request->input('id_surat')]);
+
+            foreach ($dataa as $k => $v) {
+
+                $find = array_search($v->id_source, array_column($data_list, 'id'));
+
+                if ($find == false) {
+                    $data_list[$k + 1] = [
+                        'status' => 'Disposisi ' . $k + 1,
+                        'id' => $v->id_source,
+                        'name' => $v->name_source,
+                        'role' => $v->role_source,
+                        'date' => $v->tanggal,
+                        'proses' => 0
+                    ];
+                    $data_list[$k + 2] = [
+                        'status' => 'Disposisi ' . $k + 2,
+                        'id' => $v->id_target,
+                        'name' => $v->name_target,
+                        'role' => $v->role_target,
+                        'date' => '',
+                        'proses' => $v->proses
+                    ];
+                } else {
+                    $data_list[$find] = [
+                        'status' => 'Disposisi ' . $k + 1,
+                        'id' => $v->id_source,
+                        'name' => $v->name_source,
+                        'role' => $v->role_source,
+                        'date' => $v->tanggal,
+                        'proses' => $v->proses
+                    ];
+                    $data_list[$find + 2] = [
+                        'status' => 'Disposisi ' . $k + 2,
+                        'id' => $v->id_target,
+                        'name' => $v->name_target,
+                        'role' => $v->role_target,
+                        'date' => '',
+                        'proses' => $v->proses
+                    ];
+                }
+                // $data_list[$k + 1] = [
+                //     'status' => 'Disposisi ' . $k + 1,
+                //     'id' => $v->id_target,
+                //     'name' => $v->name,
+                //     'role' => $v->role,
+                //     'date' => $v->tanggal,
+                //     'proses' => $v->proses
+                // ];
+            }
+        } else {
+            $data_list[] = [
+                'status' => 'Disposisi 1',
+                'id' => $data->id_to,
+                'name' => $data->name_to,
+                'role' => $data->role_to,
+                'date' => $date_process,
+                'proses' => $to_process
+            ];
         }
 
         $res = ['transaction' => true, 'data' => $data_list];
@@ -222,12 +287,12 @@ class SuratMasukController extends Controller
 
 
         if ($dataa->is_disposisi !== NULL) {
-            $sql_update = "UPDATE `disposisi_surat_masuk` SET is_selesai=1 WHERE id_surat=:id_surat and target_disposisi=:id_user";
+            $sql_update = "UPDATE `disposisi_surat_masuk` SET is_selesai=1 WHERE id_surat=:id_surat AND target_disposisi=:user_id";
             app('db')->connection()->update(
                 $sql_update,
                 [
-                    'id_surat' => $id_surat,
-                    'user_id' => $user_id
+                    'id_surat' => (int)$id_surat,
+                    'user_id' => (int)$user_id
                 ]
             );
         }
@@ -256,7 +321,7 @@ class SuratMasukController extends Controller
             'id_surat' => $id_surat,
             'source_disposisi' => $user_id,
             'target_disposisi' => $assign_to,
-            'tanggal_disposisi' => date("Y-m-d"),
+            'tanggal_disposisi' => date("Y-m-d H:i:s"),
         ];
 
         app('db')->connection()->insert("INSERT INTO disposisi_surat_masuk (id_surat,source_disposisi,target_disposisi,tanggal_disposisi) VALUES(:id_surat, :source_disposisi, :target_disposisi,:tanggal_disposisi)", $params);

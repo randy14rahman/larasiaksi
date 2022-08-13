@@ -190,7 +190,7 @@ $id_surat = request()->route('id');
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Disposisi Surat</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true" id="close-modal">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -218,7 +218,6 @@ $id_surat = request()->route('id');
 .timeline-steps {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap
 }
 
 .timeline-steps .timeline-step {
@@ -321,7 +320,8 @@ function getDetailSuratMasuk() {
         url: '/api/surat-masuk/detail',
         method: 'get',
         data: {
-            id_surat
+            id_surat,
+            user_id
         },
         success: (res) => {
             $("#button-action").html('')
@@ -333,11 +333,11 @@ function getDetailSuratMasuk() {
                 $("#jenis_surat_masuk").text(res.data.jenis_surat_masuk)
                 $("#tanggal_upload").text(res.data.created_date)
 
-                if (res.data.is_proses != 1 && res.data.is_disposisi != 1 && res.data.assign_to ==
-                    user_id) {
+                if ((res.data.is_proses != 1 && res.data.is_disposisi != 1 && res.data.assign_to ==
+                        user_id) || res.disposisi) {
                     const btnAction =
                         ' <button type="button" class="btn btn-primary" onclick="processSurat()">Proses Surat</button>' +
-                        '<button type="button" class="btn btn-success" onclick="openModalDisposisi()" style="margin-left:16px">Disposisi' +
+                        '<button type="button" class="btn btn-success" onclick="openModalDisposisi()" style="margin-left:16px">Disposisi ' +
                         'Surat</button>';
 
                     $("#button-action").append(btnAction)
@@ -388,15 +388,17 @@ function processSurat() {
                 }
             })
         }
-        console.log(result, 'halo')
     })
     console.log('process surat')
 
 }
 
 function openModalDisposisi() {
-    getListDisposisiAssign();
     $("#disposisiModal").modal('show')
+
+    getListDisposisiAssign();
+
+
     console.log('disposisi surat')
 
 }
@@ -475,6 +477,8 @@ function getTrackingList() {
 
 function disposisiSurat() {
     var id_disposisi = $("#list_disposisi_assign").val()
+    // $("#close-modal").click()
+
 
     $.ajax({
         url: '/api/surat-masuk/disposisi-surat',
@@ -486,6 +490,8 @@ function disposisiSurat() {
         },
         success: (res) => {
             if (res.transaction) {
+                $("#disposisiModal").modal('hide')
+
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
