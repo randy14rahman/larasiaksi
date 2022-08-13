@@ -52,7 +52,7 @@ class RoleController extends Controller
                 'level'  => (int) $request->input('level'),
             ];
 
-            app('db')->connection()->insert("INSERT INTO roles (name, level, created_at) VALUES(:name, :level, now())", $params);
+            app('db')->connection()->insert("INSERT INTO roles (name, level, created_at, updated_at) VALUES(:name, :level, now(), now())", $params);
             return response()->json(['status' => 1]);
         } catch (Exception $e) {
             Debug::dump($e->getMessage());
