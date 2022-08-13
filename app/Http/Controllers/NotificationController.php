@@ -18,7 +18,7 @@ class NotificationController extends Controller
                         sm.nomor_surat,
                         sm.created_date,
                         'surat-masuk' as jenis
-                     FROM surat_masuk sm LEFT JOIN disposisi_surat_masuk dsm on sm.id_surat = dsm.id_surat where (sm.is_proses IS NULL) AND (sm.assign_to=:user_id OR dsm.target_disposisi=:user_id2)  order by sm.`created_date` DESC";
+                     FROM surat_masuk sm LEFT JOIN disposisi_surat_masuk dsm on sm.id_surat = dsm.id_surat where (sm.is_proses IS NULL) AND (sm.assign_to=:user_id OR dsm.target_disposisi=:user_id2)  order by sm. created_date  DESC";
 
         $data = app('db')->connection()->select($sql, [
             'user_id' => $request->input('user_id'),
