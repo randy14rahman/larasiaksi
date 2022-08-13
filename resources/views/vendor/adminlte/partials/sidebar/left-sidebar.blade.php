@@ -68,7 +68,7 @@
                 <img src="{!! url('assets/adminlte/dist/img/user2-160x160.jpg') !!}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="javascript:;" class="d-block">{{ auth()->user()->name }} xx</a>
+                <a href="javascript:;" class="d-block">{{ auth()->user()->name }}</a>
             </div>
         </div>
         <nav class="mt-2">
