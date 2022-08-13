@@ -45,12 +45,39 @@ class HomeController extends Controller
             ];
         }
         // Debug::dump($sk_trendline);die;
+
+        $sm_stats = app('db')->connection()->selectOne("select  
+        sum(case when nullif(is_disposisi,0)=0 and nullif(is_proses,0)=0 and nullif(is_arsip,0)=0 then 1 else 0 end) surat_baru,
+        sum(case when nullif(is_disposisi,0)=1 and nullif(is_proses,0)=0 and nullif(is_arsip,0)=0 then 1 else 0 end) disposisi,
+        sum(case when nullif(is_proses,0)=1 and nullif(is_arsip,0)=0 then 1 else 0 end) proses,
+        sum(case when nullif(is_arsip,0)=1 then 1 else 0 end) arsip
+        from surat_masuk");
+
+        $tmp_sm_trendline = app('db')->connection()->select("select tanggal_surat, count(*) as jumlah from surat_keluar sk
+        group by tanggal_surat order by tanggal_surat");
+        // Debug::dump($sk_trendline);die;
+
+        $sm_trendline = [];
+        foreach ($tmp_sm_trendline as $k => $v) {
+            $sm_trendline[] = [
+                strtotime($v->tanggal_surat)*1000,
+                $v->jumlah
+            ];
+        }
+        // Debug::dump($sm_trendline);die;
+
+
+        
         
         return view('home', [
             'data'=>[
                 'surat_keluar' => [
                     'stats' => $sk_stats,
                     'trendline' => $sk_trendline
+                ],
+                'surat_masuk' => [
+                    'stats' => $sm_stats,
+                    'trendline' => $sm_trendline
                 ]
             ]
         ]);

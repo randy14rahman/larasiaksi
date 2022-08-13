@@ -5,7 +5,7 @@ Highcharts.chart('pie-sm', {
         plotShadow: false
     },
     title: {
-        text: '1183',
+        text: parseInt(data.surat_masuk.stats.surat_baru||0)+parseInt(data.surat_masuk.stats.disposisi||0)+parseInt(data.surat_masuk.stats.proses||0)+parseInt(data.surat_masuk.stats.arsip||0),
         align: 'center',
         verticalAlign: 'middle',
     },
@@ -38,8 +38,8 @@ Highcharts.chart('pie-sm', {
         name: 'Browser share',
         innerSize: '50%',
         data: [
-            ['Proses', 237],
-            ['Arsip', 342],
+            ['Proses', parseInt(data.surat_masuk.stats.surat_baru||0)+parseInt(data.surat_masuk.stats.disposisi||0)+parseInt(data.surat_masuk.stats.proses||0)],
+            ['Arsip', parseInt(data.surat_masuk.stats.arsip||0)],
         ]
     }]
 });
@@ -50,7 +50,7 @@ Highcharts.chart('pie-sk', {
         plotShadow: false
     },
     title: {
-        text: (parseInt(data.surat_keluar.stats.arsip,'')+parseInt(data.surat_keluar.stats.proses||'')),
+        text: (parseInt(data.surat_keluar.stats.arsip||'0')+parseInt(data.surat_keluar.stats.proses||'0')),
         align: 'center',
         verticalAlign: 'middle',
     },
@@ -83,8 +83,8 @@ Highcharts.chart('pie-sk', {
         name: 'Surat Keluar',
         innerSize: '50%',
         data: [
-            ['Proses', parseInt(data.surat_keluar.stats.proses,'')],
-            ['Arsip', parseInt(data.surat_keluar.stats.arsip,'')],
+            ['Proses', parseInt(data.surat_keluar.stats.proses||0)],
+            ['Arsip', parseInt(data.surat_keluar.stats.arsip||0)],
         ]
     }]
 });
@@ -129,7 +129,7 @@ Highcharts.chart('bar-jumlah-smsk-pbln', {
     series: [{
         name: 'Surat Masuk',
         color: '#57AB7D',
-        data: []
+        data: data.surat_keluar.trendline
 
     }, {
         name: 'Surat Keluar',
