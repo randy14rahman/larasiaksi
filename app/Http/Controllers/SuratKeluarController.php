@@ -107,31 +107,7 @@ class SuratKeluarController extends Controller
         // Debug::dump($request->input());die;
 
         if (!$_FILES){
-            return response()->json(['status'=>false]);
-        }
-        $link_file = '';
-        $allowedfileExtensions = array('pdf');
-        $fileTmpPath = $_FILES['file']['tmp_name'];
-        $fileName = $_FILES['file']['name'];
-        $fileSize = $_FILES['file']['size'];
-        $fileType = $_FILES['file']['type'];
-        $fileNameCmps = explode(".", $fileName);
-        $fileExtension = strtolower(end($fileNameCmps));
-
-        $newFileName = 'surat-keluar-' . md5(time() . $fileName);
-        $dir = '/upload/surat-keluar/' . $newFileName . '.' . $fileExtension;
-        $uploadFileDir = base_path() . '/public' . $dir;
-
-        if (move_uploaded_file($fileTmpPath, $uploadFileDir)) {
-            $link_file = $dir;
-            // $message = 'File is successfully uploaded.';
-        } else {
-            $link_file = 'error';
-
-            return response()->json([
-                'status' => false
-            ]);
-            // $message = 'There was some error moving the file to upload directory. Please make sure the upload directory is writable by web server.';
+            return response()->json(['status'=>0]);
         }
 
         $params = [
@@ -141,9 +117,11 @@ class SuratKeluarController extends Controller
             'judul_surat' => $request->input('judul_surat'),
             'pettd' => (int) $request->input('pettd', 0),
             'pemaraf1' => (int) $request->input('pemaraf1'),
-            'link_surat' => $link_file,
-            'user_id' => (int) $request->input('user_id'),
+            'link_surat' => '',
+            'created_by' => (int) $request->input('user_id'),
+            'created_at' => date('Y-m-d H:i:s')
         ];
+
 
         $additional_field = '';
         $additional_value = '';
@@ -154,31 +132,36 @@ class SuratKeluarController extends Controller
         }
         // Debug::dump($params);die;
 
-        $sql = "INSERT
-                INTO
-                surat_keluar (tanggal_surat,
-                perihal_surat,
-                nomor_surat,
-                judul_surat,
-                pettd,
-                pemaraf1,
-                link_surat,
-                created_by,
-                created_at{$additional_field})
-            VALUES (:tanggal_surat,
-            :perihal_surat,
-            :nomor_surat,
-            :judul_surat,
-            :pettd,
-            :pemaraf1,
-            :link_surat,
-            :user_id,
-            now(){$additional_value})";
+        $id = app('db')->connection()->table('surat_keluar')->insertGetId($params);
+        // Debug::dump($id);die;
 
-        // Debug::dump($sql);
-        // Debug::dump($params);die;
+        $link_file = '';
+        $allowedfileExtensions = array('pdf');
+        $fileTmpPath = $_FILES['file']['tmp_name'];
+        $fileName = $_FILES['file']['name'];
+        $fileSize = $_FILES['file']['size'];
+        $fileType = $_FILES['file']['type'];
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
 
-        app('db')->connection()->insert($sql, $params);
+        $fileName = md5($id.$fileName);
+        $newFileName = "surat-keluar-{$fileName}";
+        $dir = '/upload/surat-keluar/' . $newFileName . '.' . $fileExtension;
+        $uploadFileDir = base_path() . '/public' . $dir;
+
+        if (move_uploaded_file($fileTmpPath, $uploadFileDir)) {
+            $link_file = $dir;
+            // $message = 'File is successfully uploaded.';
+        } else {
+            $link_file = 'error';
+
+            return response()->json([
+                'transaction' => false
+            ]);
+            // $message = 'There was some error moving the file to upload directory. Please make sure the upload directory is writable by web server.';
+        }
+
+        app('db')->connection()->update("UPDATE surat_keluar set link_surat=:link_surat where id=:id", ['id'=>$id, 'link_surat'=>$link_file]);
 
         return response()->json(['status'=>1]);
     }

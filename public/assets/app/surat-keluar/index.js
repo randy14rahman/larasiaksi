@@ -1,4 +1,5 @@
 $(() => {
+    bsCustomFileInput.init();
 
     datatable = $('#datatable-surat-keluar').DataTable({
         ajax: `/api/surat-keluar`,
@@ -182,6 +183,10 @@ function addSuratKeluar(form){
         processData: false,
         contentType: false,
         data: formData,
+        beforeSend: ()=>{
+            $('#form-add-surat-keluar button[type="submit"]').html('<i class="fas fa-sync-alt fa-spin">');
+            $('#form-add-surat-keluar button[type="submit"]').prop('disabled', true);
+        },
         success: (data)=>{
 
             if (data.status==1){
@@ -191,6 +196,7 @@ function addSuratKeluar(form){
                     text: 'Berhasil membuat Surat Keluar.',
                 });
 
+                form.trigger('reset');
                 datatable.ajax.reload();
             } else {
                 Swal.fire({
@@ -199,6 +205,8 @@ function addSuratKeluar(form){
                     text: 'Gagal membuat Surat Keluar.',
                 });
             }
+            $('#form-add-surat-keluar button[type="submit"]').html('Buat Surat');
+            $('#form-add-surat-keluar button[type="submit"]').prop('disabled', false);
         }
     });
 

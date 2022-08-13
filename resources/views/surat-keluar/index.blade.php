@@ -1,6 +1,14 @@
 @extends('adminlte::page')
 @section('title_prefix', 'Surat Keluar -')
 
+@push('css')
+    <style>
+        .error.invalid-feedback {
+            display: none !important;
+        }
+    </style>
+@endpush
+
 @section('content_header')
     <h1 class="m-0 text-dark">Surat Keluar</h1>
 @stop
@@ -51,7 +59,7 @@
                             <label class="col-form-label col-4">Penandatangan <span class="text-danger">*</span></label>
                             <div class="col-8">
                                 <select class="form-control" id="pettd" name="pettd">
-                                    <option>Pilih Penandatangan</option>
+                                    <option value="">Pilih Penandatangan</option>
                                     @foreach ($users_pettd as $k => $v)
                                         <option value="{{$v->id}}" data-level="{{$v->level}}">{{$v->nip}} | {{$v->name}} | {{$v->jabatan}}</option>
                                     @endforeach
@@ -177,6 +185,7 @@
 @push('js')
     <script src="/assets/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="/assets/plugins/jquery-validation/additional-methods.min.js"></script>
+    <script src="/assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.8/pdfobject.min.js"></script>
     <script>const user_id = <?= auth()->id() ?>;</script>
     <script src="/assets/app/surat-keluar/index.js"></script>
