@@ -50,7 +50,7 @@ Highcharts.chart('pie-sk', {
         plotShadow: false
     },
     title: {
-        text: (parseInt(data.surat_keluar[0].arsip,'')+parseInt(data.surat_keluar[0].proses||'')),
+        text: (parseInt(data.surat_keluar.stats.arsip,'')+parseInt(data.surat_keluar.stats.proses||'')),
         align: 'center',
         verticalAlign: 'middle',
     },
@@ -83,34 +83,22 @@ Highcharts.chart('pie-sk', {
         name: 'Surat Keluar',
         innerSize: '50%',
         data: [
-            ['Proses', parseInt(data.surat_keluar[0].proses,'')],
-            ['Arsip', parseInt(data.surat_keluar[0].arsip,'')],
+            ['Proses', parseInt(data.surat_keluar.stats.proses,'')],
+            ['Arsip', parseInt(data.surat_keluar.stats.arsip,'')],
         ]
     }]
 });
 
 Highcharts.chart('bar-jumlah-smsk-pbln', {
     chart: {
-        type: 'column'
+        zoomType: 'x'
     },
     title: {
-        text: ''
+        text: 'Trendline Surat Masuk / Surat Keluar',
+        align: 'left'
     },
     xAxis: {
-        categories: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec'
-        ],
+        type: 'datetime',
         crosshair: true
     },
     yAxis: {
@@ -121,8 +109,8 @@ Highcharts.chart('bar-jumlah-smsk-pbln', {
     },
     tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0"><b>{series.name}</b>: </td>' +
+            '<td style="padding:0"><b>{point.y}</b></td></tr>',
         footerFormat: '</table>',
         shared: true,
         useHTML: true
@@ -134,15 +122,19 @@ Highcharts.chart('bar-jumlah-smsk-pbln', {
         }
     },
     legend: {
-        enabled: false
+        enabled: true,
+        align: 'right',
+        verticalAlign: 'top',
     },
     series: [{
         name: 'Surat Masuk',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+        color: '#57AB7D',
+        data: []
 
     }, {
         name: 'Surat Keluar',
-        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+        color: '#7176BE',
+        data: data.surat_keluar.trendline
 
     }]
 });

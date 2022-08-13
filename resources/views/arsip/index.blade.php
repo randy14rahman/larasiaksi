@@ -29,7 +29,7 @@
     </div>
 
     <div class="modal fade" id="modal-detail-surat">
-        <div class="modal-dialog modal-md">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form>
                     <div class="modal-body">

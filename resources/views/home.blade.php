@@ -1,6 +1,5 @@
 <?php
 use Zend\Debug\Debug;
-
 // Debug::dump($data);die;
 ?>
 @extends('adminlte::page')
@@ -79,8 +78,8 @@ use Zend\Debug\Debug;
                 <div class="row">
                     <div class="col-6">
                         <div class="description-block border-right">
-                            <span class="description-percentage text-primary">{{round($data['surat_keluar'][0]->arsip/($data['surat_keluar'][0]->paraf+$data['surat_keluar'][0]->arsip)*100, 2)}}%</span>
-                            <h5 class="description-header">{{$data['surat_keluar'][0]->draft}}</h5>
+                            <span class="description-percentage text-primary"></span>
+                            <h5 class="description-header">{{$data['surat_keluar']['stats']->draft}}</h5>
                             <span class="description-text">Draft Surat</span>
                         </div>
 
@@ -88,8 +87,8 @@ use Zend\Debug\Debug;
 
                     <div class="col-6">
                         <div class="description-block border-right">
-                            <span class="description-percentage text-warning">{{round($data['surat_keluar'][0]->paraf/($data['surat_keluar'][0]->paraf+$data['surat_keluar'][0]->arsip)*100, 2)}}%</span>
-                            <h5 class="description-header">{{$data['surat_keluar'][0]->paraf}}</h5>
+                            <span class="description-percentage text-warning"></span>
+                            <h5 class="description-header">{{$data['surat_keluar']['stats']->paraf}}</h5>
                             <span class="description-text">Paraf</span>
                         </div>
 
@@ -103,13 +102,8 @@ use Zend\Debug\Debug;
 <div class="row">
     <div class="col-8">
         <div class="card">
-            <div class="card-header border-0">
-                <div class="d-flex justify-content-between">
-                    <h3 class="card-title">Jumlah Surat Masuk / Surat Keluar per Bulan</h3>
-                </div>
-            </div>
             <div class="card-body">
-                <div id="bar-jumlah-smsk-pbln" style="height: 210px;"></div>
+                <div id="bar-jumlah-smsk-pbln" style="height: 255px;"></div>
             </div>
         </div>
     </div>
@@ -125,7 +119,7 @@ use Zend\Debug\Debug;
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="far fa-envelope"></i><span class="ml-2">Arsip Surat Keluar</span>
-                            <span class="badge bg-success float-right">{{$data['surat_keluar'][0]->arsip}}</span>
+                            <span class="badge bg-success float-right">{{$data['surat_keluar']['stats']->arsip}}</span>
                         </a>
                     </li>
                     <li class="nav-item active">
@@ -163,6 +157,6 @@ use Zend\Debug\Debug;
 
 @push('js')
     <script type="text/javascript" src="/assets/plugins/highcharts/highcharts.js"></script>
-    <script>const data = <?= json_encode($data) ?>;</script>
+    <script>const data = <?= json_encode($data) ?>; console.log(data.surat_keluar.trendline)</script>
     <script src="/assets/app/home.js"></script>
 @endpush

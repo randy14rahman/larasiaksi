@@ -47,7 +47,7 @@ $(() => {
             class: 'valign-middle',
             render: (data, type, row) => {
                 return `
-                    <button class="btn btn-sm btn-primary btn-detail" data-toggle="modal" data-target="#modal-detail-surat"><i class="fas fa-eye fa-fw"></i> Lihat</button>
+                    <a href="${row.link_surat}" class="btn btn-sm btn-primary btn-detail" target="blank"><i class="fas fa-download fa-fw"></i> Lihat / Unduh / Bagikan</a>
                 `
             }
         }]
