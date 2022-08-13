@@ -26,11 +26,12 @@ class HomeController extends Controller
     {
 
         $sk_stats = app('db')->connection()->selectOne("select
-        sum(case when nullif(is_ttd,0)=0 then 1 else 0 end) proses,
-        sum(is_ttd) as arsip,
-        sum(case when (nullif(is_paraf1,0)+nullif(is_paraf2,0))=0 then 1 else 0 end) draft,
-        sum(case when (is_paraf1+is_paraf2)>0 then 1 else 0 end) paraf
-        from surat_keluar");
+            sum(case when is_ttd is null then 1 else 0 end) proses,
+            sum(case when is_ttd=1 then 1 else 0 end) as arsip,
+            sum(case when is_paraf1 is null or (pemaraf2 is not null and is_paraf2 is null) then 1 else 0 end) draft,
+            sum(case when is_paraf1=1 or (pemaraf2 is not null and is_paraf2=1) then 1 else 0 end) paraf
+        from
+            surat_keluar");
         // Debug::dump($sk_stats);die;
 
         $tmp_sk_trendline = app('db')->connection()->select("select tanggal_surat, count(*) as jumlah from surat_keluar sk
@@ -46,14 +47,15 @@ class HomeController extends Controller
         }
         // Debug::dump($sk_trendline);die;
 
-        $sm_stats = app('db')->connection()->selectOne("select  
-        sum(case when nullif(is_disposisi,0)=0 and nullif(is_proses,0)=0 and nullif(is_arsip,0)=0 then 1 else 0 end) surat_baru,
-        sum(case when nullif(is_disposisi,0)=1 and nullif(is_proses,0)=0 and nullif(is_arsip,0)=0 then 1 else 0 end) disposisi,
-        sum(case when nullif(is_proses,0)=1 and nullif(is_arsip,0)=0 then 1 else 0 end) proses,
-        sum(case when nullif(is_arsip,0)=1 then 1 else 0 end) arsip
-        from surat_masuk");
+        $sm_stats = app('db')->connection()->selectOne("select
+            sum(case when is_disposisi is null and is_proses is null and is_arsip is null then 1 else 0 end) surat_baru,
+            sum(case when is_disposisi=1 and is_proses is null and is_arsip is null then 1 else 0 end) disposisi,
+            sum(case when is_proses=1 and is_arsip is null then 1 else 0 end) proses,
+            sum(case when is_arsip=1 then 1 else 0 end) arsip
+        from
+            surat_masuk");
 
-        $tmp_sm_trendline = app('db')->connection()->select("select tanggal_surat, count(*) as jumlah from surat_keluar sk
+        $tmp_sm_trendline = app('db')->connection()->select("select tanggal_surat, count(*) as jumlah from surat_masuk sk
         group by tanggal_surat order by tanggal_surat");
         // Debug::dump($sk_trendline);die;
 
