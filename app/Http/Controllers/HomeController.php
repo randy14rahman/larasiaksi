@@ -25,17 +25,33 @@ class HomeController extends Controller
     public function index()
     {
 
-        $sk_stats = app('db')->connection()->select("select
-        sum(case when is_ttd is null then 1 else 0 end) proses,
+        $sk_stats = app('db')->connection()->selectOne("select
+        sum(case when isnull(is_ttd,0)=0 then 1 else 0 end) proses,
         sum(is_ttd) as arsip,
-        sum(case when (ifnull(is_paraf1,0)+ifnull(is_paraf2,0))=0 then 1 else 0 end) draft,
+        sum(case when (isnull(is_paraf1,0)+isnull(is_paraf2,0))=0 then 1 else 0 end) draft,
         sum(case when (is_paraf1+is_paraf2)>0 then 1 else 0 end) paraf
         from surat_keluar sk");
         // Debug::dump($sk_stats);die;
+
+        $tmp_sk_trendline = app('db')->connection()->select("select tanggal_surat, count(*) as jumlah from surat_keluar sk
+        group by tanggal_surat order by tanggal_surat");
+        // Debug::dump($sk_trendline);die;
+
+        $sk_trendline = [];
+        foreach ($tmp_sk_trendline as $k => $v) {
+            $sk_trendline[] = [
+                strtotime($v->tanggal_surat)*1000,
+                $v->jumlah
+            ];
+        }
+        // Debug::dump($sk_trendline);die;
         
         return view('home', [
             'data'=>[
-                'surat_keluar' => $sk_stats
+                'surat_keluar' => [
+                    'stats' => $sk_stats,
+                    'trendline' => $sk_trendline
+                ]
             ]
         ]);
     }
