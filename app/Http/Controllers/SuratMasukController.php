@@ -62,7 +62,7 @@ class SuratMasukController extends Controller
             'link_file' => $link_file,
         ];
 
-        $result = app('db')->connection()->insert("INSERT into surat_masuk (tanggal_surat,asal_surat,nomor_surat,assign_to,perihal_surat,jenis_surat_masuk,id_operator,link_file) VALUES(:tanggal_surat, :asal_surat,:nomor_surat,:assign_to, :perihal_surat, :jenis_surat_masuk, :id_operator, :link_file)", $params);
+        $result = app('db')->connection()->insert("INSERT into surat_masuk (tanggal_surat,asal_surat,nomor_surat,assign_to,perihal_surat,jenis_surat_masuk,id_operator,link_file, created_at, updated_at) VALUES(:tanggal_surat, :asal_surat,:nomor_surat,:assign_to, :perihal_surat, :jenis_surat_masuk, :id_operator, :link_file, now(), now())", $params);
 
 
         return response()->json([
@@ -159,7 +159,7 @@ class SuratMasukController extends Controller
     {
 
         $data_list = [];
-        $sql = "SELECT sm.id, sm.is_proses,sm.is_disposisi,sm.is_arsip,sm.created_date as created_date,u.id as id_from,r.name as role_from,u.name as name_from, us.id as id_to, rs.name as role_to, us.name as name_to from  surat_masuk  sm 
+        $sql = "SELECT sm.id, sm.is_proses,sm.is_disposisi,sm.is_arsip,sm.created_at as created_date,u.id as id_from,r.name as role_from,u.name as name_from, us.id as id_to, rs.name as role_to, us.name as name_to from  surat_masuk  sm 
         LEFT JOIN  users  u on sm.id_operator = u.id 
         LEFT JOIN  roles  r on u.role_id = r.id
         LEFT JOIN  users  us on sm.assign_to = us.id 
@@ -265,7 +265,7 @@ class SuratMasukController extends Controller
         $user_id = $request->input('user_id');
 
 
-        $sql = "UPDATE  surat_masuk  SET is_proses = 1 where id=:id_surat";
+        $sql = "UPDATE  surat_masuk  SET is_proses = 1, updated_at=now() where id=:id_surat";
 
         app('db')->connection()->update(
             $sql,
@@ -283,11 +283,11 @@ class SuratMasukController extends Controller
             'id_pemroses' => $user_id,
         ];
 
-        app('db')->connection()->insert("INSERT INTO proses_surat_masuk (id_surat,tanggal_proses,id_pemroses) VALUES(:id_surat, :tanggal_proses, :id_pemroses)", $data_params);
+        app('db')->connection()->insert("INSERT INTO proses_surat_masuk (id_surat,tanggal_proses,id_pemroses,created_at,updated_at) VALUES(:id_surat, :tanggal_proses, :id_pemroses, now(), now())", $data_params);
 
 
         if ($dataa->is_disposisi !== NULL) {
-            $sql_update = "UPDATE disposisi_surat_masuk SET is_selesai=1 WHERE id_surat=:id_surat AND target_disposisi=:user_id";
+            $sql_update = "UPDATE disposisi_surat_masuk SET is_selesai=1, updated_at=now() WHERE id_surat=:id_surat AND target_disposisi=:user_id";
             app('db')->connection()->update(
                 $sql_update,
                 [
@@ -310,7 +310,7 @@ class SuratMasukController extends Controller
 
 
         //UPDATE SURAT MASUK 
-        $sql = 'UPDATE surat_masuk set is_disposisi = 1 where id=:id_surat';
+        $sql = 'UPDATE surat_masuk set is_disposisi = 1, updated_at=now() where id=:id_surat';
         app('db')->connection()->update(
             $sql,
             ['id_surat' => $id_surat]
@@ -324,7 +324,7 @@ class SuratMasukController extends Controller
             'tanggal_disposisi' => date("Y-m-d H:i:s"),
         ];
 
-        app('db')->connection()->insert("INSERT INTO disposisi_surat_masuk (id_surat,source_disposisi,target_disposisi,tanggal_disposisi) VALUES(:id_surat, :source_disposisi, :target_disposisi,:tanggal_disposisi)", $params);
+        app('db')->connection()->insert("INSERT INTO disposisi_surat_masuk (id_surat,source_disposisi,target_disposisi,tanggal_disposisi,created_at,updated_at) VALUES(:id_surat, :source_disposisi, :target_disposisi,:tanggal_disposisi,now(),now())", $params);
 
 
         $res = [
