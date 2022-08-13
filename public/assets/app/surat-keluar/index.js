@@ -95,7 +95,7 @@ $(() => {
         }
         $('#modal-detail-surat .pettd>address>div').html(_areaTtd);
 
-        PDFObject.embed(`${data.link_surat}#toolbar=0`, "#show-pdf", {
+        PDFObject.embed(`${data.link_surat||'/file-not-found'}#toolbar=0`, "#show-pdf", {
             height: '775px'
         });
     });
