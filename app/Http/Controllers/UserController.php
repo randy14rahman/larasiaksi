@@ -50,7 +50,7 @@ class UserController extends Controller
             u.email,
             u.role_id,
             r.name role_name,
-            r.`level`,
+            r.level,
             u.jabatan,
             u.is_pemaraf,
             u.is_pettd
