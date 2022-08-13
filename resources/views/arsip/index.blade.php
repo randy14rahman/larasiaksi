@@ -19,6 +19,19 @@
             <div class="d-flex justify-content-between">
                 <div></div>
                 <div>
+                    <h4> Daftar Arsip Surat Masuk</h4>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="datatable-arsip-surat-masuk" class="table table-stripped" style="width:100%" style="width:100%"></table>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header border-0">
+            <div class="d-flex justify-content-between">
+                <div></div>
+                <div>
                     <h4> Daftar Arsip Surat Keluar</h4>
                 </div>
             </div>
@@ -47,5 +60,6 @@
 @push('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.8/pdfobject.min.js"></script>
     <script>const user_id = <?= auth()->id() ?>;</script>
+    <script src="/assets/app/arsip/surat-masuk.js"></script>
     <script src="/assets/app/arsip/index.js"></script>
 @endpush
