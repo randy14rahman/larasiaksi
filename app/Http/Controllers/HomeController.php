@@ -26,9 +26,9 @@ class HomeController extends Controller
     {
 
         $sk_stats = app('db')->connection()->selectOne("select
-        sum(case when isnull(is_ttd,0)=0 then 1 else 0 end) proses,
+        sum(case when nullif(is_ttd,0)=0 then 1 else 0 end) proses,
         sum(is_ttd) as arsip,
-        sum(case when (isnull(is_paraf1,0)+isnull(is_paraf2,0))=0 then 1 else 0 end) draft,
+        sum(case when (nullif(is_paraf1,0)+nullif(is_paraf2,0))=0 then 1 else 0 end) draft,
         sum(case when (is_paraf1+is_paraf2)>0 then 1 else 0 end) paraf
         from surat_keluar");
         // Debug::dump($sk_stats);die;
