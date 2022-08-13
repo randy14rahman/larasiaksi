@@ -1,6 +1,14 @@
 @extends('adminlte::page')
 @section('title_prefix', 'Arsip -')
 
+@push('css')
+<style>
+    table.dataTable tbody td.valign-middle {
+    vertical-align: middle;
+    }
+</style>
+@endpush
+
 @section('content_header')
     <h1 class="m-0 text-dark">Arsip</h1>
 @stop

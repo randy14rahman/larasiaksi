@@ -5,41 +5,46 @@ $(() => {
         orderCellsTop: true,
         columns: [{
             title: 'Perihal',
-            data: 'perihal_surat'
+            data: 'perihal_surat',
+            class: 'valign-middle',
         }, {
             title: 'Judul Surat',
-            data: 'judul_surat'
+            data: 'judul_surat',
+            class: 'valign-middle',
         }, {
             title: 'Tanggal Surat',
-            data: 'tanggal_surat'
+            data: 'tanggal_surat',
+            class: 'valign-middle',
         }, {
-            title: 'Pemaraf',
+            title: 'Diparaf oleh',
             render: (data, type, row)=>{
 
-                let status = ``;
-                status += (row.is_paraf1==1) ?  `<span class="badge badge-success">${row.pemaraf1.name}<br>${row.paraf1_date}</span>` : `<span class="badge badge-danger">Belum diparaf 1</span>`;
+                let status = `${row.pemaraf1.name}<br>${row.paraf1_date}`;
                 if (row.pemaraf2!=null) {
-                    status += (row.is_paraf2==1) ? ` <span class="badge badge-success">${row.pemaraf2.name}<br>${row.paraf2_date}</span>` : ` <span class="badge badge-danger">Belum diparaf 2</span>`;
+                    status += `<hr>${row.pemaraf2.name}<br>${row.paraf2_date}`;
                 }
 
                 return status;
             }
         }, {
-            title: 'Penandatangan',
+            title: 'Ditandatangani oleh',
+            class: 'valign-middle',
             render: (data, type, row)=>{
                 
-                let status = (row.is_ttd==1) ? ` <span class="badge badge-success">${row.pettd.name}<br>${row.ttd_date}</span>` : ` <span class="badge badge-danger">Belum ditandatangan</span>`;
+                let status = `${row.pettd.name}<br>${row.ttd_date}`;
 
                 return status;
             }
         }, {
             title: 'Dibuat oleh',
             data: 'created_by_name',
+            class: 'valign-middle',
             render: (data,type,row)=>{
                 return `${data}<br>${row.created_at}`
             }
         }, {
             sortable: false,
+            class: 'valign-middle',
             render: (data, type, row) => {
                 return `
                     <button class="btn btn-sm btn-primary btn-detail" data-toggle="modal" data-target="#modal-detail-surat"><i class="fas fa-eye fa-fw"></i> Lihat</button>
