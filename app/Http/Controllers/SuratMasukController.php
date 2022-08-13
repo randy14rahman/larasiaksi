@@ -75,21 +75,21 @@ class SuratMasukController extends Controller
 
         try {
             $sql = "SELECT 
-                    id,
-                    tanggal_surat, 
-                    asal_surat,
-                    perihal_surat,
-                    nomor_surat,
-                    CASE WHEN jenis_surat_masuk =0 THEN 'Biasa'
-                    ELSE 'Penting' END as 'jenis_surat_masuk',
-                    id_operator,
-                    link_file,
-                    is_disposisi,
-                    is_proses,
-                    is_arsip,
-                    is_deleted,
-                    created_at
-             FROM surat_masuk";
+            id,
+            tanggal_surat, 
+            asal_surat,
+            perihal_surat,
+            nomor_surat,
+            CASE WHEN jenis_surat_masuk =0 THEN 'Biasa'
+            ELSE 'Penting' END as jenis_surat_masuk,
+            id_operator,
+            link_file,
+            is_disposisi,
+            is_proses,
+            is_arsip,
+            is_deleted,
+            created_at
+     FROM surat_masuk";
 
             $data = app('db')->connection()->select($sql, []);
 
