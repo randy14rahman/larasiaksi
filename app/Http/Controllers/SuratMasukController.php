@@ -117,7 +117,7 @@ class SuratMasukController extends Controller
                         created_date from surat_masuk where id_surat=:id_surat';
         $data = app('db')->connection()->selectOne($sql, ['id_surat' => $request->input('id_surat')]);
 
-        $sql1 = 'SELECT * FROM `disposisi_surat_masuk` WHERE id_surat=:id_surat and target_disposisi=:user_id and is_selesai<>1';
+        $sql1 = 'SELECT * FROM  disposisi_surat_masuk  WHERE id_surat=:id_surat and target_disposisi=:user_id and is_selesai<>1';
 
         $data_disposisi = app('db')->connection()->selectOne($sql1, ['id_surat' => $request->input('id_surat'), 'user_id' => $request->input('user_id')]);
 
@@ -145,7 +145,7 @@ class SuratMasukController extends Controller
             $where = (int)$level->level + 1;
         }
 
-        $sql = "SELECT users.id,users.name FROM `users` LEFT JOIN roles on users.role_id = roles.id where roles.level = :level";
+        $sql = "SELECT users.id,users.name FROM  users  LEFT JOIN roles on users.role_id = roles.id where roles.level = :level";
 
         $data = app('db')->connection()->select($sql, ['level' => $where]);
         $res = [
@@ -159,11 +159,11 @@ class SuratMasukController extends Controller
     {
 
         $data_list = [];
-        $sql = "SELECT sm.id_surat, sm.is_proses,sm.is_disposisi,sm.is_arsip,sm.created_date as created_date,u.id as id_from,r.name as role_from,u.name as name_from, us.id as id_to, rs.name as role_to, us.name as name_to from `surat_masuk` sm 
-        LEFT JOIN `users` u on sm.id_operator = u.id 
-        LEFT JOIN `roles` r on u.role_id = r.id
-        LEFT JOIN `users` us on sm.assign_to = us.id 
-        LEFT JOIN `roles` rs on us.role_id = rs.id
+        $sql = "SELECT sm.id_surat, sm.is_proses,sm.is_disposisi,sm.is_arsip,sm.created_date as created_date,u.id as id_from,r.name as role_from,u.name as name_from, us.id as id_to, rs.name as role_to, us.name as name_to from  surat_masuk  sm 
+        LEFT JOIN  users  u on sm.id_operator = u.id 
+        LEFT JOIN  roles  r on u.role_id = r.id
+        LEFT JOIN  users  us on sm.assign_to = us.id 
+        LEFT JOIN  roles  rs on us.role_id = rs.id
         WHERE sm.id_surat=:id_surat";
         $data = app('db')->connection()->selectOne($sql, ['id_surat' => $request->input('id_surat')]);
 
@@ -178,7 +178,7 @@ class SuratMasukController extends Controller
         $to_process = NULL;
         $date_process = '';
         if ($data->is_disposisi == NULL && $data->is_proses == 1) {
-            $sql_cek = "SELECT psm.tanggal_proses FROM `surat_masuk` sm LEFT JOIN proses_surat_masuk psm on sm.id_surat = psm.id_surat WHERE sm.id_surat = :id_surat";
+            $sql_cek = "SELECT psm.tanggal_proses FROM  surat_masuk  sm LEFT JOIN proses_surat_masuk psm on sm.id_surat = psm.id_surat WHERE sm.id_surat = :id_surat";
             $process = app('db')->connection()->selectOne($sql_cek, ['id_surat' => $request->input('id_surat')]);
             $to_process = $data->is_proses;
             $date_process = $process->tanggal_proses;
@@ -265,7 +265,7 @@ class SuratMasukController extends Controller
         $user_id = $request->input('user_id');
 
 
-        $sql = "UPDATE `surat_masuk` SET is_proses = 1 where id_surat=:id_surat";
+        $sql = "UPDATE  surat_masuk  SET is_proses = 1 where id_surat=:id_surat";
 
         app('db')->connection()->update(
             $sql,
@@ -287,7 +287,7 @@ class SuratMasukController extends Controller
 
 
         if ($dataa->is_disposisi !== NULL) {
-            $sql_update = "UPDATE `disposisi_surat_masuk` SET is_selesai=1 WHERE id_surat=:id_surat AND target_disposisi=:user_id";
+            $sql_update = "UPDATE disposisi_surat_masuk SET is_selesai=1 WHERE id_surat=:id_surat AND target_disposisi=:user_id";
             app('db')->connection()->update(
                 $sql_update,
                 [
@@ -310,7 +310,7 @@ class SuratMasukController extends Controller
 
 
         //UPDATE SURAT MASUK 
-        $sql = 'UPDATE `surat_masuk` set is_disposisi = 1 where id_surat=:id_surat';
+        $sql = 'UPDATE surat_masuk set is_disposisi = 1 where id_surat=:id_surat';
         app('db')->connection()->update(
             $sql,
             ['id_surat' => $id_surat]
