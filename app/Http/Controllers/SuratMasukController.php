@@ -324,7 +324,7 @@ class SuratMasukController extends Controller
             'tanggal_disposisi' => date("Y-m-d H:i:s"),
         ];
 
-        app('db')->connection()->insert("INSERT INTO disposisi_surat_masuk (id_surat,source_disposisi,target_disposisi,tanggal_disposisi,created_at,updated_at) VALUES(:id_surat, :source_disposisi, :target_disposisi,:tanggal_disposisi,now(),now())", $params);
+        app('db')->connection()->insert("INSERT INTO disposisi_surat_masuk (id_surat,source_disposisi,target_disposisi,tanggal_disposisi) VALUES(:id_surat, :source_disposisi, :target_disposisi,:tanggal_disposisi)", $params);
 
 
         $res = [
