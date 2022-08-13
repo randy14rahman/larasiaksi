@@ -129,7 +129,7 @@ Highcharts.chart('bar-jumlah-smsk-pbln', {
     series: [{
         name: 'Surat Masuk',
         color: '#57AB7D',
-        data: data.surat_keluar.trendline
+        data: data.surat_masuk.trendline
 
     }, {
         name: 'Surat Keluar',
