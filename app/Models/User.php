@@ -69,7 +69,8 @@ class User extends Authenticatable
 
     public function getUserIsPettd(){
 
-        $sql = "SELECT u.id, u.nip, u.name, u.email, u.jabatan, u.role_id, r.level from users u left join roles r on u.role_id=r.id where u.is_pettd=1 and r.level in (3,4,5,6) order by level desc";
+        $sql = "SELECT u.id, u.nip, u.name, u.email, u.jabatan, u.role_id, r.level 
+        from users u left join roles r on u.role_id=r.id where u.is_pettd=1 and r.level in (3,4,5,6) order by level asc";
 
         $data = app('db')->connection()->select($sql);
 
@@ -79,7 +80,9 @@ class User extends Authenticatable
     public function getPemarafByUser(int $user_id=0){
 
         $userInfo = $this->getInfoById($user_id);
-        // Debug::dump($userInfo);die;
+        // Debug::dump($userInfo);//die;
+
+        $params = ['level'=>$userInfo->level, 'user_id'=>$userInfo->id];
 
         $sql = "SELECT
                 u.id,
@@ -95,10 +98,14 @@ class User extends Authenticatable
                 u.role_id = r.id
             where
                 u.is_pettd = 1
-                and r.level between 3 and :level
-                and u.id <> :user_id";
+                and r.level >= :level
+                and u.id <> :user_id
+            order by r.level";
 
-        $data = app('db')->connection()->select($sql, ['level'=>$userInfo->level, 'user_id'=>$userInfo->id]);
+        // Debug::dump($sql);
+        // Debug::dump($params);die;
+
+        $data = app('db')->connection()->select($sql, $params);
 
         return $data;
     }

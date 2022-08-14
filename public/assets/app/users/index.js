@@ -4,8 +4,9 @@ $(() => {
     datatable = $('#datatable-1').DataTable({
         ajax: '/api/user',
         columns: [
-            { title: 'Username', data: 'nip', defaultContent: '' },
-            { title: 'Fullname', data: 'name' },
+            { title: 'NIP', data: 'nip', defaultContent: '' },
+            { title: 'Nama', data: 'name' },
+            { title: 'Email', data: 'email' },
             { title: 'Jabatan', data: 'jabatan', defaultContent: '' },
             { title: 'Role', data: 'role_name' },
             {

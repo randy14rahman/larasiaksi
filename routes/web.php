@@ -35,6 +35,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('/surat-masuk/detail/{id}', [App\Http\Controllers\SuratMasukController::class, 'detail'])->name('surat-masuk.detail');
 
         Route::get('/surat-keluar', [App\Http\Controllers\SuratKeluarController::class, 'index'])->name('surat-keluar.index');
+        Route::get('/surat-keluar/{id}/detail', [App\Http\Controllers\SuratKeluarController::class, 'detailSurat'])->name('surat-keluar.detailSurat');
 
         Route::get('/arsip', [App\Http\Controllers\ArsipController::class, 'index'])->name('arsip.index');
 
@@ -51,7 +52,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::put('/surat-keluar/{id}/paraf1', [App\Http\Controllers\SuratKeluarController::class, 'setActiveParaf1'])->name('surat-keluar.setActiveParaf1');
             Route::put('/surat-keluar/{id}/paraf2', [App\Http\Controllers\SuratKeluarController::class, 'setActiveParaf2'])->name('surat-keluar.setActiveParaf2');
             Route::put('/surat-keluar/{id}/ttd', [App\Http\Controllers\SuratKeluarController::class, 'setTtd'])->name('surat-keluar.setTtd');
-            
+
             Route::get('/notification', [App\Http\Controllers\NotificationController::class, 'index'])->name('get-notification');
 
         });
