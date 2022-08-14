@@ -62,47 +62,20 @@ $id_user = $user->id;
         @endif --}}
         @if($user_role !=1 && $user_role !=2)
         <li class="nav-item dropdown">
+            <a href="#" class="nav-link" data-toggle="dropdown">
+                <i class="fa-duotone fa-inbox-out"></i>
+                <span class="badge badge-warning navbar-badge" id="count-surat_keluar"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="container-surat_keluar">
+                <span class="dropdown-item dropdown-header text-bold">Surat Keluar</span>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="far fa-bell"></i>
+                <i class="fa-duotone fa-inbox-in"></i>
                 <span class="badge badge-warning navbar-badge" id="count_notification"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="container-notification">
-                <!-- <span class="dropdown-item dropdown-header">15 Notifications</span> -->
-                <!-- <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <p style="display:flex;flex-wrap: wrap;">Penugasan Surat <i class="ml-2"> 12/02/2000</i></p>
-                    <div><span class="badge text-bg-primary" style="background-color:#198754;color:white">Surat
-                            Masuk</span></div>
-                    <div style="font-size: 12px;">2022-02-12</div>
-
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <p style="display:flex;flex-wrap: wrap;"> Penugasan Surat <i class="ml-2">12/02/2000</i></p>
-                    <div><span class="badge text-bg-primary" style="background-color:#198754;color:white">Surat
-                            Masuk</span></div>
-                    <div style="font-size: 12px;">2022-02-12</div>
-
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <p style="display:flex;flex-wrap: wrap;"> Paraf Surat <i class="ml-2">12/02/2000</i></p>
-                    <div><span class="badge text-bg-primary" style="background-color:#fd7e14;color:white">Surat
-                            Keluar</span></div>
-                    <div style="font-size: 12px;">2022-02-12</div>
-
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <p style="display:flex;flex-wrap: wrap;"> Tandatangan Surat <i class="ml-2">12/02/2000</i></p>
-                    <div><span class="badge text-bg-primary" style="background-color:#fd7e14;color:white">Surat
-                            Keluar</span></div>
-                    <div style="font-size: 12px;">2022-02-12</div>
-
-                </a> -->
-
-                <!-- <div class="dropdown-divider"></div> -->
-                <!-- <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a> -->
             </div>
         </li>
         @endif
@@ -110,7 +83,7 @@ $id_user = $user->id;
 
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                <i class="fas fa-expand-arrows-alt"></i>
+                <i class="fa-duotone fa-arrows-maximize"></i>
             </a>
         </li>
 

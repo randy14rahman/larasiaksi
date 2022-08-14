@@ -38,5 +38,3 @@ Route::get('/surat-masuk/get-tracking', [App\Http\Controllers\SuratMasukControll
 Route::post('/surat-masuk/proses-surat', [App\Http\Controllers\SuratMasukController::class, 'processSurat'])->name('proses-surat-masuk');
 Route::post('/surat-masuk/disposisi-surat', [App\Http\Controllers\SuratMasukController::class, 'disposisiSurat'])->name('disposisi-surat-masuk');
 
-
-Route::get('/notification', [App\Http\Controllers\NotificationController::class, 'index'])->name('get-notification');

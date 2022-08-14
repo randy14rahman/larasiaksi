@@ -13,25 +13,25 @@
     $menu=[[
     'text' => 'Dashboard',
     'url' => '/home',
-    'icon' => 'fas fa-fw fa-home'
+    'icon' => 'fa-duotone fa-house'
     ],[
     'text' => 'Surat Masuk',
     'url' => '/surat-masuk',
-    'icon' => 'far fa-fw fa-envelope',
+    'icon' => 'fa-duotone fa-inbox-in',
     'label' => 4,
     'label_color' => 'success',
     ],
     [
     'text' => 'Surat Keluar',
     'url' => '/surat-keluar',
-    'icon' => 'far fa-fw fa-envelope',
+    'icon' => 'fa-duotone fa-inbox-out',
     'label' => 4,
     'label_color' => 'success',
     ],
     [
     'text' => 'Arsip',
     'url' => '/arsip',
-    'icon' => 'fas fa-fw fa-archive'
+    'icon' => 'fa-duotone fa-box-archive'
     ]];
 
     $menuadmin=[[
@@ -84,9 +84,7 @@
                         <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{
                             isset($item['icon_color']) ? 'text-'.$item['icon_color'] : ''
                         }}"></i>
-                        <p>
-                            {{ $item['text'] }}
-                        </p>
+                        <p class="ml-1">{{ $item['text'] }}</p>
                     </a> </li>
                 @endforeach
                 @if($user_role==1)

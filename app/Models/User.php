@@ -69,7 +69,9 @@ class User extends Authenticatable
 
     public function getUserIsPettd(){
 
-        $data = app('db')->connection()->select("SELECT u.id, u.nip, u.name, u.email, u.jabatan, u.role_id, r.level from users u left join roles r on u.role_id=r.id where u.is_pettd=1 and r.level in (3,4,5,6)");
+        $sql = "SELECT u.id, u.nip, u.name, u.email, u.jabatan, u.role_id, r.level from users u left join roles r on u.role_id=r.id where u.is_pettd=1 and r.level in (3,4,5,6) order by level desc";
+
+        $data = app('db')->connection()->select($sql);
 
         return $data;
     }

@@ -47,8 +47,39 @@ function getNotification() {
                         '<a href="#" class="dropdown-item dropdown-footer">Tidak Ada Notifikasi</a>')
                 }
 
+
+                $('#count-surat_keluar').text(res.surat_keluar.count||0);
+                if (parseInt(res.surat_keluar.count||0)>0) {
+                    $.each(res.surat_keluar.data, function(k, v) {
+
+                        const _task = (v.pemaraf1==parseInt(userid) || v.pemaraf2==parseInt(userid)) ? 'Paraf' : (v.pettd==parseInt(userid)) ? 'Tanda Tangan' : false;
+                        console.log(_task);
+
+                        if (_task!=false) {
+                            const _item = `
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <div class="media">
+                                    <div class="media-body">
+                                    <h3 class="dropdown-item-title text-bold">${v.created_by_name}</h3>
+                                    <p class="text-sm">Penugasan ${_task} Surat Keluar: ${v.perihal_surat}</p>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> ${v.created_at}</p>
+                                    </div>
+                                </div>
+                            </a>`;
+    
+                            $("#container-surat_keluar").append(_item);
+                        }
+
+                    });
+
+                    const _see_all = `<a href="/surat-keluar" class="dropdown-item dropdown-footer">Lihat semua</a>`;
+                    $('#container-surat_keluar').append(_see_all);
+
+                }
+
             }
-            console.log(res)
+            // console.log(res)
         }
     })
 }

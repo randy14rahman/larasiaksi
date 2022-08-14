@@ -9,7 +9,7 @@
 
 <li class="nav-item">
     <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-        <i class="fas fa-sign-out-alt"></i>
+        <i class="fa-duotone fa-arrow-right-from-bracket"></i>
     </a>
     <form id="logout-form" action="{{ $logout_url }}" method="POST" style="display: none;">
         @if(config('adminlte.logout_method'))

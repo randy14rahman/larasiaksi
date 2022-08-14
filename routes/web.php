@@ -51,6 +51,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::put('/surat-keluar/{id}/paraf1', [App\Http\Controllers\SuratKeluarController::class, 'setActiveParaf1'])->name('surat-keluar.setActiveParaf1');
             Route::put('/surat-keluar/{id}/paraf2', [App\Http\Controllers\SuratKeluarController::class, 'setActiveParaf2'])->name('surat-keluar.setActiveParaf2');
             Route::put('/surat-keluar/{id}/ttd', [App\Http\Controllers\SuratKeluarController::class, 'setTtd'])->name('surat-keluar.setTtd');
+            
+            Route::get('/notification', [App\Http\Controllers\NotificationController::class, 'index'])->name('get-notification');
 
         });
     });
