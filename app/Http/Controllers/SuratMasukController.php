@@ -345,12 +345,15 @@ class SuratMasukController extends Controller
             $additional = " and (sm.created_by=:user_id)";
         }
 
-        $data = app('db')->connection()->select("select sm.id, sm.tanggal_surat, 
+        $sql = "SELECT sm.id, sm.tanggal_surat, 
         case when sm.jenis_surat_masuk=0 then 'Biasa' when sm.jenis_surat_masuk=1 then 'Penting' else '-' end jenis_surat_masuk, 
         sm.perihal_surat, sm.created_by, u.\"name\" as created_by_name
         from surat_masuk sm 
         left join users u on sm.created_by=u.id
-        where is_arsip = 1{$additional}");
+        where is_arsip = 1{$additional}";
+        // Debug::dump($sql);die;
+
+        $data = app('db')->connection()->select($sql, $params);
 
         // Debug::dump($data);die;
 
