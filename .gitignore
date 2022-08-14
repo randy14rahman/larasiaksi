@@ -3,6 +3,7 @@
 /public/hot
 /public/storage
 /public/upload/surat-masuk
+/public/upload/surat-keluar
 /storage/*.key
 /vendor
 .env
