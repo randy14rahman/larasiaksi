@@ -58,7 +58,7 @@ function getNotification() {
                         if (_task!=false) {
                             const _item = `
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
+                            <a href="/surat-keluar/${v.id}/detail" class="dropdown-item">
                                 <div class="media">
                                     <div class="media-body">
                                     <h3 class="dropdown-item-title text-bold">${v.created_by_name}</h3>

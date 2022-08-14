@@ -18,7 +18,7 @@ $(() => {
             render: (data, type, row)=>{
 
                 let status = ``;
-                status += (row.is_paraf1==1) ?  `<span class="badge badge-success">Sudah diparaf 1</span>` : `<span class="badge badge-danger">Belum diparaf 1</span>`;
+                status += (row.is_paraf1==1) ?  `<span class="badge badge-success">Diparaf oleh ${row.pemaraf1.name}</span>` : `<span class="badge badge-danger">Belum diparaf 1</span>`;
                 if (row.pemaraf2!=null) {
                     status += (row.is_paraf2==1) ? ` <span class="badge badge-success">Sudah diparaf 2</span>` : ` <span class="badge badge-danger">Belum diparaf 2</span>`;
                 }
