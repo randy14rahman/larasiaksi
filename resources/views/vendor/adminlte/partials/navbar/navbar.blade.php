@@ -62,20 +62,20 @@ $id_user = $user->id;
         @endif --}}
         @if($user_role !=1 && $user_role !=2)
         <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i class="fa-duotone fa-inbox-in"></i>
+                <span class="badge badge-warning navbar-badge" id="count_notification"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="container-notification">
+            </div>
+        </li>
+        <li class="nav-item dropdown">
             <a href="#" class="nav-link" data-toggle="dropdown">
                 <i class="fa-duotone fa-inbox-out"></i>
                 <span class="badge badge-warning navbar-badge" id="count-surat_keluar"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="container-surat_keluar">
                 <span class="dropdown-item dropdown-header text-bold">Surat Keluar</span>
-            </div>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="fa-duotone fa-inbox-in"></i>
-                <span class="badge badge-warning navbar-badge" id="count_notification"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="container-notification">
             </div>
         </li>
         @endif
