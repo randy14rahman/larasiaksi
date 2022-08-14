@@ -7,6 +7,8 @@ use App\Models\User;
 
 use Zend\Debug\Debug;
 
+date_default_timezone_set('Asia/Jakarta');
+
 class SuratKeluarController extends Controller
 {
     public function index()

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Zend\Debug\Debug;
 use Exception;
 
+date_default_timezone_set('Asia/Jakarta');
+
 class SuratMasukController extends Controller
 {
     public function index()
