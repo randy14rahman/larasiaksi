@@ -29,7 +29,7 @@ class HomeController extends Controller
             sum(case when is_ttd is null then 1 else 0 end) proses,
             sum(case when is_ttd=1 then 1 else 0 end) as arsip,
             sum(case when is_paraf1 is null or (pemaraf2 is not null and is_paraf2 is null) then 1 else 0 end) draft,
-            sum(case when is_paraf1=1 or (pemaraf2 is not null and is_paraf2=1) then 1 else 0 end) paraf
+            sum(case when (is_paraf1=1 or (pemaraf2 is not null and is_paraf2=1)) and is_ttd is null  then 1 else 0 end) paraf
         from
             surat_keluar");
         // Debug::dump($sk_stats);die;
