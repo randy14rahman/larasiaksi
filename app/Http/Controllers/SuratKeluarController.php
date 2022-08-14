@@ -169,9 +169,13 @@ class SuratKeluarController extends Controller
     }
 
     public function setActiveParaf1(Request $request, $id){
-        $result = app('db')->connection()->update('UPDATE surat_keluar set is_paraf1=1, paraf1_date=now(), updated_at=now() where id=:id and pemaraf1=:pemaraf1', [
+
+        $datetime = date('Y-m-d H:i:s');
+        $result = app('db')->connection()->update('UPDATE surat_keluar set is_paraf1=1, paraf1_date=:paraf1_date, updated_at=:updated_at where id=:id and pemaraf1=:pemaraf1', [
             'id' => (int) $id,
-            'pemaraf1' => (int) auth()->user()->id
+            'pemaraf1' => (int) auth()->user()->id,
+            'paraf1_date' => $datetime,
+            'updated_at' => $datetime,
         ]);
         // Debug::dump($result);die;
 
@@ -179,9 +183,13 @@ class SuratKeluarController extends Controller
     }
 
     public function setActiveParaf2(Request $request, $id){
-        $result = app('db')->connection()->update('UPDATE surat_keluar set is_paraf2=1, paraf2_date=now(), updated_at=now() where id=:id and pemaraf2=:pemaraf2', [
+
+        $datetime = date('Y-m-d H:i:s');
+        $result = app('db')->connection()->update('UPDATE surat_keluar set is_paraf2=1, paraf2_date=:paraf2_date, updated_at=:updated_at where id=:id and pemaraf2=:pemaraf2', [
             'id' => (int) $id,
-            'pemaraf2' => (int) auth()->user()->id
+            'pemaraf2' => (int) auth()->user()->id,
+            'paraf2_date' => $datetime,
+            'updated_at' => $datetime,
         ]);
         // Debug::dump($result);die;
 
@@ -189,12 +197,61 @@ class SuratKeluarController extends Controller
     }
 
     public function setTtd(Request $request, $id){
-        $result = app('db')->connection()->update('UPDATE surat_keluar set is_ttd=1, ttd_date=now(), updated_at=now() where id=:id and pettd=:pettd', [
+
+        $datetime = date('Y-m-d H:i:s');
+        $result = app('db')->connection()->update('UPDATE surat_keluar set is_ttd=1, ttd_date=:ttd_date, updated_at=:updated_at where id=:id and pettd=:pettd', [
             'id' => (int) $id,
-            'pettd' => (int) auth()->user()->id
+            'pettd' => (int) auth()->user()->id,
+            'ttd_date' => $datetime,
+            'updated_at' => $datetime,
         ]);
         // Debug::dump($result);die;
 
         return response()->json(['status'=>$result]);
+    }
+
+    public function detailSurat(Request $request, int $id){
+        // Debug::dump($id);die;
+
+        $params = [
+            'id' => $id,
+            'pemaraf1' => auth()->id(),
+            'pemaraf2' => auth()->id(),
+            'pettd' => auth()->id(),
+        ];
+
+        $sql = "SELECT sk.id, sk.tanggal_surat, sk.perihal_surat, sk.nomor_surat, sk.judul_surat, sk.link_surat, 
+        sk.pemaraf1, sk.is_paraf1, sk.paraf1_date, 
+        sk.pemaraf2, sk.is_paraf2, sk.paraf2_date, 
+        sk.pettd, sk.is_ttd, sk.ttd_date, 
+        sk.created_at, 
+        u.name as created_by_name 
+        from surat_keluar sk 
+        left join users u on sk.created_by=u.id
+        where sk.id=:id and (sk.pemaraf1=:pemaraf1 or sk.pemaraf2=:pemaraf2 or sk.pettd=:pettd)";
+
+        $data = app('db')->connection()->selectOne($sql, $params);
+        // Debug::dump($data);die;
+
+        $userModel = new User();
+        // foreach ($data as $k => $v) {
+
+            // $pemaraf1 = (int) $v->pemaraf1;
+            // $pemaraf2 = (int) $v->pemaraf2;
+            // $pettd = (int) $v->pettd;
+
+            
+            $pemaraf1 = $userModel->getInfoById($data->pemaraf1);
+            $pemaraf2 = (!is_null($data->pemaraf2) && ($data->pemaraf2)>1) ? $userModel->getInfoById($data->pemaraf2) : null;
+            $pettd = $userModel->getInfoById($data->pettd);
+
+            $data->pemaraf1 = $pemaraf1;
+            $data->pemaraf2 = $pemaraf2;
+            $data->pettd = $pettd;
+        // }
+
+        // Debug::dump($data);die;
+
+        return view('surat-keluar.detailSurat', ['data'=>$data]);
     }
 }
