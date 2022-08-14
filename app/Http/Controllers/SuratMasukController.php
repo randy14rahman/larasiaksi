@@ -119,7 +119,7 @@ class SuratMasukController extends Controller
                         created_at from surat_masuk where id=:id_surat';
         $data = app('db')->connection()->selectOne($sql, ['id_surat' => $request->input('id_surat')]);
 
-        $sql1 = 'SELECT * FROM  disposisi_surat_masuk  WHERE id_surat=:id_surat and target_disposisi=:user_id and is_selesai<>1';
+        $sql1 = 'SELECT * FROM  disposisi_surat_masuk  WHERE id_surat=:id_surat and target_disposisi=:user_id and is_selesai is null';
 
         $data_disposisi = app('db')->connection()->selectOne($sql1, ['id_surat' => $request->input('id_surat'), 'user_id' => $request->input('user_id')]);
 
