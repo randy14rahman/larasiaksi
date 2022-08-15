@@ -86,21 +86,21 @@ use Zend\Debug\Debug;
                 <div class="col-6 pemaraf2{{($data->pemaraf2)==''? ' d-none' :'' }}">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title text-center float-none text-center">Pemaraf<br>{{$data->pemaraf2->jabatan}}</h3>
+                            <h3 class="card-title text-center float-none text-center">Pemaraf<br>{{$data->pemaraf2->jabatan??''}}</h3>
                         </div>
                         <div class="card-body text-center" style="height: 100px;">
-                            @if (auth()->id()==$data->pemaraf2->id && (int)$data->is_paraf2==0)
+                            @if (auth()->id()==($data->pemaraf2->id??0) && (int)$data->is_paraf2==0)
                                 <a href="#" class="btn btn-app bg-primary m-0" onclick="event.preventDefault(); setParaf2({{$data->id}});">Paraf,<br>Klik disini</a>
                             @elseif($data->is_paraf2==1)
-                                <span class="badge badge-success mt-3">Sudah diparaf<br>{{date_format(date_create($data->paraf2_date), 'l, d F Y H:i')}}</span>
+                                <span class="badge badge-success mt-3">Sudah diparaf<br>{{date_format(date_create($data->paraf2_date??''), 'l, d F Y H:i')}}</span>
                             @else
                                 <span class="badge badge-danger mt-3">Belum diparaf</span>
                             @endif
                         </div>
                         <div class="card-footer text-center">
-                            {{$data->pemaraf2->name}}
+                            {{$data->pemaraf2->name??''}}
                             <br>
-                            {{$data->pemaraf2->nip}}
+                            {{$data->pemaraf2->nip??''}}
                         </div>
                     </div>
                 </div>
