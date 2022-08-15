@@ -22,7 +22,7 @@ use Zend\Debug\Debug;
         <div class="col-7">
             <div class="card">
                 <div class="card-body">
-                    <iframe src="{{$data->link_surat}}#toolbar=0" class="w-100" frameborder="0" height="750"></iframe>
+                    <iframe src="{{$data->link_surat}}#toolbar=0" class="w-100" frameborder="0" height="750" id="display-pdf"></iframe>
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@ use Zend\Debug\Debug;
                         <div class="card-header">
                             <h3 class="card-title text-center float-none text-center">Penandatangan<br>{{$data->pettd->jabatan}}</h3>
                         </div>
-                        <div class="card-body text-center" style="height: 100px;">
+                        <div class="card-body text-center" style="height: 100px;" id="container-btn-ttd">
                             @if(auth()->id()==$data->pettd->id && (int)$data->is_ttd==0)
                                 <a href="#" class="btn btn-app bg-primary m-0" onclick="event.preventDefault(); setTtd({{$data->id}});">Tandatangan,<br>Klik disini</a>
                             @elseif($data->is_ttd==1)
@@ -131,5 +131,9 @@ use Zend\Debug\Debug;
 @endsection
 
 @push('js')
+<script>
+const url_id = "<?php echo $data->link_surat  ?>"
+
+</script>
     <script src="/assets/app/surat-keluar/detail-surat.js"></script>
 @endpush
