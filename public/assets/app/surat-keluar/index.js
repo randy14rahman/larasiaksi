@@ -36,9 +36,8 @@ $(() => {
         }, {
             sortable: false,
             render: (data, type, row) => {
-                return `
-                    <button class="btn btn-sm btn-primary btn-detail" data-toggle="modal" data-target="#modal-detail-surat"><i class="fas fa-eye fa-fw"></i> Lihat</button>
-                `
+                // return `<button class="btn btn-sm btn-primary btn-detail" data-toggle="modal" data-target="#modal-detail-surat"><i class="fas fa-eye fa-fw"></i> Lihat</button>`
+                return `<a href="/surat-keluar/${row.id}/detail" class="btn btn-sm btn-primary"><i class="fas fa-eye fa-fw"></i> Lihat</a>`
             }
         }]
 
