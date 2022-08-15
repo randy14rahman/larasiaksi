@@ -194,12 +194,14 @@ $id_surat = request()->route('id');
                 </button>
             </div>
             <div class="modal-body">
-                <div>Disposisi Ke</div>
-                <select name="jenis_surat_masuk" class="form-control form-select mt-3"
-                    aria-label="Default select example" id="list_disposisi_assign">
-                    <!-- <option value="1">Penting</option>
-                    <option value="0">Biasa</option> -->
-                </select>
+                <div class="form-group">
+                    <label class="col-form-label">Disposisikan ke</label>
+                    <select name="jenis_surat_masuk" class="form-control form-select"aria-label="Default select example" id="list_disposisi_assign"></select>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Keterangan</label>
+                    <textarea class="form-control" name="keterangan" id="disposisi_keterangan" cols="30" rows="10"></textarea>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -484,7 +486,9 @@ function disposisiSurat() {
         url: '/api/surat-masuk/disposisi-surat',
         method: 'post',
         data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
             assign_to: id_disposisi,
+            keterangan: $('#disposisi_keterangan').val(),
             id_surat: id_surat,
             user_id: user_id
         },

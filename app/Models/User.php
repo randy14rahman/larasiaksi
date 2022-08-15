@@ -116,5 +116,13 @@ class User extends Authenticatable
 
         return $data;
     }
+
+    public function getPenugasanPertama(){
+        $data = app('db')->connection()->select("SELECT u.id, u.name, u.nip, u.jabatan 
+        from users u left join roles r on u.role_id=r.id where r.level in (3,4)
+        order by r.level");
+
+        return $data;
+    }
     
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Zend\Debug\Debug;
 use Exception;
 
@@ -13,7 +14,13 @@ class SuratMasukController extends Controller
 {
     public function index()
     {
-        return view('surat-masuk.index');
+
+        $userModel = new User();
+
+        $data = $userModel->getPenugasanPertama();
+        // Debug::dump($data);die;
+
+        return view('surat-masuk.index', ['users_penugasan'=>$data]);
     }
 
     public function detail()
@@ -23,9 +30,35 @@ class SuratMasukController extends Controller
 
     public function addSuratMasuk(Request $request)
     {
+        $datetime = date('Y-m-d H:i:s');
+
+        // Debug::dump($request->input());die;
+
+        if (!$_FILES){
+            return response()->json(['status'=>0]);
+        }
+
+        $params = [
+            'tanggal_surat' => $request->input('tanggal_surat'),
+            'asal_surat' => $request->input('asal_surat'),
+            'nomor_surat' => $request->input('nomor_surat'),
+            'assign_to' => (int) $request->input('ditugaskan_ke'),
+            'perihal_surat' => $request->input('perihal_surat'),
+            'jenis_surat_masuk' => (int) $request->input('jenis_surat_masuk'),
+            'id_operator' => auth()->id(),
+            'created_by' => auth()->id(),
+            'created_at' => $datetime,
+            'updated_at' => $datetime
+        ];
+
+        // Debug::dump($params);die;
+
+        $id = app('db')->connection()->table('surat_masuk')->insertGetId($params);
+        // Debug::dump($id);die;
 
         $link_file = '';
         if (isset($_FILES)) {
+            // Debug::dump($_FILES);die;
             $allowedfileExtensions = array('pdf');
             $fileTmpPath = $_FILES['file']['tmp_name'];
             $fileName = $_FILES['file']['name'];
@@ -34,7 +67,8 @@ class SuratMasukController extends Controller
             $fileNameCmps = explode(".", $fileName);
             $fileExtension = strtolower(end($fileNameCmps));
 
-            $newFileName = 'surat-masuk-' . md5(time() . $fileName);
+            $fileName = md5($id.$fileName);
+            $newFileName = "surat-masuk-{$fileName}";
             $dir = '/upload/surat-masuk/' . $newFileName . '.' . $fileExtension;
             $uploadFileDir = base_path() . '/public' . $dir;
 
@@ -51,21 +85,7 @@ class SuratMasukController extends Controller
             }
         };
 
-
-
-        $params = [
-            'tanggal_surat' => $request->input('tanggal_surat'),
-            'asal_surat' => $request->input('asal_surat'),
-            'nomor_surat' => $request->input('nomor_surat'),
-            'assign_to' => $request->input('ditugaskan_ke'),
-            'perihal_surat' => $request->input('perihal_surat'),
-            'jenis_surat_masuk' => $request->input('jenis_surat_masuk'),
-            'id_operator' => $request->input('user_id'),
-            'link_file' => $link_file,
-        ];
-
-        $result = app('db')->connection()->insert("INSERT into surat_masuk (tanggal_surat,asal_surat,nomor_surat,assign_to,perihal_surat,jenis_surat_masuk,id_operator,link_file, created_at, updated_at) VALUES(:tanggal_surat, :asal_surat,:nomor_surat,:assign_to, :perihal_surat, :jenis_surat_masuk, :id_operator, :link_file, now(), now())", $params);
-
+        app('db')->connection()->update("UPDATE surat_masuk set link_file=:link_file where id=:id", ['id'=>$id, 'link_file'=>$link_file]);
 
         return response()->json([
             'transaction' => true
@@ -105,10 +125,10 @@ class SuratMasukController extends Controller
 
     public function getDetailSuratMasuk(Request $request)
     {
-        $sql = 'SELECT id,tanggal_surat,asal_surat
+        $sql = "SELECT id,tanggal_surat,asal_surat
                         perihal_surat,
                         nomor_surat,
-                        jenis_surat_masuk,
+                        case when jenis_surat_masuk=1 then 'Penting' else 'Biasa' end asjenis_surat_masuk,
                         id_operator,
                         link_file,
                         assign_to,
@@ -116,12 +136,19 @@ class SuratMasukController extends Controller
                         is_proses,
                         is_arsip,
                         is_deleted,
-                        created_at from surat_masuk where id=:id_surat';
+                        created_at from surat_masuk where id=:id_surat";
         $data = app('db')->connection()->selectOne($sql, ['id_surat' => $request->input('id_surat')]);
 
-        $sql1 = 'SELECT * FROM  disposisi_surat_masuk  WHERE id_surat=:id_surat and target_disposisi=:user_id and is_selesai is null';
+        $params = [
+            'id_surat' => $request->input('id_surat'), 
+            'user_id' => $request->input('user_id')
+        ];
 
-        $data_disposisi = app('db')->connection()->selectOne($sql1, ['id_surat' => $request->input('id_surat'), 'user_id' => $request->input('user_id')]);
+        $sql1 = 'SELECT * FROM  disposisi_surat_masuk  WHERE id_surat=:id_surat and target_disposisi=:user_id and is_selesai is null';
+        // $sql1 = 'SELECT * FROM  disposisi_surat_masuk  WHERE id_surat=:id_surat and is_selesai is null';
+
+        $data_disposisi = app('db')->connection()->selectOne($sql1, $params);
+        // Debug::dump($data_disposisi);die;
 
         $conv = json_decode(json_encode($data_disposisi), true);
 
@@ -306,27 +333,43 @@ class SuratMasukController extends Controller
 
     public function disposisiSurat(Request $request)
     {
-        $id_surat  = $request->input('id_surat');
-        $assign_to = $request->input('assign_to');
-        $user_id = $request->input('user_id');
+        $datetime = date('Y-m-d H:i:s');
 
+        $id_surat  = (int) $request->input('id_surat');
+        $assign_to = (int) $request->input('assign_to');
+        $user_id = (int) $request->input('user_id');
 
-        //UPDATE SURAT MASUK 
-        $sql = 'UPDATE surat_masuk set is_disposisi = 1, updated_at=now() where id=:id_surat';
-        app('db')->connection()->update(
-            $sql,
-            ['id_surat' => $id_surat]
-        );
+        // Debug::dump($request->input());die;
 
         //INSERT DISPOSISI SURAT MASUK
         $params = [
             'id_surat' => $id_surat,
             'source_disposisi' => $user_id,
             'target_disposisi' => $assign_to,
-            'tanggal_disposisi' => date("Y-m-d H:i:s"),
+            'tanggal_disposisi' => $datetime,
+            'created_by' => auth()->id(),
+            'created_at' => $datetime,
+            'keterangan' => $request->input('keterangan')
         ];
 
-        app('db')->connection()->insert("INSERT INTO disposisi_surat_masuk (id_surat,source_disposisi,target_disposisi,tanggal_disposisi) VALUES(:id_surat, :source_disposisi, :target_disposisi,:tanggal_disposisi)", $params);
+        $sql = "INSERT INTO disposisi_surat_masuk 
+        (id_surat,source_disposisi,target_disposisi,tanggal_disposisi,created_by,created_at,keterangan) VALUES
+        (:id_surat,:source_disposisi,:target_disposisi,:tanggal_disposisi,:created_by,:created_at,:keterangan)";
+
+        // Debug::dump($params);
+        // Debug::dump($sql);
+        // die;
+
+        app('db')->connection()->insert($sql, $params);
+
+        $params = [
+            'id_surat' => $id_surat,
+            'updated_at' => $datetime
+        ];
+
+        //UPDATE SURAT MASUK 
+        $sql = 'UPDATE surat_masuk set is_disposisi = 1, updated_at=:updated_at where id=:id_surat';
+        app('db')->connection()->update($sql,$params);
 
 
         $res = [

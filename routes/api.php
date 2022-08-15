@@ -30,11 +30,7 @@ Route::post('/role', [App\Http\Controllers\Api\RoleController::class, 'addRole']
 Route::put('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class, 'editRole']);
 Route::delete('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class, 'deleteRole']);
 
-Route::get('/surat-masuk', [App\Http\Controllers\SuratMasukController::class, 'getSuratMasuk'])->name('get-surat-masuk');
-Route::post('/surat-masuk', [App\Http\Controllers\SuratMasukController::class, 'addSuratMasuk'])->name('add-surat-masuk');
-Route::get('/surat-masuk/detail', [App\Http\Controllers\SuratMasukController::class, 'getDetailSuratMasuk'])->name('get-detail-surat-masuk');
 Route::get('/surat-masuk/list-disposisi-assign', [App\Http\Controllers\SuratMasukController::class, 'getListDisposisiAssign'])->name('list-disposisi-assign');
 Route::get('/surat-masuk/get-tracking', [App\Http\Controllers\SuratMasukController::class, 'getTrackingList'])->name('get-tracking');
 Route::post('/surat-masuk/proses-surat', [App\Http\Controllers\SuratMasukController::class, 'processSurat'])->name('proses-surat-masuk');
-Route::post('/surat-masuk/disposisi-surat', [App\Http\Controllers\SuratMasukController::class, 'disposisiSurat'])->name('disposisi-surat-masuk');
 
