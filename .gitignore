@@ -4,6 +4,7 @@
 /public/storage
 /public/upload/surat-masuk
 /public/upload/surat-keluar
+/public/upload/surat-keluar-signed
 /storage/*.key
 /vendor
 .env
