@@ -127,56 +127,7 @@ $id_user = $user->id;
                 </div>
             </div>
             <div class="card-body">
-                <table id="datatable-surat" class="table" style="width:100%" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Urgensi</th>
-                            <th>Perihal</th>
-                            <th>Tanggal Surat</th>
-                            <th>File</th>
-                            <th>Status Dokumen</th>
-                            <th>Action</th>
-                        </tr>
-                        <!-- <tr class="filte">
-                            <th>
-                                <div>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option value="penting">Penting</option>
-                                        <option value="biasa">Biasa</option>
-                                    </select>
-                                </div>
-                            </th>
-                            <th>
-                                <div>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option value="penting">Item 1 </option>
-                                        <option value="biasa">Item 2</option>
-                                    </select>
-                                </div>
-                            </th>
-                            <th>
-                                <div>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option value="penting">1 Agustus 2022</option>
-                                        <option value="biasa">1 Agustus 2022</option>
-                                    </select>
-                                </div>
-                            </th>
-                            <th></th>
-                            <th>
-                                <div>
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option value="penting">Masuk Ka Opd</option>
-                                        <option value="biasa">Process</option>
-                                    </select>
-                                </div>
-                            </th>
-                            <th></th>
-                        </tr> -->
-
-                    </thead>
-
-                </table>
+                <table id="datatable-surat" class="table" style="width:100%" style="width:100%"></table>
             </div>
         </div>
     </div>

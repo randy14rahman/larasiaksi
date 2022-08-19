@@ -138,42 +138,48 @@ $(() => {
 });
 
 function getListSurat() {
-    // var dataa = [{
-    //         'urgensi': 'Penting',
-    //         'perihal': 'Surat Tugas',
-    //         'tanggal': 'Aug 4, 2022',
-    //         'action': 'liat file',
-    //         'status': 'Masuk Ka OPD',
-    //         'delete': 'delete'
-    //     }
-
-    // ]
 
     var datatable = $('#datatable-surat').DataTable({
         ajax: '/api/surat-masuk',
         orderCellsTop: true,
         bDestroy: true,
+        order: [[4, 'desc']],
         columns: [{
+            title: 'Jenis Surat',
             data: 'jenis_surat_masuk'
         }, {
+            title: 'Perihal',
             data: 'perihal_surat'
         }, {
+            title: 'Tanggal Surat',
             data: 'tanggal_surat'
         }, {
-            data: 'action',
-            render: (data, type, row) => {
-
-                return '<a href="' + row.link_file + '" target="_blank">Liat File</a>'
-            }
-        }, {
+            title: 'Status',
             data: 'status',
             render: (data, type, row) => {
-                return `<div><span class="badge badge-primary" >Masuk Ka OPD</span></div>`
+
+                let _status = `<span class="badge badge-danger" >Surat Masuk</span><br/>${row.assign_to.name}`;
+                if (row.is_proses==1) {
+                    _status = `<span class="badge badge-primary">Diproses</span><br/>${row.pemroses.name}`;
+                } else if (row.is_disposisi==1) {
+                    _status = `<span class="badge badge-info">Disposisi ${row.disposisi.length}</span><br/>${row.disposisi[0].target_disposisi.name}`;
+                }
+                return _status;
             }
         }, {
-            data: 'delete',
+            title: 'Dibuat oleh',
+            data: 'created_at',
+            render: (data, type, row)=>{
+                return `${row.created_by_name}<br/>${row.created_at}`;
+            }
+        }, {
+            title: 'Action',
+            sortable: false,
             render: (data, type, row) => {
-                return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}"><i class="fas fa-trash fa-fw"></i></button>`
+                return `
+                    <a class="btn btn-sm btn-primary" href="/surat-masuk/detail/${row.id}"><i class="fa-duotone fa-eye"></i> Lihat</a>
+                    <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}"><i class="fa-duotone fa-trash"></i></button>
+                `
             }
         }]
 

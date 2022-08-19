@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\SuratMasuk;
 use Zend\Debug\Debug;
 use Exception;
 
@@ -96,24 +97,11 @@ class SuratMasukController extends Controller
     {
 
         try {
-            $sql = "SELECT 
-            id,
-            tanggal_surat, 
-            asal_surat,
-            perihal_surat,
-            nomor_surat,
-            CASE WHEN jenis_surat_masuk =0 THEN 'Biasa'
-            ELSE 'Penting' END as jenis_surat_masuk,
-            id_operator,
-            link_file,
-            is_disposisi,
-            is_proses,
-            is_arsip,
-            is_deleted,
-            created_at
-     FROM surat_masuk";
 
-            $data = app('db')->connection()->select($sql, []);
+            $SuratMasuk = new SuratMasuk();
+
+            $data = $SuratMasuk->getAll();
+            // Debug::dump($data);die;
 
             $result = ['data' => $data];
 
@@ -123,41 +111,103 @@ class SuratMasukController extends Controller
         }
     }
 
-    public function getDetailSuratMasuk(Request $request)
+    public function getDetailSuratMasuk(Request $request, int $id)
     {
-        $sql = "SELECT id,tanggal_surat,asal_surat
-                        perihal_surat,
-                        nomor_surat,
-                        case when jenis_surat_masuk=1 then 'Penting' else 'Biasa' end asjenis_surat_masuk,
-                        id_operator,
-                        link_file,
-                        assign_to,
-                        is_disposisi,
-                        is_proses,
-                        is_arsip,
-                        is_deleted,
-                        created_at from surat_masuk where id=:id_surat";
-        $data = app('db')->connection()->selectOne($sql, ['id_surat' => $request->input('id_surat')]);
 
         $params = [
-            'id_surat' => $request->input('id_surat'), 
-            'user_id' => $request->input('user_id')
+            'id_surat' => $id,
+            // 'assign_to' => auth()->id(),
+            // 'target_disposisi' => auth()->id(),
         ];
+        $sql = "SELECT
+                sm.id,
+                sm.tanggal_surat,
+                sm.asal_surat,
+                sm.perihal_surat,
+                sm.nomor_surat,
+                case
+                    when sm.jenis_surat_masuk = 1 then 'Penting'
+                    else 'Biasa'
+                end as jenis_surat_masuk,
+                sm.id_operator,
+                sm.link_file,
+                sm.assign_to,
+                sm.is_disposisi,
+                sm.is_proses,
+                sm.is_arsip,
+                sm.is_deleted,
+                sm.created_by,
+                u.name as created_by_name,
+                u.jabatan as created_by_jabatan,
+                sm.created_at
+            from
+                surat_masuk sm
+            -- join disposisi_surat_masuk dsm on
+            --     sm.id = dsm.id_surat
+            left join users u on
+                sm.created_by = u.id
+            where
+                sm.id =:id_surat
+                -- and sm.is_arsip is null
+                -- and (sm.assign_to = :assign_to
+                --     or dsm.target_disposisi = :target_disposisi)
+                ";
 
-        $sql1 = 'SELECT * FROM  disposisi_surat_masuk  WHERE id_surat=:id_surat and target_disposisi=:user_id and is_selesai is null';
-        // $sql1 = 'SELECT * FROM  disposisi_surat_masuk  WHERE id_surat=:id_surat and is_selesai is null';
+        // Debug::dump($params);
+        // Debug::dump($sql);
+        // die;
+        $data = app('db')->connection()->selectOne($sql, $params);
+        // Debug::dump($data);die;
 
-        $data_disposisi = app('db')->connection()->selectOne($sql1, $params);
-        // Debug::dump($data_disposisi);die;
+        if ($data) {
 
-        $conv = json_decode(json_encode($data_disposisi), true);
 
+            $userModel = new User();
+            $SuratMasuk = new SuratMasuk();
+            $data->assign_to = $userModel->getInfoById($data->assign_to);
+            // Debug::dump($data);die;
+    
+            // $params = [
+            //     'id_surat' => $id, 
+            //     'from_disposisi' => auth()->id(),
+            //     'to_disposisi' => auth()->id(),
+            // ];
+    
+            // $sql = 'SELECT * FROM  disposisi_surat_masuk  WHERE id_surat=:id_surat
+            // and (source_disposisi = :from_disposisi or target_disposisi=:to_disposisi)';
+            // // $sql1 = 'SELECT * FROM  disposisi_surat_masuk  WHERE id_surat=:id_surat and is_selesai is null';
+    
+            // Debug::dump($params);
+            // Debug::dump($sql);
+            // die;
+    
+            $disposisi = $SuratMasuk->getDisposisiBySMId($id, 'ASC');
+            // Debug::dump($disposisi);die;
+    
+            // if ($disposisi) {
+            //     foreach ($disposisi as $k => $v) {
+            //         $disposisi[$k]->source_disposisi = $userModel->getInfoById($v->source_disposisi);
+            //         $disposisi[$k]->target_disposisi = $userModel->getInfoById($v->target_disposisi);
+            //     }
+            // }
+
+            $sql = "SELECT * from proses_surat_masuk where id_surat=:id";
+
+            $pemroses = app('db')->connection()->selectOne($sql, ['id'=>$id]);
+            // Debug::dump($pemroses);die;
+            if ($pemroses){
+                $pemroses = $userModel->getInfoById($pemroses->created_by);
+            }
+
+
+        }
 
 
         $res = [
-            'transaction' => true,
+            'transaction' => ($data) ? true : false,
             'data' => $data,
-            'disposisi' => $conv
+            'disposisi' => $disposisi??[],
+            'pemroses' => $pemroses??[]
         ];
         return response()->json($res);
     }
@@ -184,8 +234,116 @@ class SuratMasukController extends Controller
         return response()->json($res);
     }
 
-    public function getTrackingList(Request $request)
+    public function getTrackingList(Request $request, int $id)
     {
+
+        $SuratMasuk = new SuratMasuk();
+        $surat_masuk = $SuratMasuk->getById($id);
+        // Debug::dump($surat_masuk);die;
+
+        $data = [];
+        // if (
+        //     ($surat_masuk->is_disposisi==null && $surat_masuk->is_proses==null) ||
+        //     ($surat_masuk->is_disposisi==1 && $surat_masuk->is_proses==null)
+        // ) {
+
+            $data[] = [
+                'label' => 'Surat Masuk',
+                'actor' => [
+                    'id' => $surat_masuk->created_by,
+                    'name' => $surat_masuk->created_by_name,
+                    'nip' => $surat_masuk->created_by_nip,
+                    'jabatan' => $surat_masuk->created_by_jabatan,
+                ],
+                'datetime' => $surat_masuk->created_at
+            ];
+
+            $data[] = [
+                'label' => 'Ditugaskan',
+                'actor' => [
+                    'id' => $surat_masuk->assign_to->id,
+                    'name' => $surat_masuk->assign_to->name,
+                    'nip' => $surat_masuk->assign_to->nip,
+                    'jabatan' => $surat_masuk->assign_to->jabatan,
+                ],
+                'datetime' => $surat_masuk->created_at
+            ];
+
+            if ($surat_masuk->is_disposisi==1){
+                $disposisi = $SuratMasuk->getDisposisiBySMId($surat_masuk->id, 'ASC');
+                // Debug::dump($disposisi);die;
+                foreach ($disposisi as $k => $v) {
+
+                    $diposisi_ke = $k+1;
+                    $data[] = [
+                        'label' => "Disposisi {$diposisi_ke}",
+                        'actor' => [
+                            'id' => $v->target_disposisi->id,
+                            'name' => $v->target_disposisi->name,
+                            'nip' => $v->target_disposisi->nip,
+                            'jabatan' => $v->target_disposisi->jabatan,
+                        ],
+                        'datetime' => $v->created_at
+                    ];
+                }
+            }
+
+            if ($surat_masuk->is_proses==1) {
+                
+                $pemroses = $SuratMasuk->getProsesBySMId($surat_masuk->id);
+                // Debug::dump($pemroses);die;
+
+                $data[] = [
+                    'label' => 'Proses',
+                    'actor' => [
+                        'id' => $pemroses->id,
+                        'name' => $pemroses->name,
+                        'nip' => $pemroses->nip,
+                        'jabatan' => $pemroses->jabatan,
+                    ],
+                    'datetime' => $pemroses->created_at
+                ];
+
+            } else {
+
+                $data[] = [
+                    'label' => 'Proses',
+                    'actor' => [
+                        'id' => null,
+                        'name' => null,
+                        'nip' => null,
+                        'jabatan' => null,
+                    ],
+                    'datetime' => null
+                ];
+            }
+
+            if ($surat_masuk->is_arsip==1) {
+                
+                $data[] = $data[count($data)-1];
+                $data[count($data)-1]['label'] = 'Selesai';
+                $data[count($data)-1]['datetime'] = $surat_masuk->updated_at;
+
+            } else {
+
+                $data[] = [
+                    'label' => 'Selesai',
+                    'actor' => [
+                        'id' => null,
+                        'name' => null,
+                        'nip' => null,
+                        'jabatan' => null,
+                    ],
+                    'datetime' => null
+                ];
+
+            }
+
+        // }
+
+        // Debug::dump($data);die;
+
+        return response()->json(['transaction'=>true, 'data'=>$data]);
 
         $data_list = [];
         $sql = "SELECT sm.id, sm.is_proses,sm.is_disposisi,sm.is_arsip,sm.created_at as created_date,u.id as id_from,r.name as role_from,u.name as name_from, us.id as id_to, rs.name as role_to, us.name as name_to from  surat_masuk  sm 
@@ -194,7 +352,7 @@ class SuratMasukController extends Controller
         LEFT JOIN  users  us on sm.assign_to = us.id 
         LEFT JOIN  roles  rs on us.role_id = rs.id
         WHERE sm.id=:id_surat";
-        $data = app('db')->connection()->selectOne($sql, ['id_surat' => $request->input('id_surat')]);
+        $data = app('db')->connection()->selectOne($sql, ['id_surat' => $id]);
 
         $data_list[] = [
             'status' => 'Surat Masuk',
@@ -208,7 +366,7 @@ class SuratMasukController extends Controller
         $date_process = '';
         if ($data->is_disposisi == NULL && $data->is_proses == 1) {
             $sql_cek = "SELECT psm.tanggal_proses FROM  surat_masuk  sm LEFT JOIN proses_surat_masuk psm on sm.id = psm.id_surat WHERE sm.id = :id_surat";
-            $process = app('db')->connection()->selectOne($sql_cek, ['id_surat' => $request->input('id_surat')]);
+            $process = app('db')->connection()->selectOne($sql_cek, ['id_surat' => $id]);
             $to_process = $data->is_proses;
             $date_process = $process->tanggal_proses;
         }
@@ -217,13 +375,14 @@ class SuratMasukController extends Controller
 
 
         if ($data->is_disposisi != NULL) {
-            $sql1 = 'select dsm.source_disposisi as id_source,us.name as name_source,rs.name as role_source,dsm.target_disposisi as id_target,ut.name as name_target,rt.name as role_target, dsm.tanggal_disposisi as tanggal, dsm.is_selesai as proses from disposisi_surat_masuk dsm 
+            $sql1 = 'select dsm.source_disposisi as id_source,us.name as name_source,rs.name as role_source,dsm.target_disposisi as id_target,ut.name as name_target,rt.name as role_target, dsm.created_at tanggal, dsm.is_selesai as proses from disposisi_surat_masuk dsm 
             left join users us on dsm.source_disposisi = us.id 
             left join users ut on dsm.target_disposisi = ut.id
             left join roles rs on us.role_id = rs.id
             left join roles rt on ut.role_id = rt.id
              where id_surat=:id_surat order by dsm.tanggal_disposisi asc';
-            $dataa = app('db')->connection()->select($sql1,  ['id_surat' => $request->input('id_surat')]);
+            $dataa = app('db')->connection()->select($sql1,  ['id_surat' => $id]);
+            // Debug::dump($dataa);die;
 
             foreach ($dataa as $k => $v) {
 
@@ -288,18 +447,46 @@ class SuratMasukController extends Controller
         return response()->json($res);
     }
 
-    public function processSurat(Request $request)
+    public function prosesSurat(Request $request, int $id)
     {
-        $id_surat  = $request->input('id_surat');
-        $user_id = $request->input('user_id');
 
+        // Debug::dump($id);Debug::dump(auth()->id());die;
+        $datetime = date('Y-m-d H:i:s');
 
-        $sql = "UPDATE  surat_masuk  SET is_proses = 1, updated_at=now() where id=:id_surat";
+        $params = [
+            'id' => $id,
+            'tanggal_proses' => date('Y-m-d', strtotime($datetime)),
+            'id_pemroses' => auth()->id(),
+            'created_by' => auth()->id(),
+            'created_at' => $datetime,
+        ];
 
-        app('db')->connection()->update(
-            $sql,
-            ['id_surat' => $id_surat]
-        );
+        $sql = "INSERT
+                into
+                proses_surat_masuk (id_surat,
+                tanggal_proses,
+                id_pemroses,
+                created_by,
+                created_at)
+            values (:id,
+            :tanggal_proses,
+            :id_pemroses,
+            :created_by,
+            :created_at)";
+
+        // Debug::dump($params);Debug::dump($sql);die;
+
+        app('db')->connection()->insert($sql, $params);
+
+        $params = [
+            'updated_at' => $datetime,
+            'id' => $id
+        ];
+        $sql = "UPDATE  surat_masuk  SET is_proses = 1, updated_at=:updated_at where id=:id";
+
+        app('db')->connection()->update($sql,$params);
+
+        return response()->json(['transaction'=>true]);
 
         $sql_get = "SELECT is_disposisi from surat_masuk where id=:id_surat";
         $dataa = app('db')->connection()->selectOne($sql_get,  ['id_surat' => $id_surat]);
@@ -376,6 +563,23 @@ class SuratMasukController extends Controller
             'transaction' => true
         ];
         return response()->json($res);
+    }
+
+    public function arsipkanSurat(Request $request, int $id){
+
+        // Debug::dump($id);Debug::dump(auth()->id());die;
+        $datetime = date('Y-m-d H:i:s');
+
+        $sql = "UPDATE surat_masuk set is_arsip=1, updated_at=:updated_at, keterangan_arsip=:keterangan_arsip where id=:id";
+        app('db')->connection()->update($sql, ['id'=>$id, 'updated_at'=>$datetime, 'keterangan_arsip'=>$request->input('keterangan')]);
+
+        $sql = "UPDATE proses_surat_masuk set is_selesai=1, tanggal_selesai=:tanggal_selesai, updated_at=:updated_at where id_surat=:id";
+        app('db')->connection()->update($sql, ['id'=>$id, 'updated_at'=>$datetime, 'tanggal_selesai'=>date('Y-m-d', strtotime($datetime))]);
+
+        $sql = "UPDATE disposisi_surat_masuk set is_selesai=1, updated_at=:updated_at where id_surat=:id";
+        app('db')->connection()->update($sql, ['id'=>$id, 'updated_at'=>$datetime]);
+
+        return response()->json(['transaction'=>true]);
     }
 
     public function listArsip(Request $request){
