@@ -23,18 +23,19 @@ class SuratKeluarController extends Controller
         ]);
     }
 
-    public function listSurat(Request $request) {
+    public function listSurat(Request $request)
+    {
 
         // Debug::dump(auth()->user()->role_id);die;
 
         $params = [];
         $additional = "";
-        if (!in_array(auth()->user()->role_id, [1,2])){ // [admin,operator]
+        if (!in_array(auth()->user()->role_id, [1, 2])) { // [admin,operator]
             $params = [
-                'user_id'=>auth()->id(),
-                'pemaraf1'=>auth()->id(),
-                'pemaraf2'=>auth()->id(),
-                'pettd'=>auth()->id(),
+                'user_id' => auth()->id(),
+                'pemaraf1' => auth()->id(),
+                'pemaraf2' => auth()->id(),
+                'pettd' => auth()->id(),
             ];
 
             $additional = " and (sk.created_by=:user_id or sk.pemaraf1=:pemaraf1 or sk.pemaraf2=:pemaraf2 or sk.pettd=:pettd)";
@@ -50,9 +51,9 @@ class SuratKeluarController extends Controller
         $userModel = new User();
         foreach ($data as $k => $v) {
 
-            
+
             $pemaraf1 = $userModel->getInfoById($v->pemaraf1);
-            $pemaraf2 = (!is_null($v->pemaraf2) && ($v->pemaraf2)>1) ? $userModel->getInfoById(($v->pemaraf2)) : null;
+            $pemaraf2 = (!is_null($v->pemaraf2) && ($v->pemaraf2) > 1) ? $userModel->getInfoById(($v->pemaraf2)) : null;
             $pettd = $userModel->getInfoById($v->pettd);
 
             $data[$k]->pemaraf1 = $pemaraf1;
@@ -61,22 +62,23 @@ class SuratKeluarController extends Controller
         }
 
         // Debug::dump($data);die;
-        
-        return response()->json(['data'=>$data]);
+
+        return response()->json(['data' => $data]);
     }
 
-    public function listArsip(Request $request) {
+    public function listArsip(Request $request)
+    {
 
         // Debug::dump(auth()->user()->role_id);die;
 
         $params = [];
         $additional = "";
-        if (!in_array(auth()->user()->role_id, [1,2])){ // [admin,operator]
+        if (!in_array(auth()->user()->role_id, [1, 2])) { // [admin,operator]
             $params = [
-                'user_id'=>auth()->id(),
-                'pemaraf1'=>auth()->id(),
-                'pemaraf2'=>auth()->id(),
-                'pettd'=>auth()->id(),
+                'user_id' => auth()->id(),
+                'pemaraf1' => auth()->id(),
+                'pemaraf2' => auth()->id(),
+                'pettd' => auth()->id(),
             ];
 
             $additional = " and (sk.created_by=:user_id or sk.pemaraf1=:pemaraf1 or sk.pemaraf2=:pemaraf2 or sk.pettd=:pettd)";
@@ -91,9 +93,9 @@ class SuratKeluarController extends Controller
         $userModel = new User();
         foreach ($data as $k => $v) {
 
-            
+
             $pemaraf1 = $userModel->getInfoById($v->pemaraf1);
-            $pemaraf2 = (!is_null($v->pemaraf2) && ($v->pemaraf2)>1) ? $userModel->getInfoById(($v->pemaraf2)) : null;
+            $pemaraf2 = (!is_null($v->pemaraf2) && ($v->pemaraf2) > 1) ? $userModel->getInfoById(($v->pemaraf2)) : null;
             $pettd = $userModel->getInfoById($v->pettd);
 
             $data[$k]->pemaraf1 = $pemaraf1;
@@ -102,15 +104,16 @@ class SuratKeluarController extends Controller
         }
 
         // Debug::dump($data);die;
-        
-        return response()->json(['data'=>$data]);
+
+        return response()->json(['data' => $data]);
     }
 
-    public function addSurat(Request $request){
+    public function addSurat(Request $request)
+    {
         // Debug::dump($request->input());die;
 
-        if (!$_FILES){
-            return response()->json(['status'=>0]);
+        if (!$_FILES) {
+            return response()->json(['status' => 0]);
         }
 
         $params = [
@@ -128,7 +131,7 @@ class SuratKeluarController extends Controller
 
         $additional_field = '';
         $additional_value = '';
-        if (!is_null($request->input('pemaraf2'))){
+        if (!is_null($request->input('pemaraf2'))) {
             $additional_field = ',pemaraf2';
             $additional_value = ',:pemaraf2';
             $params['pemaraf2'] = (int) $request->input('pemaraf2');
@@ -147,7 +150,7 @@ class SuratKeluarController extends Controller
         $fileNameCmps = explode(".", $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
 
-        $fileName = md5($id.$fileName);
+        $fileName = md5($id . $fileName);
         $newFileName = "surat-keluar-{$fileName}";
         $dir = '/upload/surat-keluar/' . $newFileName . '.' . $fileExtension;
         $uploadFileDir = base_path() . '/public' . $dir;
@@ -164,12 +167,13 @@ class SuratKeluarController extends Controller
             // $message = 'There was some error moving the file to upload directory. Please make sure the upload directory is writable by web server.';
         }
 
-        app('db')->connection()->update("UPDATE surat_keluar set link_surat=:link_surat where id=:id", ['id'=>$id, 'link_surat'=>$link_file]);
+        app('db')->connection()->update("UPDATE surat_keluar set link_surat=:link_surat where id=:id", ['id' => $id, 'link_surat' => $link_file]);
 
-        return response()->json(['status'=>1]);
+        return response()->json(['status' => 1]);
     }
 
-    public function setActiveParaf1(Request $request, $id){
+    public function setActiveParaf1(Request $request, $id)
+    {
 
         $datetime = date('Y-m-d H:i:s');
         $result = app('db')->connection()->update('UPDATE surat_keluar set is_paraf1=1, paraf1_date=:paraf1_date, updated_at=:updated_at where id=:id and pemaraf1=:pemaraf1', [
@@ -180,10 +184,11 @@ class SuratKeluarController extends Controller
         ]);
         // Debug::dump($result);die;
 
-        return response()->json(['status'=>$result]);
+        return response()->json(['status' => $result]);
     }
 
-    public function setActiveParaf2(Request $request, $id){
+    public function setActiveParaf2(Request $request, $id)
+    {
 
         $datetime = date('Y-m-d H:i:s');
         $result = app('db')->connection()->update('UPDATE surat_keluar set is_paraf2=1, paraf2_date=:paraf2_date, updated_at=:updated_at where id=:id and pemaraf2=:pemaraf2', [
@@ -194,10 +199,11 @@ class SuratKeluarController extends Controller
         ]);
         // Debug::dump($result);die;
 
-        return response()->json(['status'=>$result]);
+        return response()->json(['status' => $result]);
     }
 
-    public function setTtd(Request $request, $id){
+    public function setTtd(Request $request, $id)
+    {
 
         $datetime = date('Y-m-d H:i:s');
         $result = app('db')->connection()->update('UPDATE surat_keluar set is_ttd=1, ttd_date=:ttd_date, updated_at=:updated_at where id=:id and pettd=:pettd', [
@@ -208,10 +214,11 @@ class SuratKeluarController extends Controller
         ]);
         // Debug::dump($result);die;
 
-        return response()->json(['status'=>$result]);
+        return response()->json(['status' => $result]);
     }
 
-    public function detailSurat(Request $request, int $id){
+    public function detailSurat(Request $request, int $id)
+    {
         // Debug::dump($id);die;
 
 
@@ -219,7 +226,7 @@ class SuratKeluarController extends Controller
             'id' => $id,
         ];
         $additional = "";
-        if (!in_array(auth()->user()->role_id, [1,2])) {
+        if (!in_array(auth()->user()->role_id, [1, 2])) {
             $params2 = [
                 'pemaraf1' => auth()->id(),
                 'pemaraf2' => auth()->id(),
@@ -247,19 +254,51 @@ class SuratKeluarController extends Controller
         $data = app('db')->connection()->selectOne($sql, $params);
         // Debug::dump($data);die;
 
-        if ($data){
+        if ($data) {
 
             $userModel = new User();
-                
+
             $pemaraf1 = $userModel->getInfoById($data->pemaraf1);
-            $pemaraf2 = (!is_null($data->pemaraf2) && ($data->pemaraf2)>1) ? $userModel->getInfoById($data->pemaraf2) : null;
+            $pemaraf2 = (!is_null($data->pemaraf2) && ($data->pemaraf2) > 1) ? $userModel->getInfoById($data->pemaraf2) : null;
             $pettd = $userModel->getInfoById($data->pettd);
-    
+
             $data->pemaraf1 = $pemaraf1;
             $data->pemaraf2 = $pemaraf2;
             $data->pettd = $pettd;
         }
 
-        return view('surat-keluar.detailSurat', ['data'=>$data]);
+        return view('surat-keluar.detailSurat', ['data' => $data]);
+    }
+
+    public function uploadTtd(Request $request)
+    {
+
+        $id = $request->input('id');
+        if (!$_FILES) {
+            return response()->json(['status' => 0]);
+        }
+
+        $fileTmpPath = $_FILES['file']['tmp_name'];
+        $newFileName = $_FILES['file']['full_path'];
+        $dir = '/upload/surat-keluar/signed/' . $newFileName;
+        $uploadFileDir = base_path() . '/public' . $dir;
+
+        if (move_uploaded_file($fileTmpPath, $uploadFileDir)) {
+            $link_file = $dir;
+            // $message = 'File is successfully uploaded.';
+        } else {
+            $link_file = 'error';
+
+            return response()->json([
+                'transaction' => false
+            ]);
+            // $message = 'There was some error moving the file to upload directory. Please make sure the upload directory is writable by web server.';
+        }
+
+        app('db')->connection()->update("UPDATE surat_keluar set signed_surat=:signed_surat where id=:id", ['id' => $id, 'signed_surat' => $link_file]);
+
+        return response()->json([
+            'transaction' => true,
+        ]);
     }
 }
