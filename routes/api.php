@@ -32,3 +32,4 @@ Route::delete('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class
 
 Route::get('/surat-masuk/list-disposisi-assign', [App\Http\Controllers\SuratMasukController::class, 'getListDisposisiAssign'])->name('list-disposisi-assign');
 
+Route::post('/surat-keluar/upload-signed', [App\Http\Controllers\SuratKeluarController::class, 'uploadTtd'])->name('upload-surat-signed');

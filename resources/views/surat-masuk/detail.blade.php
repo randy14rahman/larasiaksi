@@ -275,14 +275,12 @@ $id_surat = request()->route('id');
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label class="col-form-label">Disposisikan ke</label>
-                    <select name="jenis_surat_masuk" class="form-control form-select"aria-label="Default select example" id="list_disposisi_assign"></select>
-                </div>
-                <div class="form-group">
-                    <label class="col-form-label">Keterangan</label>
-                    <textarea class="form-control" name="keterangan" id="disposisi_keterangan" cols="30" rows="10"></textarea>
-                </div>
+                <div>Disposisi Ke</div>
+                <select name="jenis_surat_masuk" class="form-control form-select mt-3"
+                    aria-label="Default select example" id="list_disposisi_assign">
+                    <!-- <option value="1">Penting</option>
+                    <option value="0">Biasa</option> -->
+                </select>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
