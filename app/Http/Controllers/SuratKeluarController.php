@@ -280,7 +280,7 @@ class SuratKeluarController extends Controller
 
         $fileTmpPath = $_FILES['file']['tmp_name'];
         $newFileName = $_FILES['file']['full_path'];
-        $dir = '/upload/surat-keluar/signed/' . $newFileName;
+        $dir = '/upload/surat-keluar-signed/' . $newFileName;
         $uploadFileDir = base_path() . '/public' . $dir;
 
         if (move_uploaded_file($fileTmpPath, $uploadFileDir)) {

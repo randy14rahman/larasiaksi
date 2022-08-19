@@ -30,9 +30,9 @@ class NotificationController extends Controller
         $sql = "SELECT sk.id, sk.perihal_surat, sk.pemaraf1, sk.pemaraf2, sk.pettd, u.name as created_by_name, sk.created_at
             from surat_keluar sk 
             left join users u on sk.created_by=u.id
-            where (is_ttd is null or is_ttd=0) and (sk.pemaraf1=:pemaraf1 or sk.pemaraf2=:pemaraf2 or sk.pettd=:pettd) order by sk.created_at";
+            where (is_ttd is null or is_ttd=0) and (sk.pemaraf1=:pemaraf1 or sk.pemaraf2=:pemaraf2 or sk.pettd=:pettd) order by sk.created_at desc";
 
-        $surat_keluar = app('db')->connection()->select($sql,[
+        $surat_keluar = app('db')->connection()->select($sql, [
             'pemaraf1' => auth()->id(),
             'pemaraf2' => auth()->id(),
             'pettd' => auth()->id(),
@@ -42,9 +42,9 @@ class NotificationController extends Controller
             'transaction' => true,
             'count' => count($data),
             'data' => $data,
-            'surat_keluar'=>[
+            'surat_keluar' => [
                 'data' => $surat_keluar,
-                'count'=> count($surat_keluar)
+                'count' => count($surat_keluar)
             ]
         ]);
     }

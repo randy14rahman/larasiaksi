@@ -110,7 +110,7 @@ async function setTtd(id) {
                 success: (data) => {
 
                     $("#container-btn-ttd").html(' <span class="badge badge-success mt-3">Sudah ditandatangan</span>')
-                    $("#display-pdf").prop("src", '/upload/surat-keluar/signed/' + fileName);
+                    $("#display-pdf").prop("src", '/upload/surat-keluar-signed/' + fileName);
                     if (data.status == 1) {
                         Swal.fire({
                             icon: 'success',
