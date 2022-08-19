@@ -34,3 +34,4 @@ Route::get('/surat-masuk/list-disposisi-assign', [App\Http\Controllers\SuratMasu
 Route::get('/surat-masuk/get-tracking', [App\Http\Controllers\SuratMasukController::class, 'getTrackingList'])->name('get-tracking');
 Route::post('/surat-masuk/proses-surat', [App\Http\Controllers\SuratMasukController::class, 'processSurat'])->name('proses-surat-masuk');
 
+Route::post('/surat-keluar/upload-signed', [App\Http\Controllers\SuratKeluarController::class, 'uploadTtd'])->name('upload-surat-signed');
