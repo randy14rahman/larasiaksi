@@ -57,7 +57,8 @@ function getDetailSuratMasuk() {
                     (
                         (res.disposisi.length>0 && res.disposisi[res.disposisi.length-1].target_disposisi.id==user_id) ||
                         (res.pemroses.id!=undefined && res.pemroses.id==user_id)
-                    )
+                    ) &&
+                    res.data.is_arsip==null
                 ){
                     $('#card-action').removeClass('d-none');
                     const btnAction =
