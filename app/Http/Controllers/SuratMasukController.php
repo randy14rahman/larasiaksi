@@ -584,29 +584,11 @@ class SuratMasukController extends Controller
 
     public function listArsip(Request $request){
 
-        $params = [];
-        $additional = "";
-        if (!in_array(auth()->user()->role_id, [1,2])){ // [admin,operator]
-            $params = [
-                'user_id'=>auth()->id(),
-            ];
+        $SuratMasuk = new SuratMasuk();
 
-            $additional = " and (sm.created_by=:user_id)";
-        }
-
-        $sql = "SELECT sm.id, sm.tanggal_surat, 
-        case when sm.jenis_surat_masuk=0 then 'Biasa' when sm.jenis_surat_masuk=1 then 'Penting' else '-' end jenis_surat_masuk, 
-        sm.perihal_surat, sm.created_by, u.\"name\" as created_by_name
-        from surat_masuk sm 
-        left join users u on sm.created_by=u.id
-        where is_arsip = 1{$additional}";
-        // Debug::dump($sql);die;
-
-        $data = app('db')->connection()->select($sql, $params);
-
+        $data = $SuratMasuk->getAll(['is_arsip'=>1]);
         // Debug::dump($data);die;
 
         return response()->json(['data'=>$data]);
-
     }
 }
