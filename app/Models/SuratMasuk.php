@@ -2,22 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Zend\Debug\Debug;
 
 class SuratMasuk extends Model
 {
-    use HasFactory;
 
-    public function getAll(){
+    public function getAll(array $p=[]){
 
-        $params = [
-            'created_by' => auth()->id(),
-            'assign_to' => auth()->id(),
-            'target_disposisi' => auth()->id(),
-        ];
+        // Debug::dump(auth()->user()->role_id);die;
+
+        $params = [];
+        $sWhere_1 = ($p['is_arsip']??0==1) ? " sm.is_arsip=1" : " sm.is_arsip is null";
+        $sWhere_2 = ($p['is_arsip']??0==1) ? " sm.is_arsip=1" : " sm.is_arsip is null";
+        if (auth()->user()->role_id>1) {
+            $params = [
+                'created_by' => auth()->id(),
+                'assign_to' => auth()->id(),
+                'target_disposisi' => auth()->id(),
+            ];
+            $sWhere_1 .= " and (sm.created_by = :created_by or sm.assign_to = :assign_to)";
+            $sWhere_2 .= " and dsm.target_disposisi = :target_disposisi";
+        }
 
         $sql = "SELECT
                 sm.id,
@@ -46,8 +53,7 @@ class SuratMasuk extends Model
             left join users u on
                 sm.created_by = u.id
             where
-                sm.is_arsip is null
-                and (sm.created_by = :created_by or sm.assign_to = :assign_to)
+                {$sWhere_1}
             union all
             select 
                 sm.id,
@@ -78,8 +84,9 @@ class SuratMasuk extends Model
             left join users u on
                 sm.created_by = u.id
             where
-                sm.is_arsip is null
-                and dsm.target_disposisi = :target_disposisi";
+                {$sWhere_2}";
+
+        // Debug::dump($params);Debug::dump($sql);die();
                 
         $data = app('db')->connection()->select($sql, $params);
         // Debug::dump($data);die;

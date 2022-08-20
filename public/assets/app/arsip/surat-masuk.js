@@ -23,11 +23,18 @@ $(() => {
                 return `${data}<br>${row.created_at}`
             }
         }, {
+            title: 'Diproses oleh',
+            data: 'pemroses.id',
+            class: 'valign-middle',
+            render: (data,type,row)=>{
+                return `${row.pemroses.name}<br>${row.created_at}`
+            }
+        }, {
             sortable: false,
             class: 'valign-middle',
             render: (data, type, row) => {
                 return `
-                    <a href="${row.link_file}" class="btn btn-sm btn-primary btn-detail" target="blank"><i class="fas fa-download fa-fw"></i> Lihat / Unduh / Bagikan</a>
+                    <a href="/surat-masuk/detail/${row.id}" class="btn btn-sm btn-primary btn-detail" target="blank"><i class="fa-duotone fa-eye"></i> Lihat</a>
                 `
             }
         }]
