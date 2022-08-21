@@ -85,7 +85,7 @@ class SuratKeluarController extends Controller
         }
 
         $sql = "SELECT sk.*, u.id as created_by_id, u.name as created_by_name from surat_keluar sk
-        left join users u on sk.created_by=u.id where is_ttd=1{$additional}";
+        left join users u on sk.created_by=u.id where is_ttd=1{$additional} order by created_at desc";
 
         $data = app('db')->connection()->select($sql, $params);
         // Debug::dump($data);die;
