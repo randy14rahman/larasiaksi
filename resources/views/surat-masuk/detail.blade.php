@@ -177,7 +177,7 @@ $id_surat = request()->route('id');
             </div>
             <div class="card d-none" id="card-table_disposisi">
                 <div class="card-body p-0">
-                    <table class="table table-stripped" id="table-disposisi">
+                    <table class="table table-responsive table-stripped" id="table-disposisi">
                         <thead>
                             <tr>
                                 <th>Disposisi dari</th>
@@ -192,7 +192,7 @@ $id_surat = request()->route('id');
             </div>
             <div class="card d-none" id="card-table_proses">
                 <div class="card-body p-0">
-                    <table class="table table-stripped" id="table-proses">
+                    <table class="table table-responsive table-stripped" id="table-proses">
                         <thead>
                             <tr>
                                 <th>Pemroses</th>
