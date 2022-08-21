@@ -69,8 +69,8 @@ class SuratMasukController extends Controller
             $fileExtension = strtolower(end($fileNameCmps));
 
             // $fileName = md5($id.$fileName);
-            $fileName = "surat_masuk-".(date("Ymd", strtotime($datetime)))."-".$id;
-            $newFileName = "surat-masuk-{$fileName}";
+            $fileName = (date("Ymd", strtotime($datetime)))."-".$id;
+            $newFileName = "surat_masuk-{$fileName}";
             $dir = '/upload/surat-masuk/' . $newFileName . '.' . $fileExtension;
             $uploadFileDir = base_path() . '/public' . $dir;
 
