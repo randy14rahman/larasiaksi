@@ -14,77 +14,84 @@ class SuratMasuk extends Model
         // Debug::dump(auth()->user()->role_id);die;
 
         $params = [];
-        $sWhere_1 = ($p['is_arsip']??0==1) ? " sm.is_arsip=1" : " sm.is_arsip is null";
-        $sWhere_2 = ($p['is_arsip']??0==1) ? " sm.is_arsip=1" : " sm.is_arsip is null";
-        if (auth()->user()->role_id>1) {
+        $sWhere = ($p['is_arsip']??0==1) ? " sm.is_arsip=1" : " sm.is_arsip is null";
+        if (in_array(auth()->user()->role_id, [1,2,3,4])) { // admin, operator, ka opd, sekretaris
+
+            if (in_array(auth()->user()->role_id, [2,3,4])){
+                $params = [
+                    'created_by' => auth()->id(),
+                    'assign_to' => auth()->id(),
+                ];
+                $sWhere .= " and (sm.created_by = :created_by or sm.assign_to = :assign_to)";
+            }
+
+            $sql = "SELECT
+                    sm.id,
+                    sm.tanggal_surat,
+                    sm.asal_surat,
+                    sm.perihal_surat,
+                    sm.nomor_surat,
+                    case
+                        when sm.jenis_surat_masuk = 0 then 'Biasa'
+                        else 'Penting'
+                    end as jenis_surat_masuk,
+                    sm.id_operator,
+                    sm.link_file,
+                    sm.assign_to,
+                    sm.is_disposisi,
+                    sm.is_proses,
+                    sm.is_arsip,
+                    sm.is_deleted,
+                    sm.created_at,
+                    sm.created_by,
+                    u.name as created_by_name,
+                    u.nip as created_by_nip,
+                    u.jabatan as created_by_jabatan
+                from
+                    surat_masuk sm
+                left join users u on
+                    sm.created_by = u.id
+                where
+                    {$sWhere}";
+        } else {
+
             $params = [
-                'created_by' => auth()->id(),
-                'assign_to' => auth()->id(),
                 'target_disposisi' => auth()->id(),
             ];
-            $sWhere_1 .= " and (sm.created_by = :created_by or sm.assign_to = :assign_to)";
-            $sWhere_2 .= " and dsm.target_disposisi = :target_disposisi";
-        }
+            $sWhere .= " and dsm.target_disposisi = :target_disposisi";
 
-        $sql = "SELECT
-                sm.id,
-                sm.tanggal_surat,
-                sm.asal_surat,
-                sm.perihal_surat,
-                sm.nomor_surat,
-                case
-                    when sm.jenis_surat_masuk = 0 then 'Biasa'
-                    else 'Penting'
-                end as jenis_surat_masuk,
-                sm.id_operator,
-                sm.link_file,
-                sm.assign_to,
-                sm.is_disposisi,
-                sm.is_proses,
-                sm.is_arsip,
-                sm.is_deleted,
-                sm.created_at,
-                sm.created_by,
-                u.name as created_by_name,
-                u.nip as created_by_nip,
-                u.jabatan as created_by_jabatan
-            from
-                surat_masuk sm
-            left join users u on
-                sm.created_by = u.id
-            where
-                {$sWhere_1}
-            union all
-            select 
-                sm.id,
-                sm.tanggal_surat,
-                sm.asal_surat,
-                sm.perihal_surat,
-                sm.nomor_surat,
-                case
-                    when sm.jenis_surat_masuk = 0 then 'Biasa'
-                    else 'Penting'
-                end as jenis_surat_masuk,
-                sm.id_operator,
-                sm.link_file,
-                sm.assign_to,
-                sm.is_disposisi,
-                sm.is_proses,
-                sm.is_arsip,
-                sm.is_deleted,
-                sm.created_at,
-                sm.created_by,
-                u.name as created_by_name,
-                u.nip as created_by_nip,
-                u.jabatan as created_by_jabatan
-            from
-                disposisi_surat_masuk dsm
-            join surat_masuk sm on
-                dsm.id_surat = sm.id
-            left join users u on
-                sm.created_by = u.id
-            where
-                {$sWhere_2}";
+            $sql = "SELECT 
+                    sm.id,
+                    sm.tanggal_surat,
+                    sm.asal_surat,
+                    sm.perihal_surat,
+                    sm.nomor_surat,
+                    case
+                        when sm.jenis_surat_masuk = 0 then 'Biasa'
+                        else 'Penting'
+                    end as jenis_surat_masuk,
+                    sm.id_operator,
+                    sm.link_file,
+                    sm.assign_to,
+                    sm.is_disposisi,
+                    sm.is_proses,
+                    sm.is_arsip,
+                    sm.is_deleted,
+                    sm.created_at,
+                    sm.created_by,
+                    u.name as created_by_name,
+                    u.nip as created_by_nip,
+                    u.jabatan as created_by_jabatan
+                from
+                    disposisi_surat_masuk dsm
+                join surat_masuk sm on
+                    dsm.id_surat = sm.id
+                left join users u on
+                    sm.created_by = u.id
+                where
+                    {$sWhere}";
+
+        }
 
         // Debug::dump($params);Debug::dump($sql);die();
                 
