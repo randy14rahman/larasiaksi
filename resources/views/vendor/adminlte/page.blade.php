@@ -47,6 +47,8 @@
 @stop
 
 @section('adminlte_js')
+    <script>const userid = "<?= auth()->id() ?>";</script>
+    <script src="/assets/app/notification.js"></script>
     @stack('js')
     @yield('js')
 @stop
