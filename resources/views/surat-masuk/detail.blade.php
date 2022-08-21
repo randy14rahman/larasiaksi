@@ -101,160 +101,24 @@ $id_surat = request()->route('id');
 @endphp
 
 @section('content')
-<div class="row">
-    <div class="col-7">
-        <div class="card">
-            <div class="card-body p-0" style="height: 600px;">
-                <iframe src="" id="iframe-preview-pdf" width="100%" style="height: 650px;" border="0"></iframe>
-            </div>
-        </div>
-    </div>
-    <div class="col-5">
-        <div class="card">
-            <div class="card-body" style="display:flex;flex-direction:column;">
-                <div class="row">
-                    <div class="col-3">
-                        Nomor Surat
-                    </div>
-                    <div class="col-9" id="nomor_surat">: <span></span></div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-3">
-                        Tanggal Surat
-                    </div>
-                    <div class="col-9" id="tanggal_surat">: <span></span></div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-3">
-                        Perihal Surat
-                    </div>
-                    <div class="col-9" id="perihal_surat">: <span></span></div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-3">
-                        Jenis Surat Masuk
-                    </div>
-                    <div class="col-9" id="jenis_surat_masuk">: <span></span></div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-3">
-                        Dibuat oleh
-                    </div>
-                    <div class="col-9" id="tanggal_upload">: <span></span></div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-3">
-                        Ditugaskan ke
-                    </div>
-                    <div class="col-9" id="assign_to">: <span></span></div>
-                </div>
-            </div>
-        </div>
-        <div class="card d-none" id="card-table_disposisi">
-            <div class="card-body p-0">
-                <table class="table table-stripped" id="table-disposisi">
-                    <thead>
-                        <tr>
-                            <th>Disposisi dari</th>
-                            <th>Disposisi ke</th>
-                            <th>Tanggal disposisi</th>
-                            <th>Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-        <div class="card d-none" id="card-action">
-            <div class="card-body">
-                <div id="button-action"></div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="row mt-5">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header border-0">
-                <div class="d-flex justify-content-between">
-                    <div></div>
-                    <div>
-                        <h4> Tracking</h4>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header border-0">
+                    <div class="d-flex justify-content-between">
+                        <div></div>
+                        <div>
+                            <h4> Tracking</h4>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <div class="timeline-steps aos-init aos-animate" data-aos="fade-up" id="container-step">
-                                <!-- <div class="timeline-step">
-                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover"
-                                        data-placement="top" title=""
-                                        data-content="And here's some amazing content. It's very engaging. Right?"
-                                        data-original-title="2003">
-                                        <p class="h6 text-muted mb-4 mb-lg-4"><i>Surat Masuk</i></p>
-
-                                        <div class="inner-circle-active"></div>
-                                        <p class="h6 mt-3 mb-1">Bone Fletcher</p>
-                                        <p class="h6 text-muted mb-0 mb-lg-0"><i>Operator</i></p>
-                                        <p class="h7 text-muted mb-0 mb-lg-0">Jun 6, 2022</p>
-
-                                    </div>
+                <div class="card-body p-0">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="timeline-steps aos-init aos-animate" data-aos="fade-up" id="container-step">
                                 </div>
-                                <div class="timeline-step">
-                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover"
-                                        data-placement="top" title=""
-                                        data-content="And here's some amazing content. It's very engaging. Right?"
-                                        data-original-title="2004">
-                                        <p class="h6 text-muted mb-4 mb-lg-4"><i>Disposisi 1</i></p>
-
-                                        <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">Bone Fletcher</p>
-                                        <p class="h6 text-muted mb-0 mb-lg-0"><i>Ka OPD</i></p>
-                                        <p class="h7 text-muted mb-0 mb-lg-0">Jun 6, 2022</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-step">
-                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover"
-                                        data-placement="top" title=""
-                                        data-content="And here's some amazing content. It's very engaging. Right?"
-                                        data-original-title="2004">
-                                        <p class="h6 text-muted mb-4 mb-lg-4"><i>Disposisi 2</i></p>
-
-                                        <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">Bone Fletcher</p>
-                                        <p class="h6 text-muted mb-0 mb-lg-0"><i>Ka OPD</i></p>
-                                        <p class="h7 text-muted mb-0 mb-lg-0">Jun 6, 2022</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-step">
-                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover"
-                                        data-placement="top" title=""
-                                        data-content="And here's some amazing content. It's very engaging. Right?"
-                                        data-original-title="2004">
-                                        <p class="h6 text-muted mb-4 mb-lg-4"><i>Disposisi 3</i></p>
-
-                                        <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">Bone Fletcher</p>
-                                        <p class="h6 text-muted mb-0 mb-lg-0"><i>Ka OPD</i></p>
-                                        <p class="h7 text-muted mb-0 mb-lg-0">Jun 6, 2022</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-step">
-                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover"
-                                        data-placement="top" title=""
-                                        data-content="And here's some amazing content. It's very engaging. Right?"
-                                        data-original-title="2004">
-                                        <p class="h6 text-muted mb-4 mb-lg-4"><i>Disposisi 2</i></p>
-
-                                        <div class="inner-circle"></div>
-                                        <p class="h6 mt-3 mb-1">Bone Fletcher</p>
-                                        <p class="h6 text-muted mb-0 mb-lg-0"><i>Ka OPD</i></p>
-                                        <p class="h7 text-muted mb-0 mb-lg-0">Jun 6, 2022</p>
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -262,60 +126,143 @@ $id_surat = request()->route('id');
             </div>
         </div>
     </div>
-</div>
-
-<div class="modal fade" id="disposisiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Disposisi Surat</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" id="close-modal">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div>Disposisi Ke</div>
-                <select name="jenis_surat_masuk" class="form-control form-select mt-3"
-                    aria-label="Default select example" id="list_disposisi_assign">
-                    <!-- <option value="1">Penting</option>
-                    <option value="0">Biasa</option> -->
-                </select>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" onclick="disposisiSurat()">Disposisi Surat</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="selesaiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Arsipkan Surat</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" id="close-modal">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="col-form-label">Keterangan</label>
-                    <textarea class="form-control" name="keterangan" id="selesai_keterangan" cols="30" rows="10"></textarea>
+    <div class="row">
+        <div class="col-7">
+            <div class="card">
+                <div class="card-body p-0">
+                    <iframe src="" id="iframe-preview-pdf" width="100%" style="height: 900px;" border="0"></iframe>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" onclick="arsipkanSurat()">Arsipkan Surat</button>
+        </div>
+        <div class="col-5">
+            <div class="card">
+                <div class="card-body" style="display:flex;flex-direction:column;">
+                    <div class="row">
+                        <div class="col-3">
+                            Nomor Surat
+                        </div>
+                        <div class="col-9" id="nomor_surat">: <span></span></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            Tanggal Surat
+                        </div>
+                        <div class="col-9" id="tanggal_surat">: <span></span></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            Perihal Surat
+                        </div>
+                        <div class="col-9" id="perihal_surat">: <span></span></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            Jenis Surat Masuk
+                        </div>
+                        <div class="col-9" id="jenis_surat_masuk">: <span></span></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            Dibuat oleh
+                        </div>
+                        <div class="col-9" id="tanggal_upload">: <span></span></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            Ditugaskan ke
+                        </div>
+                        <div class="col-9" id="assign_to">: <span></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card d-none" id="card-table_disposisi">
+                <div class="card-body p-0">
+                    <table class="table table-stripped" id="table-disposisi">
+                        <thead>
+                            <tr>
+                                <th>Disposisi dari</th>
+                                <th>Disposisi ke</th>
+                                <th>Tanggal disposisi</th>
+                                <th>Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card d-none" id="card-table_proses">
+                <div class="card-body p-0">
+                    <table class="table table-stripped" id="table-proses">
+                        <thead>
+                            <tr>
+                                <th>Pemroses</th>
+                                <th>Tanggal Proses</th>
+                                <th>Tanggal Selesai</th>
+                                <th>Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card d-none" id="card-action">
+                <div class="card-body">
+                    <div id="button-action"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-
-
-
+    <div class="modal fade" id="disposisiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Disposisi Surat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" id="close-modal">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-form-label">Disposisi ke</label>
+                        <select name="jenis_surat_masuk" class="form-control form-select mt-3" aria-label="Default select example" id="list_disposisi_assign"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Catatan</label>
+                        <textarea class="form-control" name="keterangan" id="disposisi_keterangan" cols="30" rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="disposisiSurat()">Disposisi Surat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="selesaiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Arsipkan Surat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" id="close-modal">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-form-label">Catatan</label>
+                        <textarea class="form-control" name="keterangan" id="selesai_keterangan" cols="30" rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="arsipkanSurat()">Arsipkan Surat</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 @push('js')
 <script>

@@ -10,7 +10,7 @@ Highcharts.chart('pie-sm', {
         verticalAlign: 'middle',
     },
     tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
     },
     accessibility: {
         point: {
@@ -35,7 +35,7 @@ Highcharts.chart('pie-sm', {
     },
     series: [{
         type: 'pie',
-        name: 'Browser share',
+        name: 'Surat Masuk',
         innerSize: '50%',
         data: [
             ['Proses', parseInt(data.surat_masuk.stats.surat_baru||0)+parseInt(data.surat_masuk.stats.disposisi||0)+parseInt(data.surat_masuk.stats.proses||0)],

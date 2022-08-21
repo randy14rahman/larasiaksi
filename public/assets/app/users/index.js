@@ -13,14 +13,14 @@ $(() => {
                 title: 'Pemaraf',
                 data: 'is_pemaraf',
                 render: (data, type, row) => {
-                    return (data === 1) ? '<i class="fas fa-check-circle fa-fw text-success"></i>' : '<i class="fas fa-times-circle fa-fw text-danger"></i>';
+                    return (data === 1) ? '<i class="fa-solid fa-circle-check text-success"></i>' : '<i class="fa-solid fa-circle-xmark text-danger"></i></i>';
                 }
             },
             {
                 title: 'Penandatangan',
                 data: 'is_pettd',
                 render: (data, type, row) => {
-                    return (data === 1) ? '<i class="fas fa-check-circle fa-fw text-success"></i>' : '<i class="fas fa-times-circle fa-fw text-danger"></i>';
+                    return (data === 1) ? '<i class="fa-solid fa-circle-check text-success"></i>' : '<i class="fa-solid fa-circle-xmark text-danger"></i></i>';
                 }
             },
             {
@@ -29,8 +29,8 @@ $(() => {
                 sortable: false,
                 render: (data, type, row) => {
                     return `
-                        <button class="btn btn-sm btn-warning btn-edit" data-toggle="modal" data-target="#modal-edit-user"><i class="fas fa-edit fa-fw"></i></button>
-                        <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}"><i class="fas fa-trash fa-fw"></i></button>`;
+                        <button class="btn btn-sm btn-warning btn-edit" data-toggle="modal" data-target="#modal-edit-user"><i class="fa-duotone fa-pen-to-square"></i></button>
+                        <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}"><i class="fa-duotone fa-trash-can"></i></button>`;
                 }
             },
         ]

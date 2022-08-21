@@ -153,6 +153,7 @@
 
 @push('js')
     <script type="text/javascript" src="/assets/plugins/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="/assets/plugins/highcharts/modules/no-data-to-display.js?.js"></script>
     <script>const data = <?= json_encode($data) ?>; console.log(data.surat_keluar.trendline)</script>
     <script src="/assets/app/home.js"></script>
 @endpush

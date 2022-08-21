@@ -2,86 +2,102 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Zend\Debug\Debug;
 
 class SuratMasuk extends Model
 {
-    use HasFactory;
 
-    public function getAll()
-    {
 
-        $params = [
-            'created_by' => auth()->id(),
-            'assign_to' => auth()->id(),
-            'target_disposisi' => auth()->id(),
-        ];
+    public function getAll(array $p=[]){
 
-        $sql = "SELECT
-                sm.id,
-                sm.tanggal_surat,
-                sm.asal_surat,
-                sm.perihal_surat,
-                sm.nomor_surat,
-                case
-                    when sm.jenis_surat_masuk = 0 then 'Biasa'
-                    else 'Penting'
-                end as jenis_surat_masuk,
-                sm.id_operator,
-                sm.link_file,
-                sm.assign_to,
-                sm.is_disposisi,
-                sm.is_proses,
-                sm.is_arsip,
-                sm.is_deleted,
-                sm.created_at,
-                sm.created_by,
-                u.name as created_by_name,
-                u.nip as created_by_nip,
-                u.jabatan as created_by_jabatan
-            from
-                surat_masuk sm
-            left join users u on
-                sm.created_by = u.id
-            where
-                sm.is_arsip is null
-                and (sm.created_by = :created_by or sm.assign_to = :assign_to)
-            union all
-            select 
-                sm.id,
-                sm.tanggal_surat,
-                sm.asal_surat,
-                sm.perihal_surat,
-                sm.nomor_surat,
-                case
-                    when sm.jenis_surat_masuk = 0 then 'Biasa'
-                    else 'Penting'
-                end as jenis_surat_masuk,
-                sm.id_operator,
-                sm.link_file,
-                sm.assign_to,
-                sm.is_disposisi,
-                sm.is_proses,
-                sm.is_arsip,
-                sm.is_deleted,
-                sm.created_at,
-                sm.created_by,
-                u.name as created_by_name,
-                u.nip as created_by_nip,
-                u.jabatan as created_by_jabatan
-            from
-                disposisi_surat_masuk dsm
-            join surat_masuk sm on
-                dsm.id_surat = sm.id
-            left join users u on
-                sm.created_by = u.id
-            where
-                sm.is_arsip is null
-                and dsm.target_disposisi = :target_disposisi";
 
+        // Debug::dump(auth()->user()->role_id);die;
+
+
+        $params = [];
+        $sWhere = ($p['is_arsip']??0==1) ? " sm.is_arsip=1" : " sm.is_arsip is null";
+        if (in_array(auth()->user()->role_id, [1,2,3,4])) { // admin, operator, ka opd, sekretaris
+
+            if (in_array(auth()->user()->role_id, [2,3,4])){
+                $params = [
+                    'created_by' => auth()->id(),
+                    'assign_to' => auth()->id(),
+                ];
+                $sWhere .= " and (sm.created_by = :created_by or sm.assign_to = :assign_to)";
+            }
+
+            $sql = "SELECT
+                    sm.id,
+                    sm.tanggal_surat,
+                    sm.asal_surat,
+                    sm.perihal_surat,
+                    sm.nomor_surat,
+                    case
+                        when sm.jenis_surat_masuk = 0 then 'Biasa'
+                        else 'Penting'
+                    end as jenis_surat_masuk,
+                    sm.id_operator,
+                    sm.link_file,
+                    sm.assign_to,
+                    sm.is_disposisi,
+                    sm.is_proses,
+                    sm.is_arsip,
+                    sm.is_deleted,
+                    sm.created_at,
+                    sm.created_by,
+                    u.name as created_by_name,
+                    u.nip as created_by_nip,
+                    u.jabatan as created_by_jabatan
+                from
+                    surat_masuk sm
+                left join users u on
+                    sm.created_by = u.id
+                where
+                    {$sWhere}";
+        } else {
+
+            $params = [
+                'target_disposisi' => auth()->id(),
+            ];
+            $sWhere .= " and dsm.target_disposisi = :target_disposisi";
+
+            $sql = "SELECT 
+                    sm.id,
+                    sm.tanggal_surat,
+                    sm.asal_surat,
+                    sm.perihal_surat,
+                    sm.nomor_surat,
+                    case
+                        when sm.jenis_surat_masuk = 0 then 'Biasa'
+                        else 'Penting'
+                    end as jenis_surat_masuk,
+                    sm.id_operator,
+                    sm.link_file,
+                    sm.assign_to,
+                    sm.is_disposisi,
+                    sm.is_proses,
+                    sm.is_arsip,
+                    sm.is_deleted,
+                    sm.created_at,
+                    sm.created_by,
+                    u.name as created_by_name,
+                    u.nip as created_by_nip,
+                    u.jabatan as created_by_jabatan
+                from
+                    disposisi_surat_masuk dsm
+                join surat_masuk sm on
+                    dsm.id_surat = sm.id
+                left join users u on
+                    sm.created_by = u.id
+                where
+                    {$sWhere}";
+
+        }
+
+        // Debug::dump($params);Debug::dump($sql);die();
+                
         $data = app('db')->connection()->select($sql, $params);
 
 
@@ -116,6 +132,7 @@ class SuratMasuk extends Model
                 sm.is_disposisi,
                 sm.is_proses,
                 sm.is_arsip,
+                sm.keterangan_arsip,
                 sm.is_deleted,
                 sm.created_at,
                 sm.created_by,
@@ -202,4 +219,109 @@ class SuratMasuk extends Model
 
         return $data;
     }
+
+
+    public function getStatistik(){
+
+        $params = [];
+        $sWhere = "";
+        if (in_array(auth()->user()->role_id, [1,2,3,4])) {
+
+            if (in_array(auth()->user()->role_id, [2,3,4])){
+                $params = [
+                    'created_by' => auth()->id(),
+                    'assign_to' => auth()->id(),
+                ];
+                $sWhere .= " and (sm.created_by = :created_by or sm.assign_to = :assign_to)";
+            }
+
+            $data = app('db')->connection()->selectOne("SELECT
+                    sum(case when is_disposisi is null and is_proses is null and is_arsip is null then 1 else 0 end) surat_baru,
+                    sum(case when is_disposisi = 1 and is_proses is null and is_arsip is null then 1 else 0 end) disposisi,
+                    sum(case when is_proses = 1 and is_arsip is null then 1 else 0 end) proses,
+                    sum(case when is_arsip = 1 then 1 else 0 end) arsip
+                from
+                    surat_masuk sm 
+                where 1=1{$sWhere}", $params);
+        } else {
+
+            $params = [
+                'target_disposisi' => auth()->id(),
+            ];
+            $sWhere .= " and dsm.target_disposisi = :target_disposisi";
+            
+            $data = app('db')->connection()->selectOne("SELECT
+                    sum(case when sm.is_disposisi is null and sm.is_proses is null and sm.is_arsip is null then 1 else 0 end) surat_baru,
+                    sum(case when sm.is_disposisi = 1 and sm.is_proses is null and sm.is_arsip is null then 1 else 0 end) disposisi,
+                    sum(case when sm.is_proses = 1 and sm.is_arsip is null then 1 else 0 end) proses,
+                    sum(case when sm.is_arsip = 1 then 1 else 0 end) arsip
+                from
+                    disposisi_surat_masuk dsm
+                join surat_masuk sm on
+                    dsm.id_surat = sm.id 
+                where 1=1{$sWhere}", $params);
+        }
+        // Debug::dump($data);die;
+
+        return $data;
+    }
+
+    public function getTrendline(){
+
+        $params = [];
+        $sWhere = "";
+        if (in_array(auth()->user()->role_id, [1,2,3,4])) {
+
+            if (in_array(auth()->user()->role_id, [2,3,4])){
+                $params = [
+                    'created_by' => auth()->id(),
+                    'assign_to' => auth()->id(),
+                ];
+                $sWhere .= " and (sm.created_by = :created_by or sm.assign_to = :assign_to)";
+            }
+
+            $data = app('db')->connection()->select("SELECT
+                    sm.tanggal_surat,
+                    count(*) as jumlah
+                from
+                    surat_masuk sm
+                where 1=1{$sWhere}
+                group by
+                    sm.tanggal_surat
+                order by
+                    sm.tanggal_surat", $params);
+        } else {
+
+            $params = [
+                'target_disposisi' => auth()->id(),
+            ];
+            $sWhere .= " and dsm.target_disposisi = :target_disposisi";
+            
+            $data = app('db')->connection()->select("SELECT
+                    sm.tanggal_surat,
+                    count(*) as jumlah
+                from
+                    disposisi_surat_masuk dsm
+                join surat_masuk sm on
+                    dsm.id_surat = sm.id 
+                where 1=1{$sWhere}
+                group by
+                    sm.tanggal_surat
+                order by
+                    sm.tanggal_surat", $params);
+        }
+        // Debug::dump($data);die;
+        
+        $trendline = [];
+        foreach ($data as $k => $v) {
+            $trendline[] = [
+                strtotime($v->tanggal_surat)*1000,
+                $v->jumlah
+            ];
+        }
+        // Debug::dump($trendline);die;
+
+        return $trendline;
+    }
 }
+

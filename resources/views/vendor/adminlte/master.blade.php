@@ -24,7 +24,6 @@
 
     {{-- Base Stylesheets --}}
     @if(!config('adminlte.enabled_laravel_mix'))
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">

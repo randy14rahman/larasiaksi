@@ -132,7 +132,7 @@ $id_user = $user->id;
         </div>
     </div>
 </div>
-<div class="row mt-5">
+<div class="row mt-5 d-none">
     <div class="col-12">
         <div class="card">
             <div class="card-header border-0">

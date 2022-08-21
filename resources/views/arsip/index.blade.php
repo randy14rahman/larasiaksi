@@ -61,5 +61,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.8/pdfobject.min.js"></script>
     <script>const user_id = <?= auth()->id() ?>;</script>
     <script src="/assets/app/arsip/surat-masuk.js"></script>
-    <script src="/assets/app/arsip/index.js"></script>
+    <script src="/assets/app/arsip/surat-keluar.js"></script>
 @endpush

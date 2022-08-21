@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\SuratMasuk;
 use Zend\Debug\Debug;
 
 class HomeController extends Controller
@@ -25,7 +26,7 @@ class HomeController extends Controller
     public function index()
     {
 
-        $sk_stats = app('db')->connection()->selectOne("select
+        $sk_stats = app('db')->connection()->selectOne("SELECT
             sum(case when is_ttd is null then 1 else 0 end) proses,
             sum(case when is_ttd=1 then 1 else 0 end) as arsip,
             sum(case when is_paraf1 is null or (pemaraf2 is not null and is_paraf2 is null) then 1 else 0 end) draft,
@@ -47,29 +48,8 @@ class HomeController extends Controller
         }
         // Debug::dump($sk_trendline);die;
 
-        $sm_stats = app('db')->connection()->selectOne("select
-            sum(case when is_disposisi is null and is_proses is null and is_arsip is null then 1 else 0 end) surat_baru,
-            sum(case when is_disposisi=1 and is_proses is null and is_arsip is null then 1 else 0 end) disposisi,
-            sum(case when is_proses=1 and is_arsip is null then 1 else 0 end) proses,
-            sum(case when is_arsip=1 then 1 else 0 end) arsip
-        from
-            surat_masuk");
-
-        $tmp_sm_trendline = app('db')->connection()->select("select tanggal_surat, count(*) as jumlah from surat_masuk sk
-        group by tanggal_surat order by tanggal_surat");
-        // Debug::dump($sk_trendline);die;
-
-        $sm_trendline = [];
-        foreach ($tmp_sm_trendline as $k => $v) {
-            $sm_trendline[] = [
-                strtotime($v->tanggal_surat)*1000,
-                $v->jumlah
-            ];
-        }
-        // Debug::dump($sm_trendline);die;
-
-
-        
+        $sm_stats = (new SuratMasuk())->getStatistik();
+        $sm_trendline = (new SuratMasuk())->getTrendline();
         
         return view('home', [
             'data'=>[

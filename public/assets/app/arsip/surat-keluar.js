@@ -16,6 +16,13 @@ $(() => {
             data: 'tanggal_surat',
             class: 'valign-middle',
         }, {
+            title: 'Dibuat oleh',
+            data: 'created_by_name',
+            class: 'valign-middle',
+            render: (data, type, row) => {
+                return `${data}<br>${row.created_at}`
+            }
+        }, {
             title: 'Diparaf oleh',
             render: (data, type, row) => {
 
@@ -36,18 +43,17 @@ $(() => {
                 return status;
             }
         }, {
-            title: 'Dibuat oleh',
-            data: 'created_by_name',
-            class: 'valign-middle',
-            render: (data, type, row) => {
-                return `${data}<br>${row.created_at}`
-            }
-        }, {
             sortable: false,
             class: 'valign-middle',
             render: (data, type, row) => {
+
+                const _url = `${window.location.protocol}//${window.location.host}/surat-keluar/${row.id}/detail`;
+                const _text = `${_url}`;
                 return `
-                    <a href="${row.signed_surat}" class="btn btn-sm btn-primary btn-detail" target="blank"><i class="fas fa-download fa-fw"></i> Lihat / Unduh / Bagikan</a>
+                    <a href="${row.signed_surat}" class="btn btn-sm btn-primary btn-detail" target="blank"><i class="fa-duotone fa-eye"></i> Lihat</a>
+                    <a href="https://api.whatsapp.com/send?text=${_text}" target="_blank" class="btn btn-sm bg-success" title="Share to WhatsApp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
                 `
             }
         }]

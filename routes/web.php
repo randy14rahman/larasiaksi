@@ -46,6 +46,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
             Route::get('/surat-masuk', [App\Http\Controllers\SuratMasukController::class, 'getSuratMasuk'])->name('get-surat-masuk');
             Route::post('/surat-masuk', [App\Http\Controllers\SuratMasukController::class, 'addSuratMasuk'])->name('add-surat-masuk');
+            Route::delete('/surat-masuk/{id}', [App\Http\Controllers\SuratMasukController::class, 'deleteSuratMasuk'])->name('delete-surat-masuk');
             Route::get('/surat-masuk/{id}/detail', [App\Http\Controllers\SuratMasukController::class, 'getDetailSuratMasuk'])->name('get-detail-surat-masuk');
             Route::get('/surat-masuk/arsip', [App\Http\Controllers\SuratMasukController::class, 'listArsip'])->name('surat-masuk.listArsip');
             Route::post('/surat-masuk/disposisi-surat', [App\Http\Controllers\SuratMasukController::class, 'disposisiSurat'])->name('disposisi-surat-masuk');
