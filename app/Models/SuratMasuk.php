@@ -11,7 +11,8 @@ class SuratMasuk extends Model
 {
     use HasFactory;
 
-    public function getAll(){
+    public function getAll()
+    {
 
         $params = [
             'created_by' => auth()->id(),
@@ -80,23 +81,25 @@ class SuratMasuk extends Model
             where
                 sm.is_arsip is null
                 and dsm.target_disposisi = :target_disposisi";
-                
+
         $data = app('db')->connection()->select($sql, $params);
-        // Debug::dump($data);die;
+
 
         if ($data) {
             $User = new User();
             foreach ($data as $k => $v) {
-                $data[$k]->assign_to = $User->getInfoById($v->assign_to);
-                $data[$k]->disposisi = ($v->is_disposisi==1) ? $this->getDisposisiBySMId($v->id) : [];
-                $data[$k]->pemroses = ($v->is_proses==1) ? $this->getProsesBySMId($v->id) : [];
+
+                $data[$k]->assign_to = $User->getInfoById((int)$v->assign_to);
+                $data[$k]->disposisi = ($v->is_disposisi == 1) ? $this->getDisposisiBySMId((int)$v->id) : [];
+                $data[$k]->pemroses = ($v->is_proses == 1) ? $this->getProsesBySMId((int)$v->id) : [];
             }
         }
 
         return $data;
     }
 
-    public function getById(int $id=0){
+    public function getById(int $id = 0)
+    {
         $sql = "SELECT
                 sm.id,
                 sm.tanggal_surat,
@@ -127,19 +130,20 @@ class SuratMasuk extends Model
             where
                 sm.id = :id";
 
-        $data = app('db')->connection()->selectOne($sql, ['id'=>$id]);
+        $data = app('db')->connection()->selectOne($sql, ['id' => $id]);
         // Debug::dump($data);die;
 
         if ($data) {
             $User = new User();
             $data->assign_to = $User->getInfoById($data->assign_to);
-
         }
 
         return $data;
     }
 
-    public function getDisposisiBySMId(int $id=0, $sort='DESC'){
+    public function getDisposisiBySMId(int $id = 0, $sort = 'DESC')
+    {
+
         $sql = "SELECT
                 dsm.id,
                 dsm.source_disposisi,
@@ -154,7 +158,7 @@ class SuratMasuk extends Model
                 created_at {$sort}";
         // Debug::dump($sql);die;
 
-        $data = app('db')->connection()->select($sql, ['id'=>$id]);
+        $data = app('db')->connection()->select($sql, ['id' => $id]);
         // Debug::dump($data);die;
 
         if ($data) {
@@ -163,13 +167,15 @@ class SuratMasuk extends Model
                 $data[$k]->source_disposisi = $User->getInfoById($v->source_disposisi);
                 $data[$k]->target_disposisi = $User->getInfoById($v->target_disposisi);
             }
-
         }
 
         return $data;
     }
 
-    public function getProsesBySMId(int $id=0){
+    public function getProsesBySMId(int $id = 0)
+    {
+
+
         $sql = "SELECT
                 psm.id,
                 psm.created_by,
@@ -179,14 +185,17 @@ class SuratMasuk extends Model
             where
                 psm.id_surat = :id";
 
-        $data = app('db')->connection()->selectOne($sql, ['id'=>$id]);
-        // Debug::dump($data);die;
+        $data = app('db')->connection()->selectOne($sql, ['id' => $id]);
 
-    
-        if ($data){
+
+
+        if ($data) {
             $created_at = $data->created_at;
             $User = new User();
-            $data = $User->getInfoById($data->created_by);
+            if (isset($data->created_by)) {
+                $data = $User->getInfoById($data->created_by);
+            }
+
             $data->created_at = $created_at;
         }
         // Debug::dump($data);die;
