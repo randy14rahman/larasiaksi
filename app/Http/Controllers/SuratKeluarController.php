@@ -277,7 +277,6 @@ class SuratKeluarController extends Controller
         if (!$_FILES) {
             return response()->json(['status' => 0]);
         }
-        Debug::dump($_FILES);die;
 
         $fileTmpPath = $_FILES['file']['tmp_name'];
         $newFileName = $_FILES['file']['full_path'];
