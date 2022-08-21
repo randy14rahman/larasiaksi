@@ -34,7 +34,7 @@ $(() => {
             class: 'valign-middle',
             render: (data, type, row) => {
                 return `
-                    <a href="/surat-masuk/detail/${row.id}" class="btn btn-sm btn-primary btn-detail" target="blank"><i class="fa-duotone fa-eye"></i> Lihat</a>
+                    <a href="/surat-masuk/detail/${row.id}" class="btn btn-sm btn-primary btn-detail"><i class="fa-duotone fa-eye"></i> Lihat</a>
                 `
             }
         }]

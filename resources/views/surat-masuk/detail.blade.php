@@ -183,7 +183,22 @@ $id_surat = request()->route('id');
                                 <th>Disposisi dari</th>
                                 <th>Disposisi ke</th>
                                 <th>Tanggal disposisi</th>
-                                <th>Keterangan</th>
+                                <th>Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card d-none" id="card-table_proses">
+                <div class="card-body p-0">
+                    <table class="table table-stripped" id="table-proses">
+                        <thead>
+                            <tr>
+                                <th>Pemroses</th>
+                                <th>Tanggal Proses</th>
+                                <th>Tanggal Selesai</th>
+                                <th>Catatan</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -214,7 +229,7 @@ $id_surat = request()->route('id');
                         <select name="jenis_surat_masuk" class="form-control form-select mt-3" aria-label="Default select example" id="list_disposisi_assign"></select>
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label">Keterangan</label>
+                        <label class="col-form-label">Catatan</label>
                         <textarea class="form-control" name="keterangan" id="disposisi_keterangan" cols="30" rows="10"></textarea>
                     </div>
                 </div>
@@ -237,7 +252,7 @@ $id_surat = request()->route('id');
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="col-form-label">Keterangan</label>
+                        <label class="col-form-label">Catatan</label>
                         <textarea class="form-control" name="keterangan" id="selesai_keterangan" cols="30" rows="10"></textarea>
                     </div>
                 </div>

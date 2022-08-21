@@ -68,7 +68,8 @@ class SuratMasukController extends Controller
             $fileNameCmps = explode(".", $fileName);
             $fileExtension = strtolower(end($fileNameCmps));
 
-            $fileName = md5($id.$fileName);
+            // $fileName = md5($id.$fileName);
+            $fileName = "surat_masuk-".(date("Ymd", strtotime($datetime)))."-".$id;
             $newFileName = "surat-masuk-{$fileName}";
             $dir = '/upload/surat-masuk/' . $newFileName . '.' . $fileExtension;
             $uploadFileDir = base_path() . '/public' . $dir;
@@ -114,90 +115,23 @@ class SuratMasukController extends Controller
     public function getDetailSuratMasuk(Request $request, int $id)
     {
 
-        $params = [
-            'id_surat' => $id,
-            // 'assign_to' => auth()->id(),
-            // 'target_disposisi' => auth()->id(),
-        ];
-        $sql = "SELECT
-                sm.id,
-                sm.tanggal_surat,
-                sm.asal_surat,
-                sm.perihal_surat,
-                sm.nomor_surat,
-                case
-                    when sm.jenis_surat_masuk = 1 then 'Penting'
-                    else 'Biasa'
-                end as jenis_surat_masuk,
-                sm.id_operator,
-                sm.link_file,
-                sm.assign_to,
-                sm.is_disposisi,
-                sm.is_proses,
-                sm.is_arsip,
-                sm.keterangan_arsip,
-                sm.is_deleted,
-                sm.created_by,
-                u.name as created_by_name,
-                u.jabatan as created_by_jabatan,
-                sm.created_at
-            from
-                surat_masuk sm
-            -- join disposisi_surat_masuk dsm on
-            --     sm.id = dsm.id_surat
-            left join users u on
-                sm.created_by = u.id
-            where
-                sm.id =:id_surat
-                -- and sm.is_arsip is null
-                -- and (sm.assign_to = :assign_to
-                --     or dsm.target_disposisi = :target_disposisi)
-                ";
-
-        // Debug::dump($params);
-        // Debug::dump($sql);
-        // die;
-        $data = app('db')->connection()->selectOne($sql, $params);
+        $SuratMasuk = new SuratMasuk();
+        $data = $SuratMasuk->getById($id);
         // Debug::dump($data);die;
 
         if ($data) {
 
 
             $userModel = new User();
-            $SuratMasuk = new SuratMasuk();
-            $data->assign_to = $userModel->getInfoById($data->assign_to);
-            // Debug::dump($data);die;
-    
-            // $params = [
-            //     'id_surat' => $id, 
-            //     'from_disposisi' => auth()->id(),
-            //     'to_disposisi' => auth()->id(),
-            // ];
-    
-            // $sql = 'SELECT * FROM  disposisi_surat_masuk  WHERE id_surat=:id_surat
-            // and (source_disposisi = :from_disposisi or target_disposisi=:to_disposisi)';
-            // // $sql1 = 'SELECT * FROM  disposisi_surat_masuk  WHERE id_surat=:id_surat and is_selesai is null';
-    
-            // Debug::dump($params);
-            // Debug::dump($sql);
-            // die;
     
             $disposisi = $SuratMasuk->getDisposisiBySMId($id, 'ASC');
-            // Debug::dump($disposisi);die;
-    
-            // if ($disposisi) {
-            //     foreach ($disposisi as $k => $v) {
-            //         $disposisi[$k]->source_disposisi = $userModel->getInfoById($v->source_disposisi);
-            //         $disposisi[$k]->target_disposisi = $userModel->getInfoById($v->target_disposisi);
-            //     }
-            // }
 
-            $sql = "SELECT * from proses_surat_masuk where id_surat=:id";
+            $sql = "SELECT id, id_surat, created_by, created_at, updated_at as tanggal_selesai from proses_surat_masuk where id_surat=:id";
 
-            $pemroses = app('db')->connection()->selectOne($sql, ['id'=>$id]);
+            $proses = app('db')->connection()->selectOne($sql, ['id'=>$id]);
             // Debug::dump($pemroses);die;
-            if ($pemroses){
-                $pemroses = $userModel->getInfoById($pemroses->created_by);
+            if ($proses){
+                $proses->pemroses = $userModel->getInfoById($proses->created_by);
             }
 
 
@@ -208,7 +142,7 @@ class SuratMasukController extends Controller
             'transaction' => ($data) ? true : false,
             'data' => $data,
             'disposisi' => $disposisi??[],
-            'pemroses' => $pemroses??[]
+            'proses' => $proses??[]
         ];
         return response()->json($res);
     }

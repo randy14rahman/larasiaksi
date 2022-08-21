@@ -7,7 +7,8 @@ function getDetailSuratMasuk() {
     $.ajax({
         url: `/api/surat-masuk/${id_surat}/detail`,
         success: (res) => {
-            $("#button-action").html('')
+            $("#button-action").html('');
+            console.log(res);
             if (res.transaction) {
                 $("#iframe-preview-pdf").attr('src', `${res.data.link_file}#toolbar=0`)
                 $("#nomor_surat>span").text(res.data.nomor_surat)
@@ -32,10 +33,15 @@ function getDetailSuratMasuk() {
 
                 }
 
-                // console.log(user_id);
-                // console.log(res.data);
-                // console.log(res.data.is_proses);
-                // console.log(res.disposisi[res.disposisi.length-1].target_disposisi.id==user_id);
+                if (res.proses.id!=undefined) {
+                    $('#card-table_proses').removeClass('d-none');
+                    $('#table-proses tbody').append(`<tr>
+                        <td>${res.proses.pemroses.name}<br/>${res.proses.pemroses.nip}<br/>${res.proses.pemroses.jabatan}</td>
+                        <td>${res.proses.created_at}</td>
+                        <td>${res.proses.tanggal_selesai||'-'}</td>
+                        <td>${res.data.keterangan_arsip||'-'}</td>
+                    </tr>`);
+                }
 
                 if (
                     (
@@ -268,7 +274,7 @@ function arsipkanSurat(){
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
-                    text: 'Surat Masuk berhasil Disposisi',
+                    text: 'Surat Masuk berhasil Diarsipkan',
                 }).then((result) => {
                     if (result.isConfirmed) {
                         location.reload();

@@ -127,6 +127,7 @@ class SuratMasuk extends Model
                 sm.is_disposisi,
                 sm.is_proses,
                 sm.is_arsip,
+                sm.keterangan_arsip,
                 sm.is_deleted,
                 sm.created_at,
                 sm.created_by,
