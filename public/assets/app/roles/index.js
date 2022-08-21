@@ -14,8 +14,8 @@ $(() => {
                     }
 
                     return `
-                                <button class="btn btn-sm btn-warning btn-edit" data-toggle="modal" data-target="#modal-edit-role"><i class="fas fa-edit fa-fw"></i></button>
-                                <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}"><i class="fas fa-trash fa-fw"></i></button>
+                                <button class="btn btn-sm btn-warning btn-edit" data-toggle="modal" data-target="#modal-edit-role"><i class="fa-duotone fa-pen-to-square"></i></button>
+                                <button class="btn btn-sm btn-danger btn-delete" data-id="${row.id}"><i class="fa-duotone fa-trash-can"></i></button>
                             `;
                 }
             },
