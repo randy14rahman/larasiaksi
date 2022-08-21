@@ -1,6 +1,7 @@
+var datatable;
 $(() => {
     bsCustomFileInput.init();
-    
+
     getListSurat()
 
     $('#form-surat-masuk').validate({
@@ -45,101 +46,68 @@ $(() => {
 
 
 
-    var data_disposisi = [{
-        'posisi': 'Andi',
-        'jabatan': 'Eselon 3',
-        'from': 'Robinson',
-        'jabatan_pen': 'KA OPD',
-        'status': 'process',
-        'tgl': 'Aug 1 , 2022',
-        'no': '12345'
-    }
+    // var data_disposisi = [{
+    //     'posisi': 'Andi',
+    //     'jabatan': 'Eselon 3',
+    //     'from': 'Robinson',
+    //     'jabatan_pen': 'KA OPD',
+    //     'status': 'process',
+    //     'tgl': 'Aug 1 , 2022',
+    //     'no': '12345'
+    // }
 
-    ]
+    // ]
 
-    datatable = $('#datatable-disposisi').DataTable({
-        data: data_disposisi,
-        orderCellsTop: true,
-        columns: [{
-            data: 'posisi'
-        }, {
-            data: 'jabatan'
-        }, {
-            data: 'from'
-        }, {
-            data: 'jabatan_pen'
-        }, {
-            data: 'status',
-            render: (data, type, row) => {
-                return `<div><span class="badge text-bg-primary" style="background-color:#198754">Process</span></div>`
-            }
-        }, {
-            data: 'tgl'
-        }, {
-            data: 'no'
-        }]
-
-
-    });
-
-    // $('#form-add-user').on('submit', (e)=>{
-    //     e.preventDefault();
-    //     addUser($(e.currentTarget));
-    // });
-    // $('#form-edit-user').on('submit', (e)=>{
-    //     e.preventDefault();
-
-    //     const user_id = parseInt($(e.currentTarget).find('input[name="id"]').val());
-    //     editUser($(e.currentTarget), user_id);
-    // });
-
-    // $('#modal-add-user').on('show.bs.modal', (e)=>{
-    //     $('#form-add-user button[type="submit"]').prop('disabled', false);
-    //     $('#form-add-user button[type="submit"]').removeClass('btn-success btn-secondary').addClass('btn-primary').text('Create');
-    // });
-    // $('#modal-edit-user').on('show.bs.modal', (e)=>{
-    //     $('#form-edit-user button[type="submit"]').prop('disabled', false);
-    //     $('#form-edit-user button[type="submit"]').removeClass('btn-success btn-secondary').addClass('btn-primary').text('Update');
-    // });
-    // $('#datatable-1 tbody').on('click', '.btn-edit', function (e) {
-
-    //     const data = datatable.row($(this).parents('tr')).data();
-    //     // console.log(data);
-    //     $('#form-edit-user .btn-submit').attr('data-id', data.id);
-    //     $('#form-edit-user input[name="id"]').val(data.id);
-    //     $('#form-edit-user input[name="nip"]').val(data.nip);
-    //     $('#form-edit-user input[name="name"]').val(data.name);
-    //     $('#form-edit-user input[name="jabatan"]').val(data.jabatan);
-    //     $('#form-edit-user input[name="email"]').val(data.email);
-    //     $('#form-edit-user input[name="password"]').val(data.password);
-    //     $('#form-edit-user input[name="is_pemaraf"]').prop('checked', (data.is_pemaraf==1));
-    //     $('#form-edit-user input[name="is_pettd"]').prop('checked', (data.is_pettd==1));
-    //     $('#form-edit-user select[name="role"]').val(data.role_id);
-    // });
-
-    // $('#datatable-1 tbody').on('click', '.btn-delete', (e)=>{
-    //     const user_id = parseInt($(e.currentTarget).data('id'));
-    //     console.log(user_id);
-    //     Swal.fire({
-    //     title: 'Are you sure?',
-    //     text: "You won't be able to revert this!",
-    //     icon: 'warning',
-    //     showCancelButton: true,
-    //     cancelButtonColor: '#3085d6',
-    //     confirmButtonColor: '#d33',
-    //     confirmButtonText: 'Yes, delete it!'
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             deleteUser(user_id);
+    // datatable = $('#datatable-disposisi').DataTable({
+    //     data: data_disposisi,
+    //     orderCellsTop: true,
+    //     columns: [{
+    //         data: 'posisi'
+    //     }, {
+    //         data: 'jabatan'
+    //     }, {
+    //         data: 'from'
+    //     }, {
+    //         data: 'jabatan_pen'
+    //     }, {
+    //         data: 'status',
+    //         render: (data, type, row) => {
+    //             return `<div><span class="badge text-bg-primary" style="background-color:#198754">Process</span></div>`
     //         }
-    //     })
-    // })
+    //     }, {
+    //         data: 'tgl'
+    //     }, {
+    //         data: 'no'
+    //     }]
+
+
+    // });
+
+    $('#datatable-surat tbody').on('click', '.btn-delete', (e) => {
+        const id_surat = parseInt($(e.currentTarget).data('id'));
+        console.log(user_id);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonColor: '#3085d6',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                console.log(id_surat);
+                deleteSurat(id_surat);
+            }
+        })
+    })
 
 });
 
 function getListSurat() {
 
-    var datatable = $('#datatable-surat').DataTable({
+    datatable = $('#datatable-surat').DataTable({
         ajax: '/api/surat-masuk',
         orderCellsTop: true,
         bDestroy: true,
@@ -159,9 +127,9 @@ function getListSurat() {
             render: (data, type, row) => {
 
                 let _status = `<span class="badge badge-danger" >Surat Masuk</span><br/>${row.assign_to.name}`;
-                if (row.is_proses==1) {
+                if (row.is_proses == 1) {
                     _status = `<span class="badge badge-primary">Diproses</span><br/>${row.pemroses.name}`;
-                } else if (row.is_disposisi==1) {
+                } else if (row.is_disposisi == 1) {
                     _status = `<span class="badge badge-info">Disposisi ${row.disposisi.length}</span><br/>${row.disposisi[0].target_disposisi.name}`;
                 }
                 return _status;
@@ -169,7 +137,7 @@ function getListSurat() {
         }, {
             title: 'Dibuat oleh',
             data: 'created_at',
-            render: (data, type, row)=>{
+            render: (data, type, row) => {
                 return `${row.created_by_name}<br/>${row.created_at}`;
             }
         }, {
@@ -228,10 +196,38 @@ function submitSurat(form) {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $("#form-surat-masuk").trigger("reset");
-                        getListSurat()
+                        datatable.ajax.reload();
                     }
                 });
             }
         }
     })
+}
+
+function deleteSurat(id_surat=0){
+    $.ajax({
+        url: `/api/surat-masuk/${id_surat}`,
+        method: 'delete',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        beforeSend: () => {
+            $('#form-edit-user button.btn-submit').prop('disabled', true);
+            $('#form-edit-user button.btn-submit').removeClass('btn-primary').addClass('btn-secondary');
+        },
+        success: (res) => {
+            if (res.status == 1) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Good Job!',
+                    text: 'user berhasil dihapus.'
+                })
+                $('#form-edit-user button.btn-submit').prop('disabled', false);
+                $('#form-edit-user button.btn-submit').removeClass('btn-secondary').addClass('btn-success').text('Success');
+                $('#modal-edit-user button[data-dismiss="modal"]').trigger('click');
+                datatable.ajax.reload();
+            }
+        }
+    });
+
 }

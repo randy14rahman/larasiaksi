@@ -591,4 +591,11 @@ class SuratMasukController extends Controller
 
         return response()->json(['data'=>$data]);
     }
+
+    public function deleteSuratMasuk(Request $request, int $id){
+
+        app('db')->connection()->table('surat_masuk')->where('id', $id)->delete();
+
+        return response()->json(['status' => 1]);
+    }
 }
