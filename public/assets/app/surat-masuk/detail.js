@@ -32,9 +32,9 @@ function getDetailSuratMasuk() {
 
                 }
 
-                console.log(user_id);
-                console.log(res.data);
-                console.log(res.data.is_proses);
+                // console.log(user_id);
+                // console.log(res.data);
+                // console.log(res.data.is_proses);
                 // console.log(res.disposisi[res.disposisi.length-1].target_disposisi.id==user_id);
 
                 if (
@@ -45,11 +45,14 @@ function getDetailSuratMasuk() {
                     ) && res.data.is_proses==null
                 ){
 
+                    console.log(res.disposisi[res.disposisi.length-1].target_disposisi);
+
                     $('#card-action').removeClass('d-none');
-                    const btnAction =
-                        ' <button type="button" class="btn btn-primary" onclick="processSurat()">Proses Surat</button>' +
-                        '<button type="button" class="btn btn-success" onclick="openModalDisposisi()" style="margin-left:16px">Disposisi ' +
-                        'Surat</button>';
+
+                    let btnAction = `<button type="button" class="btn btn-primary" onclick="processSurat()">Proses Surat</button>`;
+                    if (res.disposisi[res.disposisi.length-1].target_disposisi.level<7) {
+                        btnAction += `<button type="button" class="btn btn-success float-right" onclick="openModalDisposisi()">Disposisi Surat</button>`;
+                    }
 
                     $("#button-action").append(btnAction)
                 } else if (
