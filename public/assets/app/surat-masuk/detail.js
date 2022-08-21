@@ -45,13 +45,12 @@ function getDetailSuratMasuk() {
                     ) && res.data.is_proses==null
                 ){
 
-                    console.log(res.disposisi[res.disposisi.length-1].target_disposisi);
-
                     $('#card-action').removeClass('d-none');
 
-                    let btnAction = `<button type="button" class="btn btn-primary" onclick="processSurat()">Proses Surat</button>`;
-                    if (res.disposisi[res.disposisi.length-1].target_disposisi.level<7) {
-                        btnAction += `<button type="button" class="btn btn-success float-right" onclick="openModalDisposisi()">Disposisi Surat</button>`;
+                    let btnAction = `<button type="button" class="btn btn-primary" onclick="processSurat()">Proses Surat</button>
+                    <button type="button" class="btn btn-success float-right" onclick="openModalDisposisi()">Disposisi Surat</button>`;
+                    if (res.disposisi.length>0 && res.disposisi[res.disposisi.length-1].target_disposisi.level==7) {
+                        btnAction = `<button type="button" class="btn btn-primary" onclick="processSurat()">Proses Surat</button>`;
                     }
 
                     $("#button-action").append(btnAction)
