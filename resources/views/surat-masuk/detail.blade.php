@@ -169,7 +169,7 @@ $id_surat = request()->route('id');
                     </div>
                     <div class="row mt-3">
                         <div class="col-3">
-                            Ditugaskan ke
+                            Disampaikan ke
                         </div>
                         <div class="col-9" id="assign_to">: <span></span></div>
                     </div>
