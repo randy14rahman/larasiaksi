@@ -51,7 +51,7 @@ $(() => {
                 const _text = `${_url}`;
                 return `
                     <a href="${row.signed_surat}" class="btn btn-sm btn-primary btn-detail" target="blank"><i class="fa-duotone fa-eye"></i> Lihat</a>
-                    <a href="whatsapp://send?text=${_text}" class="btn btn-sm bg-success" title="Share to WhatsApp">
+                    <a href="whatsapp://send?text=${_text}" data-action="share/whatsapp/share" class="btn btn-sm bg-success" title="Share to WhatsApp">
                         <i class="fa-brands fa-whatsapp"></i>
                     </a>
                     <a href="whatsapp://send?text=${_text}" class="btn btn-sm bg-lightblue" title="Share to WhatsApp">
