@@ -207,4 +207,107 @@ class SuratMasuk extends Model
 
         return $data;
     }
+
+    public function getStatistik(){
+
+        $params = [];
+        $sWhere = "";
+        if (in_array(auth()->user()->role_id, [1,2,3,4])) {
+
+            if (in_array(auth()->user()->role_id, [2,3,4])){
+                $params = [
+                    'created_by' => auth()->id(),
+                    'assign_to' => auth()->id(),
+                ];
+                $sWhere .= " and (sm.created_by = :created_by or sm.assign_to = :assign_to)";
+            }
+
+            $data = app('db')->connection()->selectOne("SELECT
+                    sum(case when is_disposisi is null and is_proses is null and is_arsip is null then 1 else 0 end) surat_baru,
+                    sum(case when is_disposisi = 1 and is_proses is null and is_arsip is null then 1 else 0 end) disposisi,
+                    sum(case when is_proses = 1 and is_arsip is null then 1 else 0 end) proses,
+                    sum(case when is_arsip = 1 then 1 else 0 end) arsip
+                from
+                    surat_masuk sm 
+                where 1=1{$sWhere}", $params);
+        } else {
+
+            $params = [
+                'target_disposisi' => auth()->id(),
+            ];
+            $sWhere .= " and dsm.target_disposisi = :target_disposisi";
+            
+            $data = app('db')->connection()->selectOne("SELECT
+                    sum(case when sm.is_disposisi is null and sm.is_proses is null and sm.is_arsip is null then 1 else 0 end) surat_baru,
+                    sum(case when sm.is_disposisi = 1 and sm.is_proses is null and sm.is_arsip is null then 1 else 0 end) disposisi,
+                    sum(case when sm.is_proses = 1 and sm.is_arsip is null then 1 else 0 end) proses,
+                    sum(case when sm.is_arsip = 1 then 1 else 0 end) arsip
+                from
+                    disposisi_surat_masuk dsm
+                join surat_masuk sm on
+                    dsm.id_surat = sm.id 
+                where 1=1{$sWhere}", $params);
+        }
+        // Debug::dump($data);die;
+
+        return $data;
+    }
+
+    public function getTrendline(){
+
+        $params = [];
+        $sWhere = "";
+        if (in_array(auth()->user()->role_id, [1,2,3,4])) {
+
+            if (in_array(auth()->user()->role_id, [2,3,4])){
+                $params = [
+                    'created_by' => auth()->id(),
+                    'assign_to' => auth()->id(),
+                ];
+                $sWhere .= " and (sm.created_by = :created_by or sm.assign_to = :assign_to)";
+            }
+
+            $data = app('db')->connection()->select("SELECT
+                    sm.tanggal_surat,
+                    count(*) as jumlah
+                from
+                    surat_masuk sm
+                where 1=1{$sWhere}
+                group by
+                    sm.tanggal_surat
+                order by
+                    sm.tanggal_surat", $params);
+        } else {
+
+            $params = [
+                'target_disposisi' => auth()->id(),
+            ];
+            $sWhere .= " and dsm.target_disposisi = :target_disposisi";
+            
+            $data = app('db')->connection()->select("SELECT
+                    sm.tanggal_surat,
+                    count(*) as jumlah
+                from
+                    disposisi_surat_masuk dsm
+                join surat_masuk sm on
+                    dsm.id_surat = sm.id 
+                where 1=1{$sWhere}
+                group by
+                    sm.tanggal_surat
+                order by
+                    sm.tanggal_surat", $params);
+        }
+        // Debug::dump($data);die;
+        
+        $trendline = [];
+        foreach ($data as $k => $v) {
+            $trendline[] = [
+                strtotime($v->tanggal_surat)*1000,
+                $v->jumlah
+            ];
+        }
+        // Debug::dump($trendline);die;
+
+        return $trendline;
+    }
 }
