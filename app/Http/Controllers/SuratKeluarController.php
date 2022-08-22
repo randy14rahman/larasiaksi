@@ -73,7 +73,7 @@ class SuratKeluarController extends Controller
 
         $params = [];
         $additional = "";
-        if (!in_array(auth()->user()->role_id, [1, 2])) { // [admin,operator]
+        if (auth()->user()->role_id > 1) { // bukan admin
             $params = [
                 'user_id' => auth()->id(),
                 'pemaraf1' => auth()->id(),

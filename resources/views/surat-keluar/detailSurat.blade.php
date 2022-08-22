@@ -1,5 +1,6 @@
 @php
 use Zend\Debug\Debug;
+//Debug::dump($data);
 @endphp
 
 @extends('adminlte::page')
@@ -119,9 +120,12 @@ use Zend\Debug\Debug;
                             Penandatangan<br>{{$data->pettd->jabatan}}</h3>
                     </div>
                     <div class="card-body text-center" style="height: 100px;" id="container-btn-ttd">
-                        @if(auth()->id()==$data->pettd->id && (int)$data->is_ttd==0)
-                        <a href="#" class="btn btn-app bg-primary m-0"
-                            onclick="event.preventDefault(); setTtd({{$data->id}});">Tandatangan,<br>Klik disini</a>
+                        @if(auth()->id()==$data->pettd->id && (int)$data->is_ttd==0 && (is_null($data->is_paraf1) || (!is_null($data->pemaraf2) && is_null($data->is_paraf2))))
+                        <button type="button" class="btn btn-app bg-primary m-0"
+                            onclick="event.preventDefault(); setTtd({{$data->id}});" disabled="disabled">Tandatangan,<br>Klik disini</button>
+                        @elseif(auth()->id()==$data->pettd->id && (int)$data->is_ttd==0)
+                        <button type="button" class="btn btn-app bg-primary m-0"
+                            onclick="event.preventDefault(); setTtd({{$data->id}});">Tandatangan,<br>Klik disini</button>
                         @elseif($data->is_ttd==1)
                         <span class="badge badge-success mt-3">Sudah
                             ditandatangan<br>{{date_format(date_create($data->ttd_date), 'l, d F Y H:i')}}</span>
