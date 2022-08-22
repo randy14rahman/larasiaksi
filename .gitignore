@@ -2,9 +2,9 @@
 /public/build
 /public/hot
 /public/storage
-/public/upload/surat-masuk
-/public/upload/surat-keluar
-/public/upload/surat-keluar-signed
+public/upload/surat-masuk
+public/upload/surat-keluar
+public/upload/surat-keluar-signed
 /storage/*.key
 /vendor
 .env
