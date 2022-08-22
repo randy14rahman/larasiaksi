@@ -194,7 +194,7 @@ class SuratMasukController extends Controller
             ];
 
             $data[] = [
-                'label' => 'Ditugaskan',
+                'label' => 'Disampaikan',
                 'actor' => [
                     'id' => $surat_masuk->assign_to->id,
                     'name' => $surat_masuk->assign_to->name,
