@@ -270,3 +270,50 @@ async function setTtd(id) {
     //     }
     // });
 }
+
+function rejectSurat(id) {
+    $("#rejectSurat").modal('show')
+    console.log(id)
+}
+
+
+function rejectSuratModal(id) {
+    $.ajax({
+        url: `/api/surat-keluar/${id}/rejectSurat`,
+        method: 'put',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            note: $("#selesai_keterangan").val()
+        },
+        beforeSend: () => {
+            const spinner = ' <div class = "ml-2 spinner-border text-light spinner-grow-sm"' +
+                'role = "status" id = "spinner-loading" ><span class = "sr-only"id = "spinner-loading" > Loading... < /span> < /div > ';
+
+            $(".btn-reject").append(spinner)
+
+        },
+        success: (data) => {
+            $("#spinner-loading").remove()
+            $("#rejectSurat").modal('hide')
+            $("#selesai_keterangan").val('')
+
+            if (data.transaction) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Good Job!',
+                    text: 'Berhasil Reject',
+                });
+
+                $('#modal-detail-surat button[data-dismiss="modal"]').trigger('click');
+                location.reload();
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning!',
+                    text: 'Gagal Reject.',
+                });
+            }
+
+        }
+    });
+}

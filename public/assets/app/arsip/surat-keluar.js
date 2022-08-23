@@ -23,6 +23,17 @@ $(() => {
                 return `${data}<br>${row.created_at}`
             }
         }, {
+            title: 'Status',
+            data: 'created_by_name',
+            class: 'valign-middle',
+            render: (data, type, row) => {
+                var status = '<span class="badge badge-success mt-3">Selesai</span>';
+                if (row.is_reject == 1) {
+                    status = '<span class="badge badge-danger mt-3">Rejected</span>';
+                }
+                return status
+            }
+        }, {
             title: 'Diparaf oleh',
             render: (data, type, row) => {
 
