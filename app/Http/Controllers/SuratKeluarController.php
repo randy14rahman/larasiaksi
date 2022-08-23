@@ -324,6 +324,7 @@ class SuratKeluarController extends Controller
         return response()->json([
             'transaction' => true,
         ]);
+    }
 
     function deleteSuratKeluar(Request $request, int $id){
 
