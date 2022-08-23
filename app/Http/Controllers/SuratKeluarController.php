@@ -42,11 +42,11 @@ class SuratKeluarController extends Controller
         }
 
         $sql = "SELECT sk.*, u.id as created_by_id, u.name as created_by_name from surat_keluar sk
-        left join users u on sk.created_by=u.id where (is_ttd=0 or is_ttd is null){$additional}
+        left join users u on sk.created_by=u.id where (is_ttd=0 or is_ttd is null) and (is_reject =0 or is_reject is null){$additional}
         order by created_at desc";
 
         $data = app('db')->connection()->select($sql, $params);
-        // Debug::dump($data);die;
+
 
         $userModel = new User();
         foreach ($data as $k => $v) {
@@ -85,7 +85,7 @@ class SuratKeluarController extends Controller
         }
 
         $sql = "SELECT sk.*, u.id as created_by_id, u.name as created_by_name from surat_keluar sk
-        left join users u on sk.created_by=u.id where is_ttd=1{$additional} order by created_at desc";
+        left join users u on sk.created_by=u.id where (is_ttd=1 or is_reject =1) {$additional}  order by created_at desc";
 
         $data = app('db')->connection()->select($sql, $params);
         // Debug::dump($data);die;
@@ -242,10 +242,11 @@ class SuratKeluarController extends Controller
         sk.pemaraf1, sk.is_paraf1, sk.paraf1_date, 
         sk.pemaraf2, sk.is_paraf2, sk.paraf2_date, 
         sk.pettd, sk.is_ttd, sk.ttd_date, 
-        sk.created_at, 
+        sk.created_at, sk.is_reject,sk.rejected,ur.name as rejected_by,sk.note_rejected,sk.reject_date,
         u.name as created_by_name 
         from surat_keluar sk 
         left join users u on sk.created_by=u.id
+        left join users ur on sk.rejected = ur.id
         where sk.id=:id{$additional}";
 
         // Debug::dump($params);
@@ -253,8 +254,9 @@ class SuratKeluarController extends Controller
         // die;
 
         $data = app('db')->connection()->selectOne($sql, $params);
-        // Debug::dump($data);die;
 
+        // Debug::dump($data);
+        // die;
         if ($data) {
 
             $userModel = new User();
@@ -303,6 +305,26 @@ class SuratKeluarController extends Controller
         ]);
     }
 
+
+    public function rejectSurat(Request $request, int $id)
+    {
+
+        $datetime = date('Y-m-d H:i:s');
+
+        $params = [
+            "id" => $id,
+            "rejected" => auth()->user()->id,
+            "note_rejected" => $request->input('note'),
+            "reject_date" => $datetime
+        ];
+
+        $sql = "UPDATE surat_keluar set is_reject=1,rejected=:rejected,note_rejected=:note_rejected,reject_date=:reject_date  where id=:id";
+        app('db')->connection()->update($sql, $params);
+
+        return response()->json([
+            'transaction' => true,
+        ]);
+
     function deleteSuratKeluar(Request $request, int $id){
 
         app('db')->connection()->table('surat_keluar')
@@ -311,5 +333,6 @@ class SuratKeluarController extends Controller
         ->delete();
 
         return response()->json(['status' => 1]);
+
     }
 }

@@ -17,7 +17,7 @@ function getNotification() {
                 $("#count_notification").text(res.count)
 
                 if (res.count > 0) {
-                    $.each(res.data, function(k, v) {
+                    $.each(res.data, function (k, v) {
 
 
                         if (v.jenis == 'surat-masuk') {
@@ -75,14 +75,14 @@ function getNotification() {
                 }
 
 
-                $('#count-surat_keluar').text(res.surat_keluar.count||0);
-                if (parseInt(res.surat_keluar.count||0)>0) {
-                    $.each(res.surat_keluar.data, function(k, v) {
+                $('#count-surat_keluar').text(res.surat_keluar.count || 0);
+                if (parseInt(res.surat_keluar.count || 0) > 0) {
+                    $.each(res.surat_keluar.data, function (k, v) {
 
-                        const _task = (v.pemaraf1==parseInt(userid) || v.pemaraf2==parseInt(userid)) ? 'Paraf' : (v.pettd==parseInt(userid)) ? 'Tanda Tangan' : false;
+                        const _task = (v.pemaraf1 == parseInt(userid) || v.pemaraf2 == parseInt(userid)) ? 'Paraf' : (v.pettd == parseInt(userid)) ? 'Tanda Tangan' : false;
                         console.log(_task);
 
-                        if (_task!=false) {
+                        if (_task != false) {
                             const _item = `
                             <div class="dropdown-divider"></div>
                             <a href="/surat-keluar/${v.id}/detail" class="dropdown-item">
@@ -94,7 +94,21 @@ function getNotification() {
                                     </div>
                                 </div>
                             </a>`;
-    
+
+                            $("#container-surat_keluar").append(_item);
+                        } else {
+                            const _item = `
+                            <div class="dropdown-divider"></div>
+                            <a href="/surat-keluar/${v.id}/detail" class="dropdown-item">
+                                <div class="media">
+                                    <div class="media-body">
+                                    <h3 class="dropdown-item-title text-bold">${v.rejected_by}</h3>
+                                    <p class="text-sm"><span class="badge badge-danger mt-3">Reject</span> Surat Keluar: ${v.perihal_surat}</p>
+                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> ${v.reject_date}</p>
+                                    </div>
+                                </div>
+                            </a>`;
+
                             $("#container-surat_keluar").append(_item);
                         }
 
