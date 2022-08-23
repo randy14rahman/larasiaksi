@@ -114,7 +114,7 @@ use Zend\Debug\Debug;
                         @elseif($data->is_paraf2==1)
                         <span class="badge badge-success mt-3">Sudah
                             diparaf<br>{{date_format(date_create($data->paraf2_date??''), 'l, d F Y H:i')}}</span>
-                        @elseif($data->is_reject==1 && (int)$data->pemaraf2->id??0==(int)$data->rejected)
+                        @elseif($data->is_reject==1 && ($data->pemaraf2->id??0)==(int)$data->rejected)
                         <img src="/assets/image/reject.png" style="width: 70px;" />
                         @else
                         <span class="badge badge-danger mt-3">Belum diparaf</span>
