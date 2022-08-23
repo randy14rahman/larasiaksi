@@ -91,7 +91,7 @@ $id_user = $user->id;
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-form-label col-4">Ditugaskan ke <span class="text-danger">*</span></label>
+                                <label class="col-form-label col-4">Disampaikan ke <span class="text-danger">*</span></label>
                                 <div class="col-8">
                                     <select name="ditugaskan_ke" class="form-control form-select"
                                         aria-label="Default select example" id="ditugaskan_ke">

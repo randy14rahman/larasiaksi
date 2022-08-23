@@ -55,7 +55,8 @@ class SuratMasuk extends Model
                 left join users u on
                     sm.created_by = u.id
                 where
-                    {$sWhere}";
+                    {$sWhere}
+                order by sm.created_at desc";
         } else {
 
             $params = [
@@ -92,7 +93,8 @@ class SuratMasuk extends Model
                 left join users u on
                     sm.created_by = u.id
                 where
-                    {$sWhere}";
+                    {$sWhere}
+                order by dsm.created_at desc";
 
         }
 
@@ -322,6 +324,51 @@ class SuratMasuk extends Model
         // Debug::dump($trendline);die;
 
         return $trendline;
+    }
+
+    public function getNotification(){
+
+        $result = $this->getAll();
+        // Debug::dump($result);die;
+
+        $data = [];
+        $count = 0;
+        foreach ($result as $k => $v) {
+
+            if (in_array(auth()->user()->role_id, [2,3]) && auth()->user()->id==$v->assign_to->id && $v->is_disposisi==null) {
+            
+                $data[] = [
+                    'id' => $v->id,
+                    'perihal_surat' => $v->perihal_surat,
+                    'created_at' => $v->created_at,
+                    'status' => '<span class="badge badge-danger">Surat Masuk</span>',
+                    'created_by_name' => $v->created_by_name
+                ];
+
+                $count +=1;
+            } else if (
+                in_array(auth()->user()->role_id, [4,5,6,7]) &&
+                $v->is_disposisi==1 && $v->is_proses==null &&
+                auth()->user()->id==$v->disposisi[0]->target_disposisi->id
+            ){
+            
+                $data[] = [
+                    'id' => $v->id,
+                    'perihal_surat' => $v->perihal_surat,
+                    'created_at' => $v->disposisi[0]->created_at,
+                    'status' => '<span class="badge badge-info">Disposisi</span>',
+                    'created_by_name' => $v->disposisi[0]->source_disposisi->name
+                ];
+                $count +=1;
+            }
+        }
+
+        // Debug::dump($data);die;
+
+        return [
+            'data' => $data,
+            'count' => $count
+        ];
     }
 }
 

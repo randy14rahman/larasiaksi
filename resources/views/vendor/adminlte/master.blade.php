@@ -104,9 +104,6 @@
     @endif
     @endif
 
-    <script>const userid = "<?= auth()->id() ?>";</script>
-    <script src="/assets/app/notification.js"></script>
-
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
 
