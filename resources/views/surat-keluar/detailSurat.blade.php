@@ -23,7 +23,7 @@ use Zend\Debug\Debug;
     <div class="col-7">
         <div class="card">
             <div class="card-body">
-                <iframe src="{{$data->link_surat}}#toolbar=0" class="w-100" frameborder="0" height="750"
+                <iframe src="{{$data->signed_surat??$data->link_surat}}#toolbar=0" class="w-100" frameborder="0" height="750"
                     id="display-pdf"></iframe>
             </div>
         </div>
