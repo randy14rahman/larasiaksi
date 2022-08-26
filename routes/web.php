@@ -40,7 +40,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('/arsip', [App\Http\Controllers\ArsipController::class, 'index'])->name('arsip.index');
 
 
-        Route::group(['prefix' => 'api'], function() {
+        Route::group(['prefix' => 'api'], function () {
             Route::get('/get-pemaraf/{user_id}/user', [App\Http\Controllers\UserController::class, 'getPemarafByUser']);
             Route::get('/get-pemaraf/{level}/level', [App\Http\Controllers\UserController::class, 'getPemarafByLevel']);
 
@@ -61,6 +61,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::put('/surat-keluar/{id}/paraf1', [App\Http\Controllers\SuratKeluarController::class, 'setActiveParaf1'])->name('surat-keluar.setActiveParaf1');
             Route::put('/surat-keluar/{id}/paraf2', [App\Http\Controllers\SuratKeluarController::class, 'setActiveParaf2'])->name('surat-keluar.setActiveParaf2');
             Route::put('/surat-keluar/{id}/ttd', [App\Http\Controllers\SuratKeluarController::class, 'setTtd'])->name('surat-keluar.setTtd');
+            Route::put('/surat-keluar/{id}/rejectSurat', [App\Http\Controllers\SuratKeluarController::class, 'rejectSurat'])->name('surat-keluar.rejectSurat');
             Route::post('/surat-keluar/upload-signed', [App\Http\Controllers\SuratKeluarController::class, 'uploadTtd'])->name('upload-surat-signed');
             
             Route::get('/notification', [App\Http\Controllers\NotificationController::class, 'index'])->name('get-notification');
@@ -70,13 +71,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::put('/user/{user_id}', [App\Http\Controllers\UserController::class, 'editUser'])->name('edit-user');
             Route::delete('/user/{user_id}', [App\Http\Controllers\UserController::class, 'deleteUser'])->name('delete-user');
             
-            
             Route::get('/role', [App\Http\Controllers\Api\RoleController::class, 'index']);
             Route::post('/role', [App\Http\Controllers\Api\RoleController::class, 'addRole']);
             Route::put('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class, 'editRole']);
             Route::delete('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class, 'deleteRole']);
-
         });
     });
-
 });

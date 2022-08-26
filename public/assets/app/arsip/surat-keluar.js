@@ -23,6 +23,17 @@ $(() => {
                 return `${data}<br>${row.created_at}`
             }
         }, {
+            title: 'Status',
+            data: 'created_by_name',
+            class: 'valign-middle',
+            render: (data, type, row) => {
+                var status = '<span class="badge badge-success mt-3">Selesai</span>';
+                if (row.is_reject == 1) {
+                    status = '<span class="badge badge-danger mt-3">Rejected</span>';
+                }
+                return status
+            }
+        }, {
             title: 'Diparaf oleh',
             render: (data, type, row) => {
 
@@ -50,8 +61,8 @@ $(() => {
                 const _url = `${window.location.protocol}//${window.location.host}/surat-keluar/${row.id}/detail`;
                 const _text = `${_url}`;
                 return `
-                    <a href="${row.signed_surat}" class="btn btn-sm btn-primary btn-detail" target="blank"><i class="fa-duotone fa-eye"></i> Lihat</a>
-                    <a href="https://api.whatsapp.com/send?text=${_text}" target="_blank" class="btn btn-sm bg-success" title="Share to WhatsApp">
+                    <a href="${_url}" class="btn btn-sm btn-primary btn-detail" target="blank"><i class="fa-duotone fa-eye"></i> Lihat</a>
+                    <a href="https://api.whatsapp.com/send?text=${row.signed_surat}" target="_blank" class="btn btn-sm bg-success" title="Share to WhatsApp">
                         <i class="fa-brands fa-whatsapp"></i>
                     </a>
                 `

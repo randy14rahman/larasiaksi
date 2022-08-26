@@ -60,7 +60,7 @@ $id_user = $user->id;
                 @include('adminlte::partials.navbar.menu-item-logout-link')
             @endif
         @endif --}}
-        @if($user_role !=1 && $user_role !=2)
+        @if($user_role !=1)
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="fa-duotone fa-inbox-in"></i>

@@ -71,7 +71,9 @@ async function setTtd(id) {
     const buf = await res.arrayBuffer();
     // const formData = new File([buf], fileName, { type: 'application/pdf' });
     // const apiKey = 'rizal.prasetya11@gmail.com_41fb0457f6dad810c15a8e83e0d178562cac42dc983c20027675c27f3d27220b77d12531';
-    const signatureImageUrl = 'https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl=' + src;
+    const srcSigned = window.location.origin + "/upload/surat-keluar-signed/" + fileName
+    console.log(srcSigned, 'signed')
+    const signatureImageUrl = 'https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl=' + srcSigned;
 
     //PDFLIB
     const existingPdfBytes = await fetch(src).then(res => res.arrayBuffer())
@@ -133,10 +135,7 @@ async function setTtd(id) {
             console.log(res, 'red')
         }
     })
-    console.log(extformData, 'pdf')
 
-    // download(pdfBytes, "pdf-lib_image_embedding_example.pdf", "application/pdf");
-    console.log(pdfBytes, 'pdf')
 
     // $.ajax({
     //     url: 'https://api.pdf.co/v1/file/upload/get-presigned-url?name=test.pdf&contenttype=application/pdf&encrypt=true',
@@ -270,4 +269,51 @@ async function setTtd(id) {
 
     //     }
     // });
+}
+
+function rejectSurat(id) {
+    $("#rejectSurat").modal('show')
+    console.log(id)
+}
+
+
+function rejectSuratModal(id) {
+    $.ajax({
+        url: `/api/surat-keluar/${id}/rejectSurat`,
+        method: 'put',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            note: $("#selesai_keterangan").val()
+        },
+        beforeSend: () => {
+            const spinner = ' <div class = "ml-2 spinner-border text-light spinner-grow-sm"' +
+                'role = "status" id = "spinner-loading" ><span class = "sr-only"id = "spinner-loading" > Loading... < /span> < /div > ';
+
+            $(".btn-reject").append(spinner)
+
+        },
+        success: (data) => {
+            $("#spinner-loading").remove()
+            $("#rejectSurat").modal('hide')
+            $("#selesai_keterangan").val('')
+
+            if (data.transaction) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Good Job!',
+                    text: 'Berhasil Reject',
+                });
+
+                $('#modal-detail-surat button[data-dismiss="modal"]').trigger('click');
+                location.reload();
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning!',
+                    text: 'Gagal Reject.',
+                });
+            }
+
+        }
+    });
 }
