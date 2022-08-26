@@ -48,7 +48,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::post('/surat-masuk', [App\Http\Controllers\SuratMasukController::class, 'addSuratMasuk'])->name('add-surat-masuk');
             Route::delete('/surat-masuk/{id}', [App\Http\Controllers\SuratMasukController::class, 'deleteSuratMasuk'])->name('delete-surat-masuk');
             Route::get('/surat-masuk/{id}/detail', [App\Http\Controllers\SuratMasukController::class, 'getDetailSuratMasuk'])->name('get-detail-surat-masuk');
-            Route::get('/surat-masuk/arsip', [App\Http\Controllers\SuratMasukController::class, 'listArsip'])->name('surat-masuk.listArsip');
+            Route::get('/surat-masuk/arsip', [App\Http\Controllers\SuratMasukController::class, 'listArsip'])->name('surat-masuk.listArsip');            
+            Route::get('/surat-masuk/list-disposisi-assign', [App\Http\Controllers\SuratMasukController::class, 'getListDisposisiAssign'])->name('list-disposisi-assign');
             Route::post('/surat-masuk/disposisi-surat', [App\Http\Controllers\SuratMasukController::class, 'disposisiSurat'])->name('disposisi-surat-masuk');
             Route::post('/surat-masuk/{id}/proses-surat', [App\Http\Controllers\SuratMasukController::class, 'prosesSurat'])->name('proses-surat-masuk');
             Route::post('/surat-masuk/{id}/arsipkan-surat', [App\Http\Controllers\SuratMasukController::class, 'arsipkanSurat'])->name('arsipkan-surat-masuk');
@@ -60,8 +61,20 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
             Route::put('/surat-keluar/{id}/paraf1', [App\Http\Controllers\SuratKeluarController::class, 'setActiveParaf1'])->name('surat-keluar.setActiveParaf1');
             Route::put('/surat-keluar/{id}/paraf2', [App\Http\Controllers\SuratKeluarController::class, 'setActiveParaf2'])->name('surat-keluar.setActiveParaf2');
             Route::put('/surat-keluar/{id}/ttd', [App\Http\Controllers\SuratKeluarController::class, 'setTtd'])->name('surat-keluar.setTtd');
-
+            Route::post('/surat-keluar/upload-signed', [App\Http\Controllers\SuratKeluarController::class, 'uploadTtd'])->name('upload-surat-signed');
+            
             Route::get('/notification', [App\Http\Controllers\NotificationController::class, 'index'])->name('get-notification');
+
+            Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user-list');
+            Route::post('/user', [App\Http\Controllers\UserController::class, 'addUser'])->name('add-user');
+            Route::put('/user/{user_id}', [App\Http\Controllers\UserController::class, 'editUser'])->name('edit-user');
+            Route::delete('/user/{user_id}', [App\Http\Controllers\UserController::class, 'deleteUser'])->name('delete-user');
+            
+            
+            Route::get('/role', [App\Http\Controllers\Api\RoleController::class, 'index']);
+            Route::post('/role', [App\Http\Controllers\Api\RoleController::class, 'addRole']);
+            Route::put('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class, 'editRole']);
+            Route::delete('/role/{role_id}', [App\Http\Controllers\Api\RoleController::class, 'deleteRole']);
 
         });
     });
