@@ -149,19 +149,23 @@ class SuratMasukController extends Controller
 
     public function getListDisposisiAssign(Request $request)
     {
+        // Debug::dump(auth()->user());die;
         $check_role_id = 'SELECT level from roles where id=:role_id';
-        $level = app('db')->connection()->SelectOne($check_role_id, ['role_id' => $request->input('role_id')]);
+        $level = app('db')->connection()->SelectOne($check_role_id, ['role_id' => auth()->user()->role_id]);
+        // Debug::dump($level->level);die;
 
-        $where = 5;
-        if ((int)$level->level == 3 || (int)$level->level == 4) {
-            $where = 5;
-        } else {
-            $where = (int)$level->level + 1;
+        $params = [];
+        $sWhere = "";
+        if ($level->level == 3) {
+            $sWhere .= "roles.level in (4,5)";
+        } else if ($level->level >= 3) {
+            $params['level'] = $level->level + 1;
+            $sWhere .= "roles.level = :level";
         }
 
-        $sql = "SELECT users.id,users.name FROM  users  LEFT JOIN roles on users.role_id = roles.id where roles.level = :level";
+        $sql = "SELECT users.id,users.name FROM  users  LEFT JOIN roles on users.role_id = roles.id where {$sWhere} order by roles.level, users.nip";
 
-        $data = app('db')->connection()->select($sql, ['level' => $where]);
+        $data = app('db')->connection()->select($sql, $params);
         $res = [
             'transaction' => true,
             'data' => $data
