@@ -73,7 +73,7 @@ class SuratKeluarController extends Controller
 
         $params = [];
         $additional = "";
-        if (!in_array(auth()->user()->role_id, [1, 2])) { // [admin,operator]
+        if (auth()->user()->role_id > 1) { // bukan admin
             $params = [
                 'user_id' => auth()->id(),
                 'pemaraf1' => auth()->id(),
@@ -110,6 +110,7 @@ class SuratKeluarController extends Controller
 
     public function addSurat(Request $request)
     {
+        $datetime = date('Y-m-d H:i:s');
         // Debug::dump($request->input());die;
 
         if (!$_FILES) {
@@ -125,7 +126,7 @@ class SuratKeluarController extends Controller
             'pemaraf1' => (int) $request->input('pemaraf1'),
             'link_surat' => '',
             'created_by' => (int) $request->input('user_id'),
-            'created_at' => date('Y-m-d H:i:s')
+            'created_at' => $datetime
         ];
 
 
@@ -150,8 +151,8 @@ class SuratKeluarController extends Controller
         $fileNameCmps = explode(".", $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
 
-        $fileName = md5($id . $fileName);
-        $newFileName = "surat-keluar-{$fileName}";
+        $fileName = (date("Ymd", strtotime($datetime)))."-".$id;
+        $newFileName = "surat_keluar-{$fileName}";
         $dir = '/upload/surat-keluar/' . $newFileName . '.' . $fileExtension;
         $uploadFileDir = base_path() . '/public' . $dir;
 
@@ -304,6 +305,7 @@ class SuratKeluarController extends Controller
         ]);
     }
 
+
     public function rejectSurat(Request $request, int $id)
     {
 
@@ -322,5 +324,16 @@ class SuratKeluarController extends Controller
         return response()->json([
             'transaction' => true,
         ]);
+    }
+
+    function deleteSuratKeluar(Request $request, int $id){
+
+        app('db')->connection()->table('surat_keluar')
+            ->where('id', $id)
+            ->where('created_by', auth()->user()->id)
+        ->delete();
+
+        return response()->json(['status' => 1]);
+
     }
 }

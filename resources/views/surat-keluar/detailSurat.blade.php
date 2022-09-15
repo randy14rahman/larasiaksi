@@ -1,5 +1,6 @@
 @php
 use Zend\Debug\Debug;
+//Debug::dump($data);
 @endphp
 
 @extends('adminlte::page')
@@ -22,7 +23,7 @@ use Zend\Debug\Debug;
     <div class="col-md-7">
         <div class="card">
             <div class="card-body">
-                <iframe src="{{$data->link_surat}}#toolbar=0" class="w-100" frameborder="0" height="750"
+                <iframe src="{{$data->signed_surat??$data->link_surat}}#toolbar=0" class="w-100" frameborder="0" height="750"
                     id="display-pdf"></iframe>
             </div>
         </div>
@@ -49,7 +50,11 @@ use Zend\Debug\Debug;
                     </div>
                 </div>
                 <div class="form-group row mb-0">
-                    <label for="" class="col-4">Judul Surat</label>
+                    <label for="" class="col-4">Judul 
+                    
+                    
+                    
+                    </label>
                     <div class="col-8">
                         : {{$data->judul_surat}}
                     </div>
@@ -109,7 +114,7 @@ use Zend\Debug\Debug;
                         @elseif($data->is_paraf2==1)
                         <span class="badge badge-success mt-3">Sudah
                             diparaf<br>{{date_format(date_create($data->paraf2_date??''), 'l, d F Y H:i')}}</span>
-                        @elseif($data->is_reject==1 && (int)$data->pemaraf2->id??0==(int)$data->rejected)
+                        @elseif($data->is_reject==1 && ($data->pemaraf2->id??0)==(int)$data->rejected)
                         <img src="/assets/image/reject.png" style="width: 70px;" />
                         @else
                         <span class="badge badge-danger mt-3">Belum diparaf</span>
@@ -129,11 +134,18 @@ use Zend\Debug\Debug;
                             Penandatangan<br>{{$data->pettd->jabatan}}</h3>
                     </div>
                     <div class="card-body text-center" style="height: 100px;" id="container-btn-ttd">
-                        @if(auth()->id()==$data->pettd->id && (int)$data->is_ttd==0 &&
+
+                        @if(auth()->id()==$data->pettd->id && (int)$data->is_ttd==0 && (is_null($data->is_paraf1) || (!is_null($data->pemaraf2) && is_null($data->is_paraf2))) &&
                         $data->is_reject==NULL)
-                        <a href="#" class="btn btn-app bg-primary m-0"
-                            onclick="event.preventDefault(); setTtd({{$data->id}});">Tandatangan,<br>Klik disini</a>
-                        <a href="#" class="btn btn-app bg-warning m-0"
+                        <button type="button" class="btn btn-app bg-primary m-0"
+                            onclick="event.preventDefault(); setTtd({{$data->id}});" disabled="disabled">Tandatangan,<br>Klik disini</button>
+                            <a href="#" class="btn btn-app bg-warning m-0"
+                            onclick="event.preventDefault(); rejectSurat({{$data->id}});">Reject Surat</a>
+                        @elseif(auth()->id()==$data->pettd->id && (int)$data->is_ttd==0 &&
+                        $data->is_reject==NULL)
+                        <button type="button" class="btn btn-app bg-primary m-0"
+                            onclick="event.preventDefault(); setTtd({{$data->id}});">Tandatangan,<br>Klik disini</button>
+                            <a href="#" class="btn btn-app bg-warning m-0"
                             onclick="event.preventDefault(); rejectSurat({{$data->id}});">Reject Surat</a>
                         @elseif($data->is_ttd==1)
                         <span class="badge badge-success mt-3">Sudah

@@ -173,11 +173,13 @@ $id_surat = request()->route('id');
                     </div>
                     <div class="col-9" id="tanggal_upload">: <span></span></div>
                 </div>
-                <div class="row mt-3">
-                    <div class="col-3">
-                        Ditugaskan ke
+
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            Disampaikan ke
+                        </div>
+                        <div class="col-9" id="assign_to">: <span></span></div>
                     </div>
-                    <div class="col-9" id="assign_to">: <span></span></div>
                 </div>
             </div>
         </div>
@@ -209,6 +211,7 @@ $id_surat = request()->route('id');
                     </thead>
                     <tbody></tbody>
                 </table>
+
             </div>
         </div>
         <div class="card d-none" id="card-action">

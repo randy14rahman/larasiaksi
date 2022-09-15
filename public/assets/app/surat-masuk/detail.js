@@ -64,7 +64,7 @@ function getDetailSuratMasuk() {
                     res.data.is_proses==1 && 
                     (
                         (res.disposisi.length>0 && res.disposisi[res.disposisi.length-1].target_disposisi.id==user_id) ||
-                        (res.pemroses.id!=undefined && res.pemroses.id==user_id)
+                        (res.proses.pemroses.id!=undefined && res.proses.pemroses.id==user_id)
                     ) &&
                     res.data.is_arsip==null
                 ){

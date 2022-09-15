@@ -143,7 +143,7 @@
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="far fa-trash-alt"></i><span class="ml-2">Disposisi Proses > 7 hari</span>
-                            <span class="badge bg-danger float-right">{{$data['surat_masuk']['stats']->arsip??0}}</span>
+                            <span class="badge bg-danger float-right">{{$data['surat_masuk']['stats']->disposisi7hari??0}}</span>
                         </a>
                     </li>
                 </ul>

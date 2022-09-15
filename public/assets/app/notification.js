@@ -1,3 +1,5 @@
+// const e = require("express")
+
 $(() => {
     getNotification()
 
@@ -7,9 +9,9 @@ function getNotification() {
     $.ajax({
         url: '/api/notification',
         method: 'get',
-        data: {
-            user_id: userid
-        },
+        // data: {
+        //     user_id: userid
+        // },
         success: (res) => {
             if (res.transaction) {
                 $("#count_notification").text(res.count)
@@ -43,8 +45,33 @@ function getNotification() {
 
                     })
                 } else {
-                    $("#container-notification").html(
-                        '<a href="#" class="dropdown-item dropdown-footer">Tidak Ada Notifikasi</a>')
+                    // $("#container-notification").html(
+                    //     '<a href="#" class="dropdown-item dropdown-footer">Tidak Ada Notifikasi</a>')
+                }
+
+                $('#count_notification').text(res.surat_masuk.count||0);
+                if (res.surat_masuk.count>0) {
+                    // console.log(res.surat_masuk.data);
+                    $.each(res.surat_masuk.data, (k,v)=>{
+                        const _item = `
+                        <div class="dropdown-divider"></div>
+                        <a href="/surat-masuk/detail/${v.id}" class="dropdown-item">
+                            <div class="media">
+                                <div class="media-body">
+                                <h3 class="dropdown-item-title text-bold">${v.created_by_name}</h3>
+                                <p class="text-sm">${v.status}: ${v.perihal_surat}</p>
+                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> ${v.created_at}</p>
+                                </div>
+                            </div>
+                        </a>`;
+
+                        $("#container-notification").append(_item);
+
+                    });
+                    const _see_all = `<a href="/surat-masuk" class="dropdown-item dropdown-footer">Lihat semua</a>`;
+                    $('#container-notification').append(_see_all);
+                } else {
+                    $('#container-notification').append(`<a href="#" class="dropdown-item dropdown-footer">Tidak Ada Notifikasi</a>`);
                 }
 
 
@@ -89,7 +116,6 @@ function getNotification() {
 
                     const _see_all = `<a href="/surat-keluar" class="dropdown-item dropdown-footer">Lihat semua</a>`;
                     $('#container-surat_keluar').append(_see_all);
-
                 }
 
             }
