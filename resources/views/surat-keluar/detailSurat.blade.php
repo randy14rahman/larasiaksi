@@ -20,7 +20,7 @@ use Zend\Debug\Debug;
 
 @section('content')
 <div class="row">
-    <div class="col-7">
+    <div class="col-md-7">
         <div class="card">
             <div class="card-body">
                 <iframe src="{{$data->signed_surat??$data->link_surat}}#toolbar=0" class="w-100" frameborder="0" height="750"
@@ -28,7 +28,7 @@ use Zend\Debug\Debug;
             </div>
         </div>
     </div>
-    <div class="col-5">
+    <div class="col-md-5">
         <div class="card">
             <div class="card-body">
                 <div class="form-group row mb-0">

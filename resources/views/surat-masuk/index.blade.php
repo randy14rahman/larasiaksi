@@ -6,11 +6,11 @@ use Zend\Debug\Debug;
 @section('title', 'Surat Masuk')
 
 @push('css')
-    <style>
-        .error.invalid-feedback {
-            display: none !important;
-        }
-    </style>
+<style>
+.error.invalid-feedback {
+    display: none !important;
+}
+</style>
 @endpush
 
 @section('content_header')
@@ -42,17 +42,21 @@ $id_user = $user->id;
                 @csrf
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-5">
+                        <div class="col-md-5">
                             <div class="form-group row">
-                                <label class="col-form-label col-4">Tanggal Surat <span class="text-danger">*</span></label>
+                                <label class="col-form-label col-4">Tanggal Surat <span
+                                        class="text-danger">*</span></label>
                                 <div class="col-8">
-                                    <input type="date" class="form-control" name="tanggal_surat" value="{{date('Y-m-d')}}">
+                                    <input type="date" class="form-control" name="tanggal_surat"
+                                        value="{{date('Y-m-d')}}">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-form-label col-4">Asal Surat <span class="text-danger">*</span></label>
+                                <label class="col-form-label col-4">Asal Surat <span
+                                        class="text-danger">*</span></label>
                                 <div class="col-8">
-                                    <input name="asal_surat" type="text" class="form-control" id="asal_surat" placeholder="Masukan Asal">
+                                    <input name="asal_surat" type="text" class="form-control" id="asal_surat"
+                                        placeholder="Masukan Asal">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -63,16 +67,18 @@ $id_user = $user->id;
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-form-label col-4">Nomor Surat <span class="text-danger">*</span></label>
+                                <label class="col-form-label col-4">Nomor Surat <span
+                                        class="text-danger">*</span></label>
                                 <div class="col-8">
                                     <input name="nomor_surat" type="text" class="form-control" id="nomor_surat"
                                         placeholder="Masukan Nomor">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 offset-1">
+                        <div class="col-md-6 offset-md-1">
                             <div class="form-group row">
-                                <label class="col-form-label col-4">Jenis Surat <span class="text-danger">*</span></label>
+                                <label class="col-form-label col-4">Jenis Surat <span
+                                        class="text-danger">*</span></label>
                                 <div class="col-8">
                                     <select name="jenis_surat_masuk" class="form-control form-select"
                                         aria-label="Default select example" id="jenis_surat_masuk">
@@ -82,22 +88,25 @@ $id_user = $user->id;
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-form-label col-4">Upload File <span class="text-danger">*</span></label>
+                                <label class="col-form-label col-4">Upload File <span
+                                        class="text-danger">*</span></label>
                                 <div class="col-8">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="formFile" name="file" accept="application/pdf">
+                                        <input type="file" class="custom-file-input" id="formFile" name="file"
+                                            accept="application/pdf">
                                         <label class="custom-file-label" for="customFile">Choose file</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row">
+
                                 <label class="col-form-label col-4">Disampaikan ke <span class="text-danger">*</span></label>
                                 <div class="col-8">
                                     <select name="ditugaskan_ke" class="form-control form-select"
                                         aria-label="Default select example" id="ditugaskan_ke">
                                         <option value="">Pilih penerima</option>
                                         @foreach($users_penugasan as $v)
-                                            <option value="{{$v->id}}">{{$v->nip}} | {{$v->name}} | {{$v->jabatan}}</option>
+                                        <option value="{{$v->id}}">{{$v->nip}} | {{$v->name}} | {{$v->jabatan}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -127,7 +136,7 @@ $id_user = $user->id;
                 </div>
             </div>
             <div class="card-body">
-                <table id="datatable-surat" class="table" style="width:100%" style="width:100%"></table>
+                <table id="datatable-surat" class="table" style="width:100"></table>
             </div>
         </div>
     </div>
@@ -170,9 +179,15 @@ $id_user = $user->id;
 
 @stop
 @push('js')
-    <script src="/assets/plugins/jquery-validation/jquery.validate.min.js"></script>
-    <script src="/assets/plugins/jquery-validation/additional-methods.min.js"></script>
-    <script src="/assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-    <script>const user_id = {{$id_user}}</script>
-    <script src="/assets/app/surat-masuk/index.js"></script>
+<script src="/assets/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="/assets/plugins/jquery-validation/additional-methods.min.js"></script>
+<script src="/assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script>
+const user_id = {
+    {
+        $id_user
+    }
+}
+</script>
+<script src="/assets/app/surat-masuk/index.js"></script>
 @endpush
