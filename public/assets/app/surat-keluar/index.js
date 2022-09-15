@@ -3,6 +3,8 @@ $(() => {
 
     datatable = $('#datatable-surat-keluar').DataTable({
         ajax: `/api/surat-keluar`,
+        scrollX: true,
+        responsive: true,
         orderCellsTop: true,
         columns: [{
             title: 'Perihal',
@@ -15,22 +17,22 @@ $(() => {
             data: 'tanggal_surat'
         }, {
             title: 'Status',
-            render: (data, type, row)=>{
+            render: (data, type, row) => {
 
                 let status = ``;
-                status += (row.is_paraf1==1) ?  `<span class="badge badge-success">Diparaf oleh ${row.pemaraf1.name}</span>` : `<span class="badge badge-danger">Belum diparaf 1</span>`;
-                if (row.pemaraf2!=null) {
-                    status += (row.is_paraf2==1) ? ` <span class="badge badge-success">Sudah diparaf 2</span>` : ` <span class="badge badge-danger">Belum diparaf 2</span>`;
+                status += (row.is_paraf1 == 1) ? `<span class="badge badge-success">Diparaf oleh ${row.pemaraf1.name}</span>` : `<span class="badge badge-danger">Belum diparaf 1</span>`;
+                if (row.pemaraf2 != null) {
+                    status += (row.is_paraf2 == 1) ? ` <span class="badge badge-success">Sudah diparaf 2</span>` : ` <span class="badge badge-danger">Belum diparaf 2</span>`;
                 }
-                
-                status += (row.is_ttd==1) ? ' <span class="badge badge-success">Sudah Ditandatangani</span>' : ` <span class="badge badge-danger">Belum ditandatangan</span>`;
+
+                status += (row.is_ttd == 1) ? ' <span class="badge badge-success">Sudah Ditandatangani</span>' : ` <span class="badge badge-danger">Belum ditandatangan</span>`;
 
                 return status;
             }
         }, {
             title: 'Dibuat oleh',
             data: 'created_by_name',
-            render: (data,type,row)=>{
+            render: (data, type, row) => {
                 return `${data}<br>${row.created_at}`
             }
         }, {
@@ -56,27 +58,27 @@ $(() => {
         $('#modal-detail-surat .pemaraf1>address').children('span').eq(1).text(`${data.pemaraf1.nip}`);
         $('#modal-detail-surat .pemaraf1>address').children('span').eq(2).text(`${data.pemaraf1.jabatan}`);
         let _areaParaf1 = '<p class="my-0"><span class="badge badge-danger">Belum diparaf</span></p>';
-        if ((data.is_paraf1==null || data.is_paraf1==0) && user_id==data.pemaraf1.id){
+        if ((data.is_paraf1 == null || data.is_paraf1 == 0) && user_id == data.pemaraf1.id) {
             _areaParaf1 = `
                 <a href="#" class="btn btn-app bg-primary m-0" onclick="event.preventDefault(); setParaf1(${data.id});">Paraf,<br>Klik disini</a>
             `;
-        } else if (data.is_paraf1==1){
+        } else if (data.is_paraf1 == 1) {
             _areaParaf1 = `<p class="my-0"><span class="badge badge-success">Sudah diparaf<br>${data.paraf1_date}</p>`;
         }
         $('#modal-detail-surat .pemaraf1>address>div').html(_areaParaf1);
 
         $('#modal-detail-surat .pemaraf2').addClass('d-none');
-        if (data.pemaraf2!=null) {
+        if (data.pemaraf2 != null) {
             $('#modal-detail-surat .pemaraf2').removeClass('d-none');
             $('#modal-detail-surat .pemaraf2>address').children('span').eq(0).text(`${data.pemaraf2.name}`);
             $('#modal-detail-surat .pemaraf2>address').children('span').eq(1).text(`${data.pemaraf2.nip}`);
             $('#modal-detail-surat .pemaraf2>address').children('span').eq(2).text(`${data.pemaraf2.jabatan}`);
             let _areaParaf2 = '<p class="my-0"><span class="badge badge-danger">Belum diparaf</span></p>';
-            if ((data.is_paraf2==null || data.is_paraf2==0) && user_id==data.pemaraf2.id){
+            if ((data.is_paraf2 == null || data.is_paraf2 == 0) && user_id == data.pemaraf2.id) {
                 _areaParaf2 = `
                     <button class="btn btn-app bg-primary m-0" onclick="event.preventDefault(); setParaf2(${data.id});">Paraf,<br> Klik disini</button>
                 `;
-            } else if (data.is_paraf2==1){
+            } else if (data.is_paraf2 == 1) {
                 _areaParaf2 = `<p class="my-0"><span class="badge badge-success">Sudah diparaf<br>${data.paraf2_date}</p>`;
             }
             $('#modal-detail-surat .pemaraf2>address>div').html(_areaParaf2);
@@ -86,15 +88,15 @@ $(() => {
         $('#modal-detail-surat .pettd>address').children('span').eq(1).text(`${data.pettd.nip}`);
         $('#modal-detail-surat .pettd>address').children('span').eq(2).text(`${data.pettd.jabatan}`);
         let _areaTtd = '<p class="my-0"><span class="badge badge-danger">Belum ditandatangan</span></p>';
-        if ((data.is_ttd==null || data.is_ttd==0) && user_id==data.pettd.id){
-            const isDisabled = (data.is_paraf1==null||data.is_paraf1==0) ? ' disabled="disabled"' : '';
+        if ((data.is_ttd == null || data.is_ttd == 0) && user_id == data.pettd.id) {
+            const isDisabled = (data.is_paraf1 == null || data.is_paraf1 == 0) ? ' disabled="disabled"' : '';
             _areaTtd = `<button class="btn btn-app bg-primary m-0" onclick="event.preventDefault(); setTtd(${data.id});"${isDisabled}>Tanda tangan,<br>Klik disini</button>`;
-        } else if (data.is_ttd==1){
+        } else if (data.is_ttd == 1) {
             _areaTtd = `<p class="my-0"><span class="badge badge-success">Sudah ditandatangan<br>${data.ttd_date}</p>`;
         }
         $('#modal-detail-surat .pettd>address>div').html(_areaTtd);
 
-        PDFObject.embed(`${data.link_surat||'/file-not-found'}#toolbar=0`, "#show-pdf", {
+        PDFObject.embed(`${data.link_surat || '/file-not-found'}#toolbar=0`, "#show-pdf", {
             height: '775px'
         });
     });
@@ -143,16 +145,16 @@ $(() => {
 
 });
 
-function getPemaraf(e){
+function getPemaraf(e) {
 
     $('select.form-control.pemaraf').html('<option value="">Pilih Pemaraf</option>');
 
     const user_id = $(e.currentTarget).find('option:selected').val();
     $.ajax({
         url: `/api/get-pemaraf/${user_id}/user`,
-        success: (data)=>{
-            if (data){
-                $.each(data, (k,v)=>{
+        success: (data) => {
+            if (data) {
+                $.each(data, (k, v) => {
                     $('select.form-control.pemaraf').append(`<option value="${v.id}">${v.nip} | ${v.name} | ${v.jabatan}</option>`);
                 });
             }
@@ -161,7 +163,7 @@ function getPemaraf(e){
     });
 }
 
-function addSuratKeluar(form){
+function addSuratKeluar(form) {
 
     var formData = new FormData();
     formData.append('_token', form.find('input[name="_token"]').val());
@@ -182,13 +184,13 @@ function addSuratKeluar(form){
         processData: false,
         contentType: false,
         data: formData,
-        beforeSend: ()=>{
+        beforeSend: () => {
             $('#form-add-surat-keluar button[type="submit"]').html('<i class="fas fa-sync-alt fa-spin">');
             $('#form-add-surat-keluar button[type="submit"]').prop('disabled', true);
         },
-        success: (data)=>{
+        success: (data) => {
 
-            if (data.status==1){
+            if (data.status == 1) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Good Job!',
@@ -211,16 +213,16 @@ function addSuratKeluar(form){
 
 }
 
-function setParaf1(id){
+function setParaf1(id) {
     $.ajax({
         url: `/api/surat-keluar/${id}/paraf1`,
         method: 'put',
         data: {
             _token: $('meta[name="csrf-token"]').attr('content')
         },
-        success: (data)=>{
+        success: (data) => {
 
-            if (data.status==1){
+            if (data.status == 1) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Good Job!',
@@ -241,16 +243,16 @@ function setParaf1(id){
     });
 }
 
-function setParaf2(id){
+function setParaf2(id) {
     $.ajax({
         url: `/api/surat-keluar/${id}/paraf2`,
         method: 'put',
         data: {
             _token: $('meta[name="csrf-token"]').attr('content')
         },
-        success: (data)=>{
+        success: (data) => {
 
-            if (data.status==1){
+            if (data.status == 1) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Good Job!',
@@ -270,16 +272,16 @@ function setParaf2(id){
         }
     });
 }
-function setTtd(id){
+function setTtd(id) {
     $.ajax({
         url: `/api/surat-keluar/${id}/ttd`,
         method: 'put',
         data: {
             _token: $('meta[name="csrf-token"]').attr('content')
         },
-        success: (data)=>{
+        success: (data) => {
 
-            if (data.status==1){
+            if (data.status == 1) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Good Job!',

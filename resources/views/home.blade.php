@@ -7,7 +7,7 @@
 @section('title_prefix', 'Dashboard -')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">Dashboard</h1>
+<h1 class="m-0 text-dark">Dashboard</h1>
 @stop
 
 @section('content')
@@ -21,7 +21,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-6">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
@@ -60,7 +60,7 @@
             </div>
         </div>
     </div>
-    <div class="col-6">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
@@ -96,14 +96,14 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-8">
+    <div class="col-md-8">
         <div class="card">
             <div class="card-body">
                 <div id="bar-jumlah-smsk-pbln" style="height: 255px;"></div>
             </div>
         </div>
     </div>
-    <div class="col-4">
+    <div class="col-md-4">
         <div class="card">
             <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
@@ -115,25 +115,29 @@
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="far fa-envelope"></i><span class="ml-2">Arsip Surat Keluar</span>
-                            <span class="badge bg-success float-right">{{$data['surat_keluar']['stats']->arsip??0}}</span>
+                            <span
+                                class="badge bg-success float-right">{{$data['surat_keluar']['stats']->arsip??0}}</span>
                         </a>
                     </li>
                     <li class="nav-item active">
                         <a href="#" class="nav-link">
                             <i class="fas fa-inbox"></i><span class="ml-2">Arsip Surat Masuk</span>
-                            <span class="badge bg-success float-right">{{$data['surat_masuk']['stats']->arsip??0}}</span>
+                            <span
+                                class="badge bg-success float-right">{{$data['surat_masuk']['stats']->arsip??0}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="far fa-file-alt"></i><span class="ml-2">Disposisi Selesai</span>
-                            <span class="badge bg-primary float-right">{{$data['surat_masuk']['stats']->disposisi??0}}</span>
+                            <span
+                                class="badge bg-primary float-right">{{$data['surat_masuk']['stats']->disposisi??0}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="fas fa-filter"></i><span class="ml-2">Disposisi Proses</span>
-                            <span class="badge bg-info float-right">{{$data['surat_masuk']['stats']->disposisi??0}}</span>
+                            <span
+                                class="badge bg-info float-right">{{$data['surat_masuk']['stats']->disposisi??0}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -152,8 +156,11 @@
 
 
 @push('js')
-    <script type="text/javascript" src="/assets/plugins/highcharts/highcharts.js"></script>
-    <script type="text/javascript" src="/assets/plugins/highcharts/modules/no-data-to-display.js?.js"></script>
-    <script>const data = <?= json_encode($data) ?>; console.log(data.surat_keluar.trendline)</script>
-    <script src="/assets/app/home.js"></script>
+<script type="text/javascript" src="/assets/plugins/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="/assets/plugins/highcharts/modules/no-data-to-display.js?.js"></script>
+<script>
+const data = <?= json_encode($data) ?>;
+console.log(data.surat_keluar.trendline)
+</script>
+<script src="/assets/app/home.js"></script>
 @endpush

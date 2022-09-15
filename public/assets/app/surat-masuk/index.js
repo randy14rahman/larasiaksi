@@ -96,8 +96,6 @@ $(() => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-
-                console.log(id_surat);
                 deleteSurat(id_surat);
             }
         })
@@ -111,6 +109,8 @@ function getListSurat() {
         ajax: '/api/surat-masuk',
         orderCellsTop: true,
         bDestroy: true,
+        scrollX: true,
+        responsive: true,
         order: [[4, 'desc']],
         columns: [{
             title: 'Jenis Surat',
@@ -204,7 +204,7 @@ function submitSurat(form) {
     })
 }
 
-function deleteSurat(id_surat=0){
+function deleteSurat(id_surat = 0) {
     $.ajax({
         url: `/api/surat-masuk/${id_surat}`,
         method: 'delete',
