@@ -18,7 +18,9 @@
 
 @media only screen and (max-width: 768px) {
     .timeline-steps {
-        flex-direction: column;
+        overflow: auto;
+        padding-left: 30px;
+        justify-content: flex-start
     }
 }
 
@@ -174,52 +176,52 @@ $id_surat = request()->route('id');
                     <div class="col-9" id="tanggal_upload">: <span></span></div>
                 </div>
 
-                    <div class="row mt-3">
-                        <div class="col-3">
-                            Disampaikan ke
-                        </div>
-                        <div class="col-9" id="assign_to">: <span></span></div>
+                <div class="row mt-3">
+                    <div class="col-3">
+                        Disampaikan ke
                     </div>
+                    <div class="col-9" id="assign_to">: <span></span></div>
                 </div>
             </div>
         </div>
-        <div class="card d-none" id="card-table_disposisi">
-            <div class="card-body p-0">
-                <table class="table table-stripped" id="table-disposisi">
-                    <thead>
-                        <tr>
-                            <th>Disposisi dari</th>
-                            <th>Disposisi ke</th>
-                            <th>Tanggal disposisi</th>
-                            <th>Catatan</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-        <div class="card d-none" id="card-table_proses">
-            <div class="card-body p-0">
-                <table class="table table-stripped" id="table-proses">
-                    <thead>
-                        <tr>
-                            <th>Pemroses</th>
-                            <th>Tanggal Proses</th>
-                            <th>Tanggal Selesai</th>
-                            <th>Catatan</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-
-            </div>
-        </div>
-        <div class="card d-none" id="card-action">
-            <div class="card-body">
-                <div id="button-action"></div>
-            </div>
+    </div>
+    <div class="card d-none" id="card-table_disposisi">
+        <div class="card-body p-0">
+            <table class="table table-stripped" id="table-disposisi">
+                <thead>
+                    <tr>
+                        <th>Disposisi dari</th>
+                        <th>Disposisi ke</th>
+                        <th>Tanggal disposisi</th>
+                        <th>Catatan</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
+    <div class="card d-none" id="card-table_proses">
+        <div class="card-body p-0">
+            <table class="table table-stripped" id="table-proses">
+                <thead>
+                    <tr>
+                        <th>Pemroses</th>
+                        <th>Tanggal Proses</th>
+                        <th>Tanggal Selesai</th>
+                        <th>Catatan</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="card d-none" id="card-action">
+        <div class="card-body">
+            <div id="button-action"></div>
+        </div>
+    </div>
+</div>
 </div>
 
 <div class="modal fade" id="disposisiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
