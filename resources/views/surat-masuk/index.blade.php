@@ -136,7 +136,7 @@ $id_user = $user->id;
                 </div>
             </div>
             <div class="card-body">
-                <table id="datatable-surat" class="table" style="width:100"></table>
+                <table id="datatable-surat" class="table" style="width:100%"></table>
             </div>
         </div>
     </div>

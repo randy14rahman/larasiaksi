@@ -1,3 +1,7 @@
+@php
+use Zend\Debug\Debug;
+//Debug::dump(app('request')->routeIs('home'));
+@endphp
 <aside class="main-sidebar {{ config('adminlte.classes_sidebar', 'sidebar-dark-primary elevation-4') }}">
 
     {{-- Sidebar brand logo --}}
@@ -13,13 +17,15 @@
     $menu=[[
     'text' => 'Dashboard',
     'url' => '/home',
-    'icon' => 'fa-duotone fa-house'
+    'icon' => 'fa-duotone fa-house',
+    'shift' => app('request')->routeIs('home') ? 'active' : ''
     ],[
     'text' => 'Surat Masuk',
     'url' => '/surat-masuk',
     'icon' => 'fa-duotone fa-inbox-in',
     'label' => 4,
     'label_color' => 'success',
+    'shift' => app('request')->routeIs('surat-masuk.*') ? 'active' : ''
     ],
     [
     'text' => 'Surat Keluar',
@@ -27,22 +33,26 @@
     'icon' => 'fa-duotone fa-inbox-out',
     'label' => 4,
     'label_color' => 'success',
+    'shift' => app('request')->routeIs('surat-keluar.*') ? 'active' : ''
     ],
     [
     'text' => 'Arsip',
     'url' => '/arsip',
-    'icon' => 'fa-duotone fa-box-archive'
+    'icon' => 'fa-duotone fa-box-archive',
+    'shift' => app('request')->routeIs('arsip.*') ? 'active' : ''
     ]];
 
     $menuadmin=[[
     'text' => 'User Management',
     'url' => '/admin/users',
-    'icon' => 'fas fa-fw fa-users'
+    'icon' => 'fas fa-fw fa-users',
+    'shift' => app('request')->routeIs('users') ? 'active' : ''
     ],
     [
     'text' => 'Role Management',
     'url' => '/admin/roles',
-    'icon' => 'fas fa-fw fa-lock'
+    'icon' => 'fas fa-fw fa-lock',
+    'shift' => app('request')->routeIs('roles') ? 'active' : ''
     ]];
 
     $menuprofile =[
