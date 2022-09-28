@@ -45,13 +45,13 @@ use Zend\Debug\Debug;
     $menuadmin=[[
     'text' => 'User Management',
     'url' => '/admin/users',
-    'icon' => 'fas fa-fw fa-users',
+    'icon' => 'fa-duotone fa-users',
     'shift' => app('request')->routeIs('users') ? 'active' : ''
     ],
     [
     'text' => 'Role Management',
     'url' => '/admin/roles',
-    'icon' => 'fas fa-fw fa-lock',
+    'icon' => 'fa-duotone fa-lock',
     'shift' => app('request')->routeIs('roles') ? 'active' : ''
     ]];
 
