@@ -51,4 +51,4 @@ Route::middleware('auth:sanctum')->group( function () {
     });
 });
 
-// Route::post('/auth', [App\Http\Controllers\Api\AuthController::class, 'login'])->name('auth.login');
+Route::post('/auth', [App\Http\Controllers\Api\AuthController::class, 'login'])->name('auth.login');
