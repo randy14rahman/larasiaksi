@@ -15,8 +15,8 @@ class NotificationController extends Controller
 
         $SuratMasuk = new SuratMasuk();
         $surat_masuk = $SuratMasuk->getNotification();
-     
 
+        // Debug::dump(auth()->user());die;
 
         if (auth()->user()->role_id == 2) {
             $sql = "SELECT sk.id, sk.perihal_surat, sk.pemaraf1, sk.pemaraf2, sk.pettd, u.name as created_by_name, sk.created_at,

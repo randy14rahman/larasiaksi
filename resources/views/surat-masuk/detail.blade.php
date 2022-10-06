@@ -3,95 +3,96 @@
 
 @push('css')
 <style>
-.timeline-steps {
-    display: flex;
-    justify-content: center;
-}
-
-.timeline-steps .timeline-step {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    margin: 1rem
-}
-
-@media only screen and (max-width: 768px) {
     .timeline-steps {
+        display: flex;
+        justify-content: center;
+    }
+
+    .timeline-steps .timeline-step {
+        align-items: center;
+        display: flex;
         flex-direction: column;
+        position: relative;
+        margin: 1rem
     }
-}
 
-@media (min-width:768px) {
-    .timeline-steps .timeline-step:not(:last-child):after {
+    @media only screen and (max-width: 768px) {
+        .timeline-steps {
+            overflow: auto;
+            padding-left: 30px;
+            justify-content: flex-start
+        }
+    }
+    @media (min-width:768px) {
+        .timeline-steps .timeline-step:not(:last-child):after {
+            content: "";
+            display: block;
+            border-top: .25rem dotted #3b82f6;
+            width: 3.46rem;
+            position: absolute;
+            left: 7.5rem;
+            top: .3125rem;
+            margin-top: 50px
+        }
+
+        .timeline-steps .timeline-step:not(:first-child):before {
+            content: "";
+            display: block;
+            border-top: .25rem dotted #3b82f6;
+            width: 3.8125rem;
+            position: absolute;
+            right: 7.5rem;
+            top: .3125rem;
+            margin-top: 50px
+        }
+    }
+
+    .timeline-steps .timeline-content {
+        width: 10rem;
+        text-align: center
+    }
+
+    .timeline-steps .timeline-content .inner-circle {
+        border-radius: 1.5rem;
+        height: 1rem;
+        width: 1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: red
+    }
+
+    .timeline-steps .timeline-content .inner-circle-active {
+        border-radius: 1.5rem;
+        height: 1rem;
+        width: 1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #3b82f6
+    }
+
+    .timeline-steps .timeline-content .inner-circle:before {
         content: "";
-        display: block;
-        border-top: .25rem dotted #3b82f6;
-        width: 3.46rem;
-        position: absolute;
-        left: 7.5rem;
-        top: .3125rem;
-        margin-top: 50px
+        background-color: #C4C4C4;
+        display: inline-block;
+        height: 3rem;
+        width: 3rem;
+        min-width: 3rem;
+        border-radius: 6.25rem;
+        opacity: .5
     }
 
-    .timeline-steps .timeline-step:not(:first-child):before {
+    .timeline-steps .timeline-content .inner-circle-active:before {
         content: "";
-        display: block;
-        border-top: .25rem dotted #3b82f6;
-        width: 3.8125rem;
-        position: absolute;
-        right: 7.5rem;
-        top: .3125rem;
-        margin-top: 50px
+        background-color: red;
+        display: inline-block;
+        height: 3rem;
+        width: 3rem;
+        min-width: 3rem;
+        border-radius: 6.25rem;
+        opacity: .5
     }
-}
-
-.timeline-steps .timeline-content {
-    width: 10rem;
-    text-align: center
-}
-
-.timeline-steps .timeline-content .inner-circle {
-    border-radius: 1.5rem;
-    height: 1rem;
-    width: 1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: red
-}
-
-.timeline-steps .timeline-content .inner-circle-active {
-    border-radius: 1.5rem;
-    height: 1rem;
-    width: 1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #3b82f6
-}
-
-.timeline-steps .timeline-content .inner-circle:before {
-    content: "";
-    background-color: #C4C4C4;
-    display: inline-block;
-    height: 3rem;
-    width: 3rem;
-    min-width: 3rem;
-    border-radius: 6.25rem;
-    opacity: .5
-}
-
-.timeline-steps .timeline-content .inner-circle-active:before {
-    content: "";
-    background-color: red;
-    display: inline-block;
-    height: 3rem;
-    width: 3rem;
-    min-width: 3rem;
-    border-radius: 6.25rem;
-    opacity: .5
-}
 </style>
 @endpush
 
@@ -133,14 +134,14 @@ $id_surat = request()->route('id');
     </div>
 </div>
 <div class="row">
-    <div class="col-7">
+    <div class="col-md-7 col-sm-12">
         <div class="card">
             <div class="card-body p-0">
                 <iframe src="" id="iframe-preview-pdf" width="100%" style="height: 900px;" border="0"></iframe>
             </div>
         </div>
     </div>
-    <div class="col-5">
+    <div class="col-md-5 col-sm-12">
         <div class="card">
             <div class="card-body" style="display:flex;flex-direction:column;">
                 <div class="row">
@@ -173,19 +174,17 @@ $id_surat = request()->route('id');
                     </div>
                     <div class="col-9" id="tanggal_upload">: <span></span></div>
                 </div>
-
-                    <div class="row mt-3">
-                        <div class="col-3">
-                            Disampaikan ke
-                        </div>
-                        <div class="col-9" id="assign_to">: <span></span></div>
+                <div class="row mt-3">
+                    <div class="col-3">
+                        Disampaikan ke
                     </div>
+                    <div class="col-9" id="assign_to">: <span></span></div>
                 </div>
             </div>
         </div>
         <div class="card d-none" id="card-table_disposisi">
             <div class="card-body p-0">
-                <table class="table table-stripped" id="table-disposisi">
+                <table class="table table-stripped table-responsive" id="table-disposisi">
                     <thead>
                         <tr>
                             <th>Disposisi dari</th>
@@ -200,7 +199,7 @@ $id_surat = request()->route('id');
         </div>
         <div class="card d-none" id="card-table_proses">
             <div class="card-body p-0">
-                <table class="table table-stripped" id="table-proses">
+                <table class="table table-stripped table-responsive" id="table-proses">
                     <thead>
                         <tr>
                             <th>Pemroses</th>

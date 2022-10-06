@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table id="datatable-1" class="table table-striped table-bordered" style="width:100%"></table>
+                    <table id="datatable-1" class="table table-striped table-bordered table-responsive" style="width:100%"></table>
                 </div>
             </div>
         </div>

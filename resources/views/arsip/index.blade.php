@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="datatable-arsip-surat-masuk" class="table table-stripped" style="width:100%" style="width:100%"></table>
+            <table id="datatable-arsip-surat-masuk" class="table table-stripped table-responsive" style="width:100%" style="width:100%"></table>
         </div>
     </div>
     <div class="card">
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="datatable-arsip-surat-keluar" class="table table-stripped" style="width:100%" style="width:100%"></table>
+            <table id="datatable-arsip-surat-keluar" class="table table-stripped table-responsive" style="width:100%" style="width:100%"></table>
         </div>
     </div>
 

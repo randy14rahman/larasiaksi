@@ -85,7 +85,6 @@ $(() => {
 
     $('#datatable-surat tbody').on('click', '.btn-delete', (e) => {
         const id_surat = parseInt($(e.currentTarget).data('id'));
-        console.log(user_id);
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",

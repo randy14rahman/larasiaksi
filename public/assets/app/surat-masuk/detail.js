@@ -10,7 +10,7 @@ function getDetailSuratMasuk() {
             $("#button-action").html('');
             console.log(res);
             if (res.transaction) {
-                $("#iframe-preview-pdf").attr('src', `${res.data.link_file}#toolbar=0`)
+                $("#iframe-preview-pdf").attr('src', `/ViewerJS/#${res.data.link_file}`)
                 $("#nomor_surat>span").text(res.data.nomor_surat)
                 $("#perihal_surat>span").text(res.data.perihal_surat)
                 $("#tanggal_surat>span").text(res.data.tanggal_surat)

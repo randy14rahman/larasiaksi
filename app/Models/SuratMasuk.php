@@ -18,9 +18,9 @@ class SuratMasuk extends Model
 
         $params = [];
         $sWhere = ($p['is_arsip']??0==1) ? " sm.is_arsip=1" : " sm.is_arsip is null";
-        if (in_array(auth()->user()->role_id, [1,2,3,4])) { // admin, operator, ka opd, sekretaris
+        if (in_array(auth()->user()->role_id, [1,2,3])) { // admin, operator, ka opd, sekretaris
 
-            if (in_array(auth()->user()->role_id, [2,3,4])){
+            if (in_array(auth()->user()->role_id, [2,3])){
                 $params = [
                     'created_by' => auth()->id(),
                     'assign_to' => auth()->id(),

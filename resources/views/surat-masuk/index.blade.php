@@ -183,11 +183,7 @@ $id_user = $user->id;
 <script src="/assets/plugins/jquery-validation/additional-methods.min.js"></script>
 <script src="/assets/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 <script>
-const user_id = {
-    {
-        $id_user
-    }
-}
+const user_id = 0
 </script>
 <script src="/assets/app/surat-masuk/index.js"></script>
 @endpush

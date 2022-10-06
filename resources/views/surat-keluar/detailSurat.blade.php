@@ -1,6 +1,9 @@
 @php
 use Zend\Debug\Debug;
 //Debug::dump($data);
+
+$file = ($data->signed_surat??$data->link_surat)!="" ? ($data->signed_surat??$data->link_surat) : '/file-not-found';
+//Debug::dump($file);//die;
 @endphp
 
 @extends('adminlte::page')
@@ -23,7 +26,7 @@ use Zend\Debug\Debug;
     <div class="col-md-7">
         <div class="card">
             <div class="card-body">
-                <iframe src="{{$data->signed_surat??$data->link_surat}}#toolbar=0" class="w-100" frameborder="0" height="750"
+                <iframe src="/ViewerJS/#{{$data->signed_surat??$data->link_surat}}" class="w-100" frameborder="0" height="750"
                     id="display-pdf"></iframe>
             </div>
         </div>
@@ -69,7 +72,7 @@ use Zend\Debug\Debug;
             </div>
         </div>
         <div class="row">
-            <div class="col-6 pemaraf1">
+            <div class="col-md-6 col-sm-12 pemaraf1">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title text-center float-none text-center">
@@ -98,7 +101,7 @@ use Zend\Debug\Debug;
                     </div>
                 </div>
             </div>
-            <div class="col-6 pemaraf2{{($data->pemaraf2)==''? ' d-none' :'' }}">
+            <div class="col-md-6 col-sm-12 pemaraf2{{($data->pemaraf2)==''? ' d-none' :'' }}">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title text-center float-none text-center">
@@ -127,7 +130,7 @@ use Zend\Debug\Debug;
                     </div>
                 </div>
             </div>
-            <div class="col-6 pettd{{($data->pemaraf2)==''? '' :' offset-3' }}">
+            <div class="col-md-6 col-sm-12 pettd{{($data->pemaraf2)==''? '' :' offset-md-3' }}">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title text-center float-none text-center">

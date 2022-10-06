@@ -93,8 +93,7 @@ async function setTtd(id) {
 
     formData.append('file', extformData);
     formData.append('id', id);
-
-
+    formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
 
     $.ajax({
         url: '/api/surat-keluar/upload-signed',

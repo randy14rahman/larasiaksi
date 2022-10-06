@@ -242,6 +242,7 @@ class SuratKeluarController extends Controller
         sk.pemaraf1, sk.is_paraf1, sk.paraf1_date, 
         sk.pemaraf2, sk.is_paraf2, sk.paraf2_date, 
         sk.pettd, sk.is_ttd, sk.ttd_date, 
+        sk.signed_surat,
         sk.created_at, sk.is_reject,sk.rejected,ur.name as rejected_by,sk.note_rejected,sk.reject_date,
         u.name as created_by_name 
         from surat_keluar sk 
@@ -255,8 +256,7 @@ class SuratKeluarController extends Controller
 
         $data = app('db')->connection()->selectOne($sql, $params);
 
-        // Debug::dump($data);
-        // die;
+        // Debug::dump($data);die;
         if ($data) {
 
             $userModel = new User();
