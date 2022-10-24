@@ -158,7 +158,9 @@ class SuratMasukController extends Controller
         $sWhere = "";
         if ($level->level == 3) {
             $sWhere .= "roles.level in (4,5)";
-        } else if ($level->level >= 3) {
+        } else if ($level->level == 4) {
+            $sWhere .= "roles.level in (5,6)";
+        } else if ($level->level > 4){
             $params['level'] = $level->level + 1;
             $sWhere .= "roles.level = :level";
         }
